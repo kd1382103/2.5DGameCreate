@@ -87,4 +87,10 @@ protected:
 
 	// デバッグ情報クラス
 	std::unique_ptr<KdDebugWireFrame> m_pDebugWire = nullptr;
+
+	Math::Vector3	m_nowPos;
+	Math::Vector3	m_moveVec;
+	float			m_moveSpeed;
+	float			m_movePow;
+	bool			m_aliveFlg;
 };

@@ -76,6 +76,24 @@
     <Filter Include="Src\Application\Scene\TitleScene">
       <UniqueIdentifier>{6036b8f3-498e-401e-865a-f8632985b816}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object">
+      <UniqueIdentifier>{4e7f1f17-ea80-4486-a6ad-cb5925ed0bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Player">
+      <UniqueIdentifier>{05d206a7-5587-4679-9b08-597629f2e82a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Enemy">
+      <UniqueIdentifier>{028601ae-374e-4d0e-a2fa-3d04fc46d14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Boss">
+      <UniqueIdentifier>{d5c728a8-ba93-4381-b18e-87b4ee6fb817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Bullet">
+      <UniqueIdentifier>{a0e5e896-0ebb-4b5a-b98c-71f6f0175b14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\Card">
+      <UniqueIdentifier>{1e8e41c8-b55e-4d59-8d55-19caf1601c27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -252,6 +270,9 @@
     <ClInclude Include="Src\Application\Scene\BaseScene\BaseScene.h">
       <Filter>Src\Application\Scene\BaseScene</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\Player\Player.h">
+      <Filter>Src\Application\Object\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -397,6 +418,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Scene\BaseScene\BaseScene.cpp">
       <Filter>Src\Application\Scene\BaseScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Player\Player.cpp">
+      <Filter>Src\Application\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
