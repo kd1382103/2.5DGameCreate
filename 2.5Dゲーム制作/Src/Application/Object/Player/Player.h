@@ -1,25 +1,24 @@
 ﻿#pragma once
-#include"../../../Framework/GameObject/KdGameObject.h"
 
 class GameScene;
 class Player : public KdGameObject
 {
 public:
-	Player() {}
+	Player() { Init(); }
 	~Player() { Release(); }
 
-	void Update();
-
-	void Draw();
+	void Init()			override;
+	void Update()		override;
+	void PostUpdate()	override;
+	void DrawLit()			override;
 
 private:
 
 	void Release() {}
-	void Init() override;
 
 	GameScene* m_owner = nullptr;
 
-	//単位行列で初期化
-	Math::Matrix m_player=Math::Matrix::Identity;
+	std::shared_ptr<KdSquarePolygon>m_poly;
 
+	float m_anime = 0;
 };
