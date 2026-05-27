@@ -1,6 +1,11 @@
 ﻿#include "GameScene.h"
 #include"../SceneManager.h"
+
+#include"../../Object/Backgroound/Background.h"
+#include"../../Object/Ground/Ground.h"
 #include"../../Object/Player/Player.h"
+#include"../../Object/Enemy/Enemy.h"
+
 
 void GameScene::Event()
 {
@@ -13,9 +18,11 @@ void GameScene::Event()
 	}
 
 	//　カメラ処理
-	Math::Vector3 camPos = { 0,1,-5 };
+	Math::Vector3 camPos = { 0,3,-5 };
+	Math::Matrix rotationMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(20));
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos + m_player->GetPos());
-	m_camera->SetCameraMatrix(transMat);
+	Math::Matrix camWorld = rotationMat * transMat;
+	m_camera->SetCameraMatrix(camWorld);
 
 }
 
@@ -25,7 +32,16 @@ void GameScene::Init()
 	m_camera = std::make_unique<KdCamera>();		//メモリ確保
 	m_camera->SetProjectionMatrix(60);				//視野角設定
 
+	m_back = std::make_shared<Background>();
+	m_objList.push_back(m_back);
+
+	m_ground = std::make_shared<Ground>();
+	m_objList.push_back(m_ground);
+
 	m_player = std::make_shared<Player>();
 	m_objList.push_back(m_player);
+
+	m_enemy = std::make_shared<Enemy>();
+	m_objList.push_back(m_enemy);
 
 }

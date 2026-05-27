@@ -1,13 +1,13 @@
-﻿#include "Player.h"
+﻿#include "Enemy.h"
 
-void Player::Init()
+void Enemy::Init()
 {
 	m_poly = std::make_shared<KdSquarePolygon>();
-	m_poly->SetMaterial("Asset/Textures/Object/Player/RUN/run_down.png");
+	m_poly->SetMaterial("Asset/Textures/Object/Enemy/skeleton1/enemies-skeleton1_idle.png");
 
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 
-	//m_poly->SetSplit(1,8);
+	m_poly->SetSplit(1,6);
 
 	m_nowPos	= { 0,0,0 };
 	m_moveVec	= { 0,0,0 };
@@ -21,16 +21,12 @@ void Player::Init()
 
 }
 
-void Player::Update()
+void Enemy::Update()
 {
 	//アニメーション制御
 	{
-		//int run[15] = {0,1,2,3,4,5,6,7,6,5,4,3,2,1,0};
-		
-		//m_poly->SetUVRect(run[1]);
-
 		m_anime += 0.15f;
-		if (m_anime >= 15)
+		if (m_anime >= 17)
 		{
 			m_anime = 0;
 		}
@@ -39,23 +35,6 @@ void Player::Update()
 	//移動処理
 	if (m_aliveFlg)
 	{
-		if (GetAsyncKeyState('D') & 0x8000)
-		{
-			m_nowPos.x += 0.05f;
-		}
-		if (GetAsyncKeyState('A') & 0x8000)
-		{
-			m_nowPos.x -= 0.05f;
-		}
-		if (GetAsyncKeyState('W') & 0x8000)
-		{
-			m_nowPos.z += 0.05f;
-		}
-		if (GetAsyncKeyState('S') & 0x8000)
-		{
-			m_nowPos.z -= 0.05f;
-		}
-
 		//static float _yAng = 0;
 		//Math::Matrix RotationY	=	Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(_yAng));
 		//_yAng += 1.0f;
@@ -64,12 +43,12 @@ void Player::Update()
 	}
 }
 
-void Player::PostUpdate()
+void Enemy::PostUpdate()
 {
 
 }
 
-void Player::DrawLit()
+void Enemy::DrawLit()
 {
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly,m_mWorld);
 }
