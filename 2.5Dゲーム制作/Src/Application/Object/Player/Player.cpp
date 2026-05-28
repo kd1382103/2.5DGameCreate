@@ -11,7 +11,7 @@ void Player::Init()
 
 	m_nowPos = {};
 	m_moveVec = {};
-	m_moveSpeed = 0.05f;
+	m_moveSpeed = 0.3f;
 	m_movePow = 0;
 	m_aliveFlg = true;
 
