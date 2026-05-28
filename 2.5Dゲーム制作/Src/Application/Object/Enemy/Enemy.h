@@ -1,6 +1,9 @@
 ﻿#pragma once
 
 class GameScene;
+
+class Player;
+
 class Enemy : public KdGameObject
 {
 public:
@@ -15,16 +18,19 @@ public:
 	//	Necromancer,
 	//};
 
-	void Init()			override;
-	void Update()		override;
-	void PostUpdate()	override;
-	void DrawLit()			override;
+	void Init()							override;
+	void Update()						override;
+	void PostUpdate()					override;
+	void GenerateDepthMapFromLight()	override;
+	void DrawLit()						override;
 
 private:
 
 	void Release() {}
 
 	GameScene* m_owner = nullptr;
+
+	std::shared_ptr<Player>m_player;
 
 	//EnemyType* m_type ;
 

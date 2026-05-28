@@ -7,10 +7,11 @@ public:
 	Player() { Init(); }
 	~Player() { Release(); }
 
-	void Init()			override;
-	void Update()		override;
-	void PostUpdate()	override;
-	void DrawLit()			override;
+	void Init()							override;
+	void Update()						override;
+	void PostUpdate()					override;
+	void GenerateDepthMapFromLight()	override;
+	void DrawLit()						override;
 
 private:
 

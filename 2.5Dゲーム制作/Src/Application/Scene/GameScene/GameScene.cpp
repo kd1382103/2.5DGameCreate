@@ -20,7 +20,9 @@ void GameScene::Event()
 	//　カメラ処理
 	Math::Vector3 camPos = { 0,3,-5 };
 	Math::Matrix rotationMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(20));
-	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos + m_player->GetPos());
+
+	Math::Matrix transMat = Math::Matrix::CreateTranslation( camPos + m_player->GetPos());
+
 	Math::Matrix camWorld = rotationMat * transMat;
 	m_camera->SetCameraMatrix(camWorld);
 

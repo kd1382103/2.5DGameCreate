@@ -1,4 +1,5 @@
 ﻿#include "Enemy.h"
+#include "../Player/Player.h"
 
 void Enemy::Init()
 {
@@ -7,17 +8,17 @@ void Enemy::Init()
 
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 
-	m_poly->SetSplit(1,6);
+	m_poly->SetSplit(6,1);
 
-	m_nowPos	= { 0,0,0 };
+	m_nowPos	= {};
 	m_moveVec	= { 0,0,0 };
-	m_moveSpeed = 0;
+	m_moveSpeed = 0.1f;
 	m_movePow	= 0;
 	m_aliveFlg	= true;
 
-	Math::Matrix ScaleMat = Math::Matrix::CreateScale(1, 1, 1);
-	Math::Matrix RotationX = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
-	m_mWorld = ScaleMat * RotationX;
+	//Math::Matrix ScaleMat = Math::Matrix::CreateScale(1, 1, 1);
+	//Math::Matrix RotationX = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
+	//m_mWorld = ScaleMat * RotationX;
 
 }
 
@@ -25,8 +26,12 @@ void Enemy::Update()
 {
 	//アニメーション制御
 	{
-		m_anime += 0.15f;
-		if (m_anime >= 17)
+		int run[11] = { 0,1,2,3,4,5,4,3,2,1,0 };
+
+		m_poly->SetUVRect(run[(int)m_anime]);
+
+		m_anime += 0.1f;
+		if (m_anime >= 11)
 		{
 			m_anime = 0;
 		}
@@ -35,15 +40,19 @@ void Enemy::Update()
 	//移動処理
 	if (m_aliveFlg)
 	{
-		//static float _yAng = 0;
-		//Math::Matrix RotationY	=	Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(_yAng));
-		//_yAng += 1.0f;
-		Math::Matrix transMat		=	Math::Matrix::CreateTranslation(m_nowPos);
-		m_mWorld = m_mWorld * transMat;
+		//敵とプレイヤーの座標が等しくなければプレイヤーに向かって歩く
+
+		Math::Matrix transMat	=	Math::Matrix::CreateTranslation(m_nowPos);
+		m_mWorld =  transMat;
 	}
 }
 
 void Enemy::PostUpdate()
+{
+
+}
+
+void Enemy::GenerateDepthMapFromLight()
 {
 
 }
