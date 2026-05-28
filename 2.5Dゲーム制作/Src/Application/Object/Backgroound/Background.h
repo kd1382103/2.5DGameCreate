@@ -11,7 +11,5 @@ public:
 
 private:
 
-	//std::shared_ptr<KdSquarePolygon>m_polygon;
-	KdSquarePolygon m_polygon;
-
+	std::shared_ptr<KdSquarePolygon>m_poly;
 };

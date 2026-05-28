@@ -36,7 +36,6 @@ void Player::Update()
 		}
 	}
 	
-
 	//移動処理
 	{
 		if (m_aliveFlg)
