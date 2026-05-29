@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-class Ground :public KdGameObject
+class Stage :public KdGameObject
 {
 public:
-	Ground() { Init(); }
-	~Ground()	override { Release(); }
+	Stage() { Init(); }
+	~Stage()	override { Release(); }
 
 	void Init()			override;
 	void DrawUnLit()		override;

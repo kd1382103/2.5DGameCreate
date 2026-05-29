@@ -1,9 +1,15 @@
 ﻿#include "Player.h"
+#include "../../Scene/SceneManager.h"
 
 void Player::Init()
 {
+	//デバック用
+	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
+
 	m_poly = std::make_shared<KdSquarePolygon>();
 	m_poly->SetMaterial("Asset/Textures/Object/Player/idle.png");
+
+	m_poly->SetScale(1.0f);
 
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 
@@ -58,12 +64,64 @@ void Player::Update()
 			}
 		}
 	}
+	Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
+	m_mWorld = transMat;
+
 }
 
 void Player::PostUpdate()
 {
-	Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
-	m_mWorld =  transMat;
+	// //// //// //// //// ////
+	//	 スフィア（球）判定  //
+	// //// //// //// //// ////
+
+	float maxOverlap = 0;
+	bool hit = false;
+	Math::Vector3 hitDir;
+
+	//球判定用変用意
+	KdCollider::SphereInfo sphere;
+
+	//球の中心座標設定
+	sphere.m_sphere.Center = m_nowPos;
+	//位置調整
+	sphere.m_sphere.Center.y += 0.5f;
+
+	//球の半径設定
+	sphere.m_sphere.Radius = 0.4;
+
+	//当たり判定をしたいタイプ設定
+	sphere.m_type = KdCollider::TypeGround;
+
+	m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+
+	//球に当たったオブジェクト情報格納
+	std::list<KdCollider::CollisionResult>retSphereList;
+
+	//全てのオブジェクト当たり判定
+	for (auto& obj : SceneManager::Instance().GetObjList())
+	{
+		obj->Intersects(sphere, &retSphereList);
+	}
+
+	for (auto& ret : retSphereList)
+	{
+		//球にめり込んだ長さが一番長いものを探す
+		if (maxOverlap < ret.m_overlapDistance)
+		{
+			//更新
+			maxOverlap = ret.m_overlapDistance;
+			hitDir = ret.m_hitDir;
+			hit = true;
+		}
+	}
+
+	if (hit)
+	{
+		//押し戻し処理
+		m_nowPos += hitDir * maxOverlap;
+	}
+
 }
 
 void Player::GenerateDepthMapFromLight()

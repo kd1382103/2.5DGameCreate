@@ -1,8 +1,8 @@
 ﻿#include "GameScene.h"
 #include"../SceneManager.h"
 
-#include"../../Object/Backgroound/Background.h"
-#include"../../Object/Ground/Ground.h"
+#include "../../Object/Stage/Stage.h"
+
 #include"../../Object/Player/Player.h"
 #include"../../Object/Enemy/Enemy.h"
 
@@ -34,11 +34,8 @@ void GameScene::Init()
 	m_camera = std::make_unique<KdCamera>();		//メモリ確保
 	m_camera->SetProjectionMatrix(60);				//視野角設定
 
-	m_back = std::make_shared<Background>();
-	m_objList.push_back(m_back);
-
-	m_ground = std::make_shared<Ground>();
-	m_objList.push_back(m_ground);
+	m_stage = std::make_shared<Stage>();
+	m_objList.push_back(m_stage);
 
 	m_player = std::make_shared<Player>();
 	m_objList.push_back(m_player);

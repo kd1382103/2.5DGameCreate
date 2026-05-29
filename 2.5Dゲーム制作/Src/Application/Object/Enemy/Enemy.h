@@ -28,10 +28,6 @@ private:
 
 	void Release() {}
 
-	GameScene* m_owner = nullptr;
-
-	std::shared_ptr<Player>m_player;
-
 	//EnemyType* m_type ;
 
 	std::shared_ptr<KdSquarePolygon>m_poly;

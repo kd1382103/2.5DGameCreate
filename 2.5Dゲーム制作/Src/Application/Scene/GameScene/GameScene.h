@@ -2,8 +2,7 @@
 
 #include"../BaseScene/BaseScene.h"
 
-class Background;
-class Ground;
+class Stage;
 
 class Player;
 class Enemy;
@@ -23,8 +22,7 @@ private:
 	//変数
 
 	//背景類
-	std::shared_ptr<Background>m_back;
-	std::shared_ptr<Ground>m_ground;
+	std::shared_ptr<Stage>m_stage;
 
 	//キャラクター類
 	std::shared_ptr<Player>m_player;
