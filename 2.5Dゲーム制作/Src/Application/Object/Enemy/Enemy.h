@@ -30,7 +30,12 @@ private:
 
 	//EnemyType* m_type ;
 
+	//std::shared_ptr<GameScene>m_owner;
+	std::shared_ptr<Player>m_player;
+
 	std::shared_ptr<KdSquarePolygon>m_poly;
+
+	Math::Vector3 m_enemyMove;
 
 	float m_anime = 0;
 };

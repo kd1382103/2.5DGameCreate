@@ -1,5 +1,6 @@
 ﻿#include "Enemy.h"
 #include "../../Scene/SceneManager.h"
+#include "../Player/Player.h"
 
 
 void Enemy::Init()
@@ -48,9 +49,16 @@ void Enemy::Update()
 	{
 		//敵とプレイヤーの座標が等しくなければプレイヤーに向かって歩く
 
+		m_enemyMove = m_player->GetPos() - m_nowPos;
+		m_enemyMove.Normalize();
+		m_nowPos += m_enemyMove;
+
 		Math::Matrix transMat	=	Math::Matrix::CreateTranslation(m_nowPos);
 		m_mWorld =  transMat;
 	}
+
+
+	
 }
 
 void Enemy::PostUpdate()
