@@ -51,14 +51,11 @@ void Enemy::Update()
 
 		m_enemyMove = m_player->GetPos() - m_nowPos;
 		m_enemyMove.Normalize();
-		m_nowPos += m_enemyMove;
+		m_nowPos += m_enemyMove * m_moveSpeed;
 
 		Math::Matrix transMat	=	Math::Matrix::CreateTranslation(m_nowPos);
 		m_mWorld =  transMat;
 	}
-
-
-	
 }
 
 void Enemy::PostUpdate()

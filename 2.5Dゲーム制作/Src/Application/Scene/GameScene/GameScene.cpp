@@ -42,5 +42,4 @@ void GameScene::Init()
 
 	m_enemy = std::make_shared<Enemy>();
 	m_objList.push_back(m_enemy);
-
 }

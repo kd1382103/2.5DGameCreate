@@ -24,6 +24,8 @@ public:
 	void GenerateDepthMapFromLight()	override;
 	void DrawLit()						override;
 
+	std::shared_ptr<Player>m_player;
+
 private:
 
 	void Release() {}
@@ -31,7 +33,6 @@ private:
 	//EnemyType* m_type ;
 
 	//std::shared_ptr<GameScene>m_owner;
-	std::shared_ptr<Player>m_player;
 
 	std::shared_ptr<KdSquarePolygon>m_poly;
 
