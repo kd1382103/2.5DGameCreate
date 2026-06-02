@@ -37,6 +37,13 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+	m_attackCnt--;
+	if (m_attackCnt <= 0)
+	{
+		m_attackFlg = true;
+		m_attackCnt = 50;
+	}
+
 	//アニメーション制御
 	{
 		int run[5] = { 69,70,71,72,73 };
@@ -48,6 +55,12 @@ void Enemy::Update()
 		{
 			m_anime = 0;
 		}
+	}
+
+	//攻撃処理
+	if (m_attackFlg)
+	{
+		//Attack();
 	}
 
 	//移動処理
@@ -130,17 +143,6 @@ void Enemy::PostUpdate()
 			//押し戻し処理
 			m_nowPos += hitDir * maxOverlap;
 		}
-
-		m_attackCnt--;
-		if (m_attackCnt <= 0)
-		{
-			m_attackFlg = true;
-			m_attackCnt = 30;
-		}
-		if (m_attackFlg)
-		{
-			Attack();
-		}
 	}
 }
 
@@ -175,6 +177,7 @@ void Enemy::Attack()
 			m_anime = 0;
 		}
 	}
+
 	for (auto& obj : SceneManager::Instance().GetObjList())
 	{
 		auto player = std::dynamic_pointer_cast<Player>(obj);

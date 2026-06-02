@@ -69,7 +69,7 @@ void Player::Update()
 	if (m_attackCnt <= 0)
 	{
 		m_attackFlg = true;
-		m_attackCnt = 30;
+		m_attackCnt = 40;
 	}
 	if(m_attackFlg)
 	{
