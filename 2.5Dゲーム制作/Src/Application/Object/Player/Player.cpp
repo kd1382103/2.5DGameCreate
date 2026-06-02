@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "../../Scene/SceneManager.h"
+#include "../Enemy/Enemy.h"
 
 void Player::Init()
 {
@@ -7,24 +8,23 @@ void Player::Init()
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
 	m_poly = std::make_shared<KdSquarePolygon>();
-	m_poly->SetMaterial("Asset/Textures/Object/Player/idle.png");
+	m_poly->SetMaterial("Asset/Textures/Object/Player/Player.png");
 
-	m_poly->SetScale(1.0f);
+	m_poly->SetScale(0.75f);
 
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 
-	m_poly->SetSplit(8, 4);
+	m_poly->SetSplit(8, 16);
 
-	m_nowPos = {};
+	m_pCollider = std::make_unique<KdCollider>();
+
+	m_pCollider->RegisterCollisionShape("PlayerCollision", m_poly, KdCollider::TypeBump);
+
+	m_nowPos = {-10,0,-10};
 	m_moveVec = {};
 	m_moveSpeed = 0.3f;
 	m_movePow = 0;
 	m_aliveFlg = true;
-
-	//Math::Matrix ScaleMat = Math::Matrix::CreateScale(2,2,2);
-	//Math::Matrix RotationX = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
-	//m_mWorld = ScaleMat * RotationX;
-
 }
 
 void Player::Update()
@@ -35,13 +35,13 @@ void Player::Update()
 
 		m_poly->SetUVRect(run[(int)m_anime]);
 
-		m_anime += 0.2f;
+		m_anime += 0.05f;
 		if (m_anime >= 8)
 		{
 			m_anime = 0;
 		}
 	}
-	
+
 	//移動処理
 	{
 		if (m_aliveFlg)
@@ -64,8 +64,22 @@ void Player::Update()
 			}
 		}
 	}
+
+	m_attackCnt--;
+	if (m_attackCnt <= 0)
+	{
+		m_attackFlg = true;
+		m_attackCnt = 30;
+	}
+	if(m_attackFlg)
+	{
+		Attack();
+	}
+
+	Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
+	//Math::Matrix RotationX = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
-	m_mWorld = transMat;
+	m_mWorld = ScaleMat * transMat;
 
 }
 
@@ -75,63 +89,115 @@ void Player::PostUpdate()
 	//	 スフィア（球）判定  //
 	// //// //// //// //// ////
 
-	float maxOverlap = 0;
-	bool hit = false;
-	Math::Vector3 hitDir;
-
-	//球判定用変用意
-	KdCollider::SphereInfo sphere;
-
-	//球の中心座標設定
-	sphere.m_sphere.Center = m_nowPos;
-	//位置調整
-	sphere.m_sphere.Center.y += 0.5f;
-
-	//球の半径設定
-	sphere.m_sphere.Radius = 0.4;
-
-	//当たり判定をしたいタイプ設定
-	sphere.m_type = KdCollider::TypeGround;
-
-	m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
-
-	//球に当たったオブジェクト情報格納
-	std::list<KdCollider::CollisionResult>retSphereList;
-
-	//全てのオブジェクト当たり判定
-	for (auto& obj : SceneManager::Instance().GetObjList())
 	{
-		obj->Intersects(sphere, &retSphereList);
-	}
+		float maxOverlap = 0;
+		Math::Vector3 hitDir;
 
-	for (auto& ret : retSphereList)
-	{
-		//球にめり込んだ長さが一番長いものを探す
-		if (maxOverlap < ret.m_overlapDistance)
+		//球判定用変用意
+		KdCollider::SphereInfo sphere;
+
+		//球の中心座標設定
+		sphere.m_sphere.Center = m_nowPos;
+		//位置調整
+		sphere.m_sphere.Center.y += 0.5f;
+
+		//球の半径設定
+		sphere.m_sphere.Radius = 0.5;
+
+		//当たり判定をしたいタイプ設定
+		sphere.m_type = KdCollider::TypeGround;
+
+		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+
+		//球に当たったオブジェクト情報格納
+		std::list<KdCollider::CollisionResult>retSphereList;
+
+		//全てのオブジェクト当たり判定
+		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
-			//更新
-			maxOverlap = ret.m_overlapDistance;
-			hitDir = ret.m_hitDir;
-			hit = true;
+			obj->Intersects(sphere, &retSphereList);
+		}
+
+		for (auto& ret : retSphereList)
+		{
+			//球にめり込んだ長さが一番長いものを探す
+			if (maxOverlap < ret.m_overlapDistance)
+			{
+				//更新
+				maxOverlap = ret.m_overlapDistance;
+				hitDir = ret.m_hitDir;
+				hit = true;
+			}
+		}
+
+		if (hit)
+		{
+			//押し戻し処理
+			m_nowPos += hitDir * maxOverlap;
 		}
 	}
-
-	if (hit)
-	{
-		//押し戻し処理
-		m_nowPos += hitDir * maxOverlap;
-	}
-
 }
 
 void Player::GenerateDepthMapFromLight()
 {
-	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
+	if (m_aliveFlg)
+	{
+		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
+	}
 }
-
 void Player::DrawLit()
 {
-	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly,m_mWorld);
+	if (m_aliveFlg)
+	{
+		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
+	}
+}
+
+void Player::Attack()
+{
+	///////////////////////////////////////////
+
+	//敵との当たり判定ができたらその条件式を作る
+
+	int run[6] = { 64,65,66,67,68,69 };
+
+	m_poly->SetUVRect(run[(int)m_anime]);
+
+	m_anime += 0.2f;
+	if (m_anime >= 6)
+	{
+		m_attackFlg = false;
+		m_anime = 0;
+	}
+
+	//////////////////////////////////////////
+
+	for (auto& obj : SceneManager::Instance().GetObjList())
+	{
+		auto enemy = std::dynamic_pointer_cast<Enemy>(obj);
+
+		// Enemyかつ、死んでいない場合以外は無視
+		if (!enemy) continue;            
+		if (!enemy->IsAlive()) continue; 
+
+		// 攻撃処理
+		float dist = (enemy->GetPos() - m_nowPos).Length();
+		if (dist < 1.0f)                 // 攻撃範囲
+		{
+			//enemy->Damage(10.0f);
+		}
+	}
+
+}
+
+void Player::Damage(float damage)
+{
+	m_hitPoint -= damage; 
+	if (m_hitPoint <= 0) 
+	{
+		m_hitPoint = 0;
+		m_aliveFlg = false; 
+	}
 }
 
 

@@ -19,7 +19,12 @@ void GameScene::Event()
 
 	//　カメラ処理
 	Math::Vector3 camPos = { 0,3,-5 };
-	Math::Matrix rotationMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(20));
+
+	//上からの挙動確認用
+	//Math::Vector3 camPos = { 0,20,0 };
+
+
+	Math::Matrix rotationMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(30));
 
 	Math::Matrix transMat = Math::Matrix::CreateTranslation( camPos + m_player->GetPos());
 
@@ -38,8 +43,13 @@ void GameScene::Init()
 	m_objList.push_back(m_stage);
 
 	m_player = std::make_shared<Player>();
+	m_player->mp_enemy = m_enemy;
 	m_objList.push_back(m_player);
 
-	m_enemy = std::make_shared<Enemy>();
-	m_objList.push_back(m_enemy);
+	for (int i = 0;i < 10;i++)
+	{
+		m_enemy = std::make_shared<Enemy>();
+		m_enemy->mp_player = m_player;
+		m_objList.push_back(m_enemy);
+	}
 }

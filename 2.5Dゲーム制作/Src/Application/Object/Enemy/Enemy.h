@@ -24,7 +24,14 @@ public:
 	void GenerateDepthMapFromLight()	override;
 	void DrawLit()						override;
 
-	std::shared_ptr<Player>m_player;
+	//攻撃可能関数
+	void Attack();
+
+	void Damage(float damage);
+
+	bool IsAlive() const { return m_aliveFlg; }
+
+	std::shared_ptr<Player>mp_player;
 
 private:
 
@@ -39,4 +46,11 @@ private:
 	Math::Vector3 m_enemyMove;
 
 	float m_anime = 0;
+
+	float m_attackCnt = 0;
+	bool m_attackFlg = true;
+
+	float m_hitPoint = 100;
+	bool hit = false;
+
 };
