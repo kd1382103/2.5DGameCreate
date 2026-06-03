@@ -100,6 +100,9 @@
     <Filter Include="Src\Application\Object\Starg">
       <UniqueIdentifier>{8941b746-1b32-4f5a-8dc4-95f70bd34512}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\Base">
+      <UniqueIdentifier>{c0098f0d-3a6b-4d7c-9af9-4ba9012cf1bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -288,6 +291,9 @@
     <ClInclude Include="Src\Application\Object\Stage\Stage.h">
       <Filter>Src\Application\Object\Starg</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\Base\BaseObject.h">
+      <Filter>Src\Application\Object\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -445,6 +451,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Stage\Stage.cpp">
       <Filter>Src\Application\Object\Starg</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Base\BaseObject.cpp">
+      <Filter>Src\Application\Object\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

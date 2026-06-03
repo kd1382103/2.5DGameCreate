@@ -4,13 +4,15 @@
 
 void Player::Init()
 {
+	Base::Init();
+
 	//デバック用
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
 	m_poly = std::make_shared<KdSquarePolygon>();
 	m_poly->SetMaterial("Asset/Textures/Object/Player/Player.png");
 
-	m_poly->SetScale(0.75f);
+	m_poly->SetScale(1.25f);
 
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 
@@ -65,17 +67,6 @@ void Player::Update()
 		}
 	}
 
-	m_attackCnt--;
-	if (m_attackCnt <= 0)
-	{
-		m_attackFlg = true;
-		m_attackCnt = 40;
-	}
-	if(m_attackFlg)
-	{
-		Attack();
-	}
-
 	Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
 	//Math::Matrix RotationX = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
@@ -89,6 +80,7 @@ void Player::PostUpdate()
 	//	 スフィア（球）判定  //
 	// //// //// //// //// ////
 
+	//ステージ
 	{
 		float maxOverlap = 0;
 		Math::Vector3 hitDir;
@@ -136,6 +128,46 @@ void Player::PostUpdate()
 			m_nowPos += hitDir * maxOverlap;
 		}
 	}
+
+	//敵
+	{
+		float maxOverlap = 0;
+		Math::Vector3 hitDir;
+		hit = false;
+
+		KdCollider::SphereInfo sphere;
+		sphere.m_sphere.Center = m_nowPos;
+		sphere.m_sphere.Center.y += 0.5f;
+		sphere.m_sphere.Radius = 0.5f;
+		sphere.m_type = KdCollider::TypeBump;
+
+		std::list<KdCollider::CollisionResult> retList;
+
+		for (auto& obj : SceneManager::Instance().GetObjList())
+		{
+			if (!std::dynamic_pointer_cast<Enemy>(obj)) continue;
+			obj->Intersects(sphere, &retList);
+		}
+
+		for (auto& ret : retList)
+		{
+			hit = true;
+			if (maxOverlap < ret.m_overlapDistance)
+			{
+				maxOverlap = ret.m_overlapDistance;
+				hitDir = ret.m_hitDir;
+			}
+		}
+
+		if (hit)
+		{
+			hitDir.y = 0;          // 上下揺れ防止
+			float pushRate = 0.4f; // 減衰でブルブル防止
+			m_nowPos += hitDir * maxOverlap * pushRate;
+
+			Damage(0.025f);
+		}
+	}
 }
 
 void Player::GenerateDepthMapFromLight()
@@ -153,42 +185,7 @@ void Player::DrawLit()
 	}
 }
 
-void Player::Attack()
-{
-	///////////////////////////////////////////
 
-	//敵との当たり判定ができたらその条件式を作る
-
-	int run[6] = { 64,65,66,67,68,69 };
-
-	m_poly->SetUVRect(run[(int)m_anime]);
-
-	m_anime += 0.2f;
-	if (m_anime >= 6)
-	{
-		m_attackFlg = false;
-		m_anime = 0;
-	}
-
-	//////////////////////////////////////////
-
-	for (auto& obj : SceneManager::Instance().GetObjList())
-	{
-		auto enemy = std::dynamic_pointer_cast<Enemy>(obj);
-
-		// Enemyかつ、死んでいない場合以外は無視
-		if (!enemy) continue;            
-		if (!enemy->IsAlive()) continue; 
-
-		// 攻撃処理
-		float dist = (enemy->GetPos() - m_nowPos).Length();
-		if (dist < 1.0f)                 // 攻撃範囲
-		{
-			//enemy->Damage(10.0f);
-		}
-	}
-
-}
 
 void Player::Damage(float damage)
 {

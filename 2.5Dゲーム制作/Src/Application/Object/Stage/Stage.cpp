@@ -5,7 +5,7 @@ void Stage::Init()
 	m_model = std::make_shared<KdModelData>();
 	m_model->Load("Asset/Models/Starg/Hollow_Remnant/Hollow_Remnat.gltf");
 
-	Math::Matrix scaleMat = Math::Matrix::CreateScale(3);
+	Math::Matrix scaleMat = Math::Matrix::CreateScale(20);
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(0,0,0);
 	m_mWorld = scaleMat * transMat;
 

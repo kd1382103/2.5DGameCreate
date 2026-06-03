@@ -1,6 +1,7 @@
 ﻿#pragma once
+#include "../Base/BaseObject.h"
 
-class Stage :public KdGameObject
+class Stage :public Base
 {
 public:
 	Stage() { Init(); }

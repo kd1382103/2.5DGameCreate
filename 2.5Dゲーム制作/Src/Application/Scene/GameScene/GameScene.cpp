@@ -18,7 +18,7 @@ void GameScene::Event()
 	}
 
 	//　カメラ処理
-	Math::Vector3 camPos = { 0,3,-5 };
+	Math::Vector3 camPos = { 0,10,-10 };
 
 	//上からの挙動確認用
 	//Math::Vector3 camPos = { 0,20,0 };
@@ -28,9 +28,10 @@ void GameScene::Event()
 
 	Math::Matrix transMat = Math::Matrix::CreateTranslation( camPos + m_player->GetPos());
 
-	Math::Matrix camWorld = rotationMat * transMat;
+	Math::Matrix camWorld = rotationMat * transMat ;
 	m_camera->SetCameraMatrix(camWorld);
 
+	
 }
 
 void GameScene::Init()
