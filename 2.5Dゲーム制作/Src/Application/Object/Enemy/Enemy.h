@@ -14,7 +14,6 @@ public:
 	enum EnemyType
 	{
 		Skelton,
-		Vampaire,
 		Necromancer,
 	};
 
@@ -39,7 +38,7 @@ private:
 	//std::shared_ptr<GameScene>m_owner;
 
 	std::shared_ptr<KdSquarePolygon>m_poly;
-	EnemyType m_type = EnemyType::Skelton;
+	EnemyType m_type = EnemyType::Necromancer;
 
 	Math::Vector3 m_enemyMove;
 

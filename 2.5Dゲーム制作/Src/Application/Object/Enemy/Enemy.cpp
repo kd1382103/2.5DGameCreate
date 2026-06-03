@@ -11,7 +11,6 @@ void Enemy::Init()
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
 	m_poly = std::make_shared<KdSquarePolygon>();
-	m_poly->SetScale(1.0f);
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 
 	//タイプ別初期設定
@@ -19,21 +18,18 @@ void Enemy::Init()
 	{
 	case Skelton:
 		m_poly->SetMaterial("Asset/Textures/Object/Enemy/skeleton1.png");
+		m_poly->SetScale(1.0f);
 		m_poly->SetSplit(17, 5);
 		m_hitPoint = 50;
-		m_moveSpeed = 0.08f;
-		break;
-
-	case Vampaire:
-		m_poly->SetMaterial("Asset/Textures/Object/Enemy/vampire.png");
-		m_hitPoint = 120;
 		m_moveSpeed = 0.15f;
 		break;
 
 	case Necromancer:
-		m_poly->SetMaterial("Asset/Textures/Object/Enemy/necromancer.png");
+		m_poly->SetMaterial("Asset/Textures/Object/Enemy/Necromancer.png");
+		m_poly->SetScale(1.5f);
+		m_poly->SetSplit(17, 7);
 		m_hitPoint = 200;
-		m_moveSpeed = 0.05f;
+		m_moveSpeed = 0.1f;
 		break;
 	}
 
@@ -75,15 +71,18 @@ void Enemy::Update()
 	}
 	break;
 
-	case Vampaire:
-	{
-
-	}
-	break;
-
 	case Necromancer:
 	{
+		//アニメーション制御
+		int run[7] = { 0,1,2,3,4,5,6 };
 
+		m_poly->SetUVRect(run[(int)m_anime]);
+
+		m_anime += 0.1f;
+		if (m_anime >= 7)
+		{
+			m_anime = 0;
+		}
 	}
 	break;
 	}
