@@ -1,6 +1,6 @@
 ﻿#include "Enemy.h"
-#include "../../Scene/SceneManager.h"
-#include "../Player/Player.h"
+#include <Application/Scene/SceneManager.h>
+#include <Application/Object/Player/Player.h>
 
 
 void Enemy::Init()
@@ -33,21 +33,21 @@ void Enemy::Init()
 		break;
 	}
 
-	//複数生成確認用
-	//ランダムで生成位置を決定（のちに削除予定）
-	float x = KdRandom::GetFloat(-30, 30);
-	float z = KdRandom::GetFloat(-30, 30);
-	
-	m_nowPos	= {x,0,z};
-
-	//m_nowPos	= {5,0,5};
+	m_nowPos	= {};
 	m_moveVec	= { 0,0,0 };
 	m_movePow	= 0;
 	m_aliveFlg	= true;
 
 	//当たり判定
 	m_pCollider = std::make_unique<KdCollider>();
+
+	//敵同士
 	m_pCollider->RegisterCollisionShape("EnemyCollision", m_poly, KdCollider::TypeBump);
+
+	//武器との当たり判定
+	m_pCollider->RegisterCollisionShape("EnemyCollision", { 0,0.5,0 }, 0.2, KdCollider::TypeDamage);
+
+
 }
 
 void Enemy::Update()
@@ -113,14 +113,10 @@ void Enemy::Update()
 
 void Enemy::PostUpdate()
 {
-	//// //// //// //// //// ////
-	//	 スフィア（球）判定    //
-	//// //// //// //// //// ////
-
 	//地面との当たり判定
 	{
 		float maxOverlap = 0;
-		Math::Vector3 hitDir;
+		Math::Vector3 hitPos;
 
 		KdCollider::SphereInfo sphere;
 		sphere.m_sphere.Center		= m_nowPos;
@@ -140,14 +136,14 @@ void Enemy::PostUpdate()
 			if (maxOverlap < ret.m_overlapDistance)
 			{
 				maxOverlap = ret.m_overlapDistance;
-				hitDir = ret.m_hitDir;
+				hitPos = ret.m_hitDir;
 				hit = true;
 			}
 		}
 
 		if (hit)
 		{
-			m_nowPos += hitDir * maxOverlap;
+			m_nowPos += hitPos * maxOverlap;
 		}
 	}
 
@@ -157,15 +153,16 @@ void Enemy::PostUpdate()
 		Math::Vector3 hitDir;
 
 		KdCollider::SphereInfo sphere;
-		sphere.m_sphere.Center		= m_nowPos;
-		sphere.m_sphere.Center.y	+= 0.3f;
-		sphere.m_sphere.Radius		= 0.35;
+		sphere.m_sphere.Center = m_nowPos;
+		sphere.m_sphere.Center.y += 0.3f;
+		sphere.m_sphere.Radius = 0.35;
 		sphere.m_type = KdCollider::TypeBump;
 
 		std::list<KdCollider::CollisionResult>retSphereList;
 
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
+			if (obj.get() == this) continue;
 			if (!std::dynamic_pointer_cast<Enemy>(obj))continue;
 			obj->Intersects(sphere, &retSphereList);
 		}
@@ -182,8 +179,9 @@ void Enemy::PostUpdate()
 		if (maxOverlap > 0)
 		{
 			//押し戻し弱化
-			float pushRate = 0.2f;
+			float pushRate = 0.4f;
 			hitDir.y = 0;
+			hitDir.Normalize();
 
 			m_nowPos += hitDir * maxOverlap * pushRate;
 		}
@@ -214,6 +212,9 @@ void Enemy::Damage(float damage)
 	{
 		m_hitPoint = 0;
 		m_aliveFlg = false;
+
+		////死亡時のアニメーション後に呼び出す
+		//m_isExpired = true;
 	}
 }
 

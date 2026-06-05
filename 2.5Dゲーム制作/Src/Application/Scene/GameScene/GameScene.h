@@ -7,6 +7,8 @@ class Stage;
 class Player;
 class Enemy;
 
+class Weapons;
+
 class GameScene : public BaseScene
 {
 public :
@@ -21,10 +23,13 @@ private:
 
 	//変数
 
-	//背景類
+	//ステージ
 	std::shared_ptr<Stage>m_stage;
 
 	//キャラクター類
 	std::shared_ptr<Player>m_player;
 	std::shared_ptr<Enemy>m_enemy;
+
+	//武器
+	std::shared_ptr<Weapons>m_weapon;
 };

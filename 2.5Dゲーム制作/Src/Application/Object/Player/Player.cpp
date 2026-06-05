@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
-#include "../../Scene/SceneManager.h"
-#include "../Enemy/Enemy.h"
+#include <Application/Scene/SceneManager.h>
+#include <Application/Object/Enemy/Enemy.h>
+#include <Application/Object/Weapons/Weapons.h>
 
 void Player::Init()
 {
@@ -22,10 +23,10 @@ void Player::Init()
 
 	m_pCollider->RegisterCollisionShape("PlayerCollision", m_poly, KdCollider::TypeBump);
 
-	m_nowPos = {-10,0,-10};
+	m_nowPos = {};
 	m_moveVec = {};
 	m_moveSpeed = 0.3f;
-	m_movePow = 0;
+	m_movePow = 1.0f;
 	m_aliveFlg = true;
 }
 
@@ -50,21 +51,24 @@ void Player::Update()
 		{
 			if (GetAsyncKeyState('D') & 0x8000)
 			{
-				m_nowPos.x += m_moveSpeed;
 			}
 			if (GetAsyncKeyState('A') & 0x8000)
-			{
-				m_nowPos.x -= m_moveSpeed;
+			{	
 			}
 			if (GetAsyncKeyState('W') & 0x8000)
 			{
-				m_nowPos.z += m_moveSpeed;
 			}
 			if (GetAsyncKeyState('S') & 0x8000)
 			{
-				m_nowPos.z -= m_moveSpeed;
 			}
 		}
+	}
+
+	//攻撃処理（オート）
+	{
+		mp_weapon = std::make_shared<Weapons>();
+		mp_weapon->SetPos(m_nowPos);
+		SceneManager::Instance().AddObject(mp_weapon);
 	}
 
 	Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
@@ -145,7 +149,8 @@ void Player::PostUpdate()
 
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
-			if (!std::dynamic_pointer_cast<Enemy>(obj)) continue;
+			if (obj.get() == this)continue;
+			if (std::dynamic_pointer_cast<Enemy>(obj)) continue;
 			obj->Intersects(sphere, &retList);
 		}
 
@@ -161,11 +166,13 @@ void Player::PostUpdate()
 
 		if (hit)
 		{
-			hitDir.y = 0;          // 上下揺れ防止
-			float pushRate = 0.4f; // 減衰でブルブル防止
-			m_nowPos += hitDir * maxOverlap * pushRate;
+			//重ならないようにする（今回は重なるように作るので不要（見本として残す））
+			
+			//hitDir.y = 0;          // 上下揺れ防止
+			//float pushRate = 0.4f; // 減衰でブルブル防止
+			//m_nowPos += hitDir * maxOverlap * pushRate;
 
-			Damage(0.025f);
+			Damage(0.05f);
 		}
 	}
 }

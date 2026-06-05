@@ -103,6 +103,9 @@
     <Filter Include="Src\Application\Object\Base">
       <UniqueIdentifier>{c0098f0d-3a6b-4d7c-9af9-4ba9012cf1bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\Weapons">
+      <UniqueIdentifier>{9aca5f2d-b6cd-4907-9701-3c2c4a42abeb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -294,6 +297,9 @@
     <ClInclude Include="Src\Application\Object\Base\BaseObject.h">
       <Filter>Src\Application\Object\Base</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\Weapons\Weapons.h">
+      <Filter>Src\Application\Object\Weapons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -454,6 +460,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Base\BaseObject.cpp">
       <Filter>Src\Application\Object\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\Weapons\Weapons.cpp">
+      <Filter>Src\Application\Object\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

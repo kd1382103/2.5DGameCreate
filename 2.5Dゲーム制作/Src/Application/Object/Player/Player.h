@@ -1,9 +1,10 @@
 ﻿#pragma once
-#include "../Base/BaseObject.h"
+#include <Application/Object/Base/BaseObject.h>
 
-class GameScene;
+//class GameScene;
 
 class Enemy;
+class Weapons;
 
 class Player : public Base
 {
@@ -17,24 +18,25 @@ public:
 	void GenerateDepthMapFromLight()	override;
 	void DrawLit()						override;
 
-	void Damage(float damage);
+	void Damage(float damage)			override;
 
 	bool IsAlive() const { return m_aliveFlg; }
 
 	std::shared_ptr<Enemy>mp_enemy;
+	std::shared_ptr<Weapons>mp_weapon;
 
 private:
 
 	void Release() {}
 
-	GameScene* m_owner = nullptr;
+	//GameScene* m_owner = nullptr;
 
 	std::shared_ptr<KdSquarePolygon>m_poly;
-
 
 	float m_hitPoint = 100;
 	bool hit = false;
 
 	float m_anime = 0;
+	int m_run[8];
 
 };

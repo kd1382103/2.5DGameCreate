@@ -1,10 +1,12 @@
 ﻿#include "GameScene.h"
-#include"../SceneManager.h"
+#include<Application/Scene/SceneManager.h>
 
-#include "../../Object/Stage/Stage.h"
+#include <Application/Object/Stage/Stage.h>
 
-#include"../../Object/Player/Player.h"
-#include"../../Object/Enemy/Enemy.h"
+#include<Application/Object/Player/Player.h>
+#include<Application/Object/Enemy/Enemy.h>
+
+#include<Application/Object/Weapons/Weapons.h>
 
 
 void GameScene::Event()
@@ -41,16 +43,21 @@ void GameScene::Init()
 	m_camera->SetProjectionMatrix(60);				//視野角設定
 
 	m_stage = std::make_shared<Stage>();
-	m_objList.push_back(m_stage);
+	AddObject(m_stage);
 
 	m_player = std::make_shared<Player>();
+	m_player->SetPos({ 0,0,10 });
 	m_player->mp_enemy = m_enemy;
-	m_objList.push_back(m_player);
+	AddObject(m_player);
 
 	for (int i = 0;i < 10;i++)
 	{
+		float x = KdRandom::GetFloat(-30, 30);
+		float y = KdRandom::GetFloat(-30, 30);
 		m_enemy = std::make_shared<Enemy>();
+		m_enemy->SetPos({x,0,y});
 		m_enemy->mp_player = m_player;
-		m_objList.push_back(m_enemy);
+		AddObject(m_enemy);
 	}
+
 }

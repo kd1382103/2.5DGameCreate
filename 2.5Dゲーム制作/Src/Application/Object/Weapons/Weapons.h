@@ -1,0 +1,38 @@
+﻿#pragma once
+#include <Application/Object/Base/BaseObject.h>
+
+class Weapons:public::Base
+{
+public:
+
+	//武器タイプ
+	enum WeaponType
+	{
+		Bleed,			//剣
+		Gun,			//銃
+		Axe,			//斧
+		boomerang,		//ブーメラン
+	};
+
+	Weapons()	{ Init(); }
+	~Weapons()	{ Release(); }
+
+	void Init	()		override;
+	void Update	()		override;
+	void PostUpdate()	override;
+	void DrawLit()		override;
+
+	void SetPos(const Math::Vector3& _pos) override { m_nowPos = _pos; }
+
+private:
+
+	void Release();
+
+	std::shared_ptr<KdSquarePolygon>m_poly;
+
+	WeaponType m_type = WeaponType::Bleed;
+
+	float m_anime = 0;
+	
+	int m_run[8];
+};

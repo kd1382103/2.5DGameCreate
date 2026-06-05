@@ -18,11 +18,21 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"\u5e73\u9762.001"
+			"name":"\u5e73\u9762.001",
+			"translation":[
+				0,
+				1,
+				0
+			]
 		},
 		{
 			"mesh":1,
-			"name":"\u5e73\u9762.002"
+			"name":"\u5e73\u9762.002",
+			"translation":[
+				0,
+				1,
+				0
+			]
 		},
 		{
 			"mesh":2,
@@ -30,7 +40,12 @@
 		},
 		{
 			"mesh":3,
-			"name":"\u5e73\u9762.004"
+			"name":"\u5e73\u9762.004",
+			"translation":[
+				0,
+				1,
+				0
+			]
 		}
 	],
 	"materials":[

@@ -47,6 +47,17 @@ public:
 
 	const Math::Matrix& GetMatrix() const { return m_mWorld; }
 
+	//追加関数(個人)
+	//////////////////////////////////////////////////////////////////
+	virtual void SetAlive(const bool flg) { m_aliveFlg = flg; }
+	virtual bool GetAlive() const { return m_aliveFlg; }
+
+	virtual void SetDir(const float dir) { m_dir = dir; }
+	virtual float GetDir() const { return m_dir; }
+
+	virtual void Damage(const float damage) { m_damage = damage; }
+	//////////////////////////////////////////////////////////////////
+
 	virtual bool IsExpired() const { return m_isExpired; }
 
 	virtual bool IsVisible()	const { return false; }
@@ -90,7 +101,11 @@ protected:
 
 	Math::Vector3	m_nowPos;
 	Math::Vector3	m_moveVec;
+	
+	float			m_dir;
 	float			m_moveSpeed;
 	float			m_movePow;
 	bool			m_aliveFlg;
+
+	float			m_damage;
 };
