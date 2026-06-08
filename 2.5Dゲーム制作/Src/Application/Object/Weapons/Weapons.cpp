@@ -9,34 +9,39 @@ void Weapons::Init()
 
 	Base::Init();
 
-	m_poly = std::make_shared<KdSquarePolygon>();
-	m_poly->SetMaterial("");
+	switch (m_type)
+	{
+		case Sword:
+		{
+			m_poly = std::make_shared<KdSquarePolygon>();
+			m_poly->SetMaterial("Asset/Textures/Object/AttackEffect/Sword/Slash1/color3/sprite.png");
+			m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Middle);
+			m_poly->SetSplit(5, 2);
+			m_poly->SetScale(4.0f);
+			m_nowPos = {};
 
-	//m_poly->SetScale();
+			break;
+		}
+	}
 
-	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
-
-	//m_poly->SetSplit(8, 16);
-
-	m_nowPos = {};
 }
 
 void Weapons::Update()
 {
 	switch (m_type)
 	{
-		case Bleed:
+		case Sword:
 		{
 			//アニメーション制御
-			//int attack[5] = { 69,70,71,72,73 };
+			int attack[8] = { 0,1,2,3,4,5,6,7 };
 
-			//m_poly->SetUVRect(attack[(int)m_anime]);
+			m_poly->SetUVRect(attack[(int)m_anime]);
 
-			//m_anime += 0.5f;
-			//if (m_anime >= 5) 
-			//{ 
-			//	m_isExpired = true;
-			//}
+			m_anime += 0.5f;
+			if (m_anime >= 8) 
+			{ 
+				m_isExpired = true;
+			}
 
 			break;
 		}
@@ -50,7 +55,7 @@ void Weapons::PostUpdate()
 {
 	KdCollider::SphereInfo sphere;
 	sphere.m_sphere.Center = GetPos();
-	sphere.m_sphere.Radius = 0.3;
+	sphere.m_sphere.Radius = 0.5;
 	sphere.m_type = KdCollider::TypeDamage;
 
 	m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
@@ -59,7 +64,7 @@ void Weapons::PostUpdate()
 	{
 		if (obj->Intersects(sphere, nullptr) == true)	
 		{
-			obj->Damage(1.0f);
+			obj->Damage(10.0f);
 		}
 	}
 

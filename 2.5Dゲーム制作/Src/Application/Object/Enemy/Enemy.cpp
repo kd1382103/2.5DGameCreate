@@ -1,7 +1,7 @@
 ﻿#include "Enemy.h"
 #include <Application/Scene/SceneManager.h>
 #include <Application/Object/Player/Player.h>
-
+#include<Application/Object/Weapons/Weapons.h>
 
 void Enemy::Init()
 {
@@ -45,7 +45,7 @@ void Enemy::Init()
 	m_pCollider->RegisterCollisionShape("EnemyCollision", m_poly, KdCollider::TypeBump);
 
 	//武器との当たり判定
-	m_pCollider->RegisterCollisionShape("EnemyCollision", { 0,0.5,0 }, 0.2, KdCollider::TypeDamage);
+	m_pCollider->RegisterCollisionShape("WeaponsCollision", { 0,0.5,0 }, 0.2, KdCollider::TypeDamage);
 
 
 }
@@ -113,7 +113,7 @@ void Enemy::Update()
 
 void Enemy::PostUpdate()
 {
-	//地面との当たり判定
+	//	VS	地面
 	{
 		float maxOverlap = 0;
 		Math::Vector3 hitPos;
@@ -147,7 +147,47 @@ void Enemy::PostUpdate()
 		}
 	}
 
-	//敵同士
+	//	VS	敵同士
+	{
+		float maxOverlap = 0;
+		Math::Vector3 hitDir;
+
+		KdCollider::SphereInfo sphere;
+		sphere.m_sphere.Center = m_nowPos;
+		sphere.m_sphere.Center.y += 0.5f;
+		sphere.m_sphere.Radius = 0.55;
+		sphere.m_type = KdCollider::TypeBump;
+		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+		std::list<KdCollider::CollisionResult>retSphereList;
+
+		for (auto& obj : SceneManager::Instance().GetObjList())
+		{
+			if (obj.get() == this) continue;
+			if (!std::dynamic_pointer_cast<Enemy>(obj))continue;
+			obj->Intersects(sphere, &retSphereList);
+		}
+
+		for (auto& ret : retSphereList)
+		{
+			if (maxOverlap < ret.m_overlapDistance)
+			{
+				maxOverlap = ret.m_overlapDistance;
+				hitDir = ret.m_hitDir;
+			}
+		}
+
+		if (maxOverlap > 0)
+		{
+			//押し戻し弱化
+			float pushRate = 0.4f;
+			hitDir.y = 0;
+			hitDir.Normalize();
+
+			m_nowPos += hitDir * maxOverlap * pushRate;
+		}
+	}
+
+	//	VS	武器
 	{
 		float maxOverlap = 0;
 		Math::Vector3 hitDir;
@@ -156,14 +196,14 @@ void Enemy::PostUpdate()
 		sphere.m_sphere.Center = m_nowPos;
 		sphere.m_sphere.Center.y += 0.3f;
 		sphere.m_sphere.Radius = 0.35;
-		sphere.m_type = KdCollider::TypeBump;
-
+		sphere.m_type = KdCollider::TypeDamage;
+		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius,kRedColor);
 		std::list<KdCollider::CollisionResult>retSphereList;
 
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
 			if (obj.get() == this) continue;
-			if (!std::dynamic_pointer_cast<Enemy>(obj))continue;
+			if (!std::dynamic_pointer_cast<Weapons>(obj))continue;
 			obj->Intersects(sphere, &retSphereList);
 		}
 

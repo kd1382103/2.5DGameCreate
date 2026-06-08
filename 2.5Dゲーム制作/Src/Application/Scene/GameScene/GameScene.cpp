@@ -6,9 +6,6 @@
 #include<Application/Object/Player/Player.h>
 #include<Application/Object/Enemy/Enemy.h>
 
-#include<Application/Object/Weapons/Weapons.h>
-
-
 void GameScene::Event()
 {
 	if (GetAsyncKeyState('T') & 0x8000)
@@ -20,15 +17,17 @@ void GameScene::Event()
 	}
 
 	//　カメラ処理
-	Math::Vector3 camPos = { 0,10,-10 };
+	//Math::Vector3 camPos = { 0,10,-10 };
 
 	//上からの挙動確認用
 	//Math::Vector3 camPos = { 0,20,0 };
 
+	//横からの挙動確認用
+	Math::Vector3 camPos = { 0,3,-10 };
 
-	Math::Matrix rotationMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(30));
+	Math::Matrix rotationMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
 
-	Math::Matrix transMat = Math::Matrix::CreateTranslation( camPos + m_player->GetPos());
+	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos + m_player->GetPos());
 
 	Math::Matrix camWorld = rotationMat * transMat ;
 	m_camera->SetCameraMatrix(camWorld);

@@ -33,10 +33,15 @@ private:
 
 	std::shared_ptr<KdSquarePolygon>m_poly;
 
+	Math::Vector3 m_dir;
+
 	float m_hitPoint = 100;
 	bool hit = false;
 
 	float m_anime = 0;
 	int m_run[8];
+
+	float m_attackInterval = 0;
+	const int m_attackCoolTime = 40;
 
 };

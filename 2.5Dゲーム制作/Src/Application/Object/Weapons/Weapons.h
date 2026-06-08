@@ -8,7 +8,7 @@ public:
 	//武器タイプ
 	enum WeaponType
 	{
-		Bleed,			//剣
+		Sword,			//剣
 		Gun,			//銃
 		Axe,			//斧
 		boomerang,		//ブーメラン
@@ -30,7 +30,7 @@ private:
 
 	std::shared_ptr<KdSquarePolygon>m_poly;
 
-	WeaponType m_type = WeaponType::Bleed;
+	WeaponType m_type = WeaponType::Sword;
 
 	float m_anime = 0;
 	

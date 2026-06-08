@@ -27,6 +27,7 @@ void Player::Init()
 	m_moveVec = {};
 	m_moveSpeed = 0.3f;
 	m_movePow = 1.0f;
+	m_attackInterval = 0;
 	m_aliveFlg = true;
 }
 
@@ -47,28 +48,48 @@ void Player::Update()
 
 	//移動処理
 	{
+		m_dir = {};
+
 		if (m_aliveFlg)
 		{
-			if (GetAsyncKeyState('D') & 0x8000)
-			{
-			}
-			if (GetAsyncKeyState('A') & 0x8000)
-			{	
-			}
 			if (GetAsyncKeyState('W') & 0x8000)
 			{
+				m_dir.z += 1;
 			}
 			if (GetAsyncKeyState('S') & 0x8000)
 			{
+				m_dir.z -= 1;
+			}
+			if (GetAsyncKeyState('D') & 0x8000)
+			{
+				m_dir.x += 1;
+			}
+			if (GetAsyncKeyState('A') & 0x8000)
+			{
+				m_dir.x -= 1;
+			}
+			m_dir.Normalize();
+			m_nowPos += m_dir * m_moveSpeed;
+		}
+
+		//攻撃処理（オート）
+		{
+			m_attackInterval--;
+
+			mp_weapon = std::make_shared<Weapons>();
+
+			if (m_attackInterval <= 0)
+			{
+				
+				//Math::Vector3 forward = { 3,1,0 };	//全方向ベクトル
+				//float offset = 0.8f;					//オフセット
+				m_attackInterval = m_attackCoolTime;
+				//mp_weapon->SetPos(m_nowPos + forward * offset);
+				mp_weapon->SetPos(m_nowPos);
+				SceneManager::Instance().AddObject(mp_weapon);
+
 			}
 		}
-	}
-
-	//攻撃処理（オート）
-	{
-		mp_weapon = std::make_shared<Weapons>();
-		mp_weapon->SetPos(m_nowPos);
-		SceneManager::Instance().AddObject(mp_weapon);
 	}
 
 	Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
@@ -131,6 +152,8 @@ void Player::PostUpdate()
 			//押し戻し処理
 			m_nowPos += hitDir * maxOverlap;
 		}
+
+
 	}
 
 	//敵
@@ -175,6 +198,8 @@ void Player::PostUpdate()
 			Damage(0.05f);
 		}
 	}
+
+
 }
 
 void Player::GenerateDepthMapFromLight()
