@@ -37,7 +37,7 @@ void Weapons::Update()
 
 			m_poly->SetUVRect(attack[(int)m_anime]);
 
-			m_anime += 0.5f;
+			m_anime += 0.75f;
 			if (m_anime >= 8) 
 			{ 
 				m_isExpired = true;
@@ -53,6 +53,11 @@ void Weapons::Update()
 
 void Weapons::PostUpdate()
 {
+	if (m_anime >= 2)
+	{
+		return;
+	}
+
 	KdCollider::SphereInfo sphere;
 	sphere.m_sphere.Center = GetPos();
 	sphere.m_sphere.Radius = 0.5;
@@ -67,7 +72,6 @@ void Weapons::PostUpdate()
 			obj->Damage(10.0f);
 		}
 	}
-
 }
 
 void Weapons::DrawLit()

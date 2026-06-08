@@ -14,5 +14,6 @@ private :
 	void Event() override;
 	void Init()  override;
 
+	std::shared_ptr<KdSquarePolygon>m_poly;
 
 };

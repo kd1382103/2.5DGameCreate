@@ -22,8 +22,6 @@ public:
 
 	bool IsAlive() const { return m_aliveFlg; }
 
-	std::shared_ptr<Enemy>mp_enemy;
-	std::shared_ptr<Weapons>mp_weapon;
 
 private:
 
@@ -32,6 +30,7 @@ private:
 	//GameScene* m_owner = nullptr;
 
 	std::shared_ptr<KdSquarePolygon>m_poly;
+	std::shared_ptr<Weapons>m_weapons;
 
 	Math::Vector3 m_dir;
 

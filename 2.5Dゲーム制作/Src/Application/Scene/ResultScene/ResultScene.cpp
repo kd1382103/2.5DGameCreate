@@ -14,4 +14,10 @@ void ResultScene::Event()
 
 void ResultScene::Init()
 {
+	BaseScene::Init();
+
+	m_poly = std::make_shared<KdSquarePolygon>();
+	m_poly->SetMaterial("");
+
+
 }

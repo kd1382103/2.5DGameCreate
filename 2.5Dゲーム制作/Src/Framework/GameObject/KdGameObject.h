@@ -55,6 +55,8 @@ public:
 	virtual void SetDir(const float dir) { m_dir = dir; }
 	virtual float GetDir() const { return m_dir; }
 
+	virtual void SetTarget(const std::shared_ptr<KdGameObject>target) { m_target = target; }
+
 	virtual void Damage(const float damage) { m_damage = damage; }
 	//////////////////////////////////////////////////////////////////
 
@@ -107,5 +109,8 @@ protected:
 	float			m_movePow;
 	bool			m_aliveFlg;
 
+	//追加
 	float			m_damage;
+	std::weak_ptr<KdGameObject>m_target;
+
 };

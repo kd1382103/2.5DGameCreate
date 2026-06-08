@@ -8,12 +8,13 @@
 
 void GameScene::Event()
 {
-	if (GetAsyncKeyState('T') & 0x8000)
+	if (!m_player->GetAlive())
 	{
 		SceneManager::Instance().SetNextScene
 		(
 			SceneManager::SceneType::Result
 		);
+		return;
 	}
 
 	//　カメラ処理
@@ -25,11 +26,16 @@ void GameScene::Event()
 	//横からの挙動確認用
 	Math::Vector3 camPos = { 0,3,-10 };
 
-	Math::Matrix rotationMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
+	//斜め上から斜め下に(メイン採用)
+	//Math::Vector3 camPos = { -5,10,-10 };
+
+	Math::Matrix rotationXMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(30));
+	Math::Matrix rotationYMat = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(45));
 
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos + m_player->GetPos());
 
-	Math::Matrix camWorld = rotationMat * transMat ;
+	Math::Matrix camWorld = rotationXMat * transMat ;
+	//Math::Matrix camWorld = rotationXMat * rotationYMat * transMat;
 	m_camera->SetCameraMatrix(camWorld);
 
 	
@@ -46,7 +52,7 @@ void GameScene::Init()
 
 	m_player = std::make_shared<Player>();
 	m_player->SetPos({ 0,0,10 });
-	m_player->mp_enemy = m_enemy;
+	m_player->SetAlive(true);
 	AddObject(m_player);
 
 	for (int i = 0;i < 10;i++)
@@ -55,7 +61,7 @@ void GameScene::Init()
 		float y = KdRandom::GetFloat(-30, 30);
 		m_enemy = std::make_shared<Enemy>();
 		m_enemy->SetPos({x,0,y});
-		m_enemy->mp_player = m_player;
+		m_enemy->SetTarget(m_player);
 		AddObject(m_enemy);
 	}
 

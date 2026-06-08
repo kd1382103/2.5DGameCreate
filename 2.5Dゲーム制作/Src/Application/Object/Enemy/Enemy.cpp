@@ -1,7 +1,6 @@
 ﻿#include "Enemy.h"
 #include <Application/Scene/SceneManager.h>
 #include <Application/Object/Player/Player.h>
-#include<Application/Object/Weapons/Weapons.h>
 
 void Enemy::Init()
 {
@@ -12,6 +11,7 @@ void Enemy::Init()
 
 	m_poly = std::make_shared<KdSquarePolygon>();
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
+
 
 	//タイプ別初期設定
 	switch (m_type)
@@ -90,24 +90,31 @@ void Enemy::Update()
 	//移動処理
 	if (m_aliveFlg)
 	{
-		m_enemyMove = mp_player->GetPos() - m_nowPos;
+		Math::Vector3 targetPos;
+		if (m_target.expired() == false)
+		{
+			targetPos = m_target.lock()->GetPos();
+		}
 
+		Math::Vector3 dir = targetPos - m_nowPos;
+		
 		// ★ 距離が小さければ停止（震え防止）
-		float dist = m_enemyMove.Length();
+		float dist = dir.Length();
 		if (dist < 0.5f)
 		{
-			m_enemyMove = { 0,0,0 };
+			dir = { 0,0,0 };
 		}
 		else
 		{
-			m_enemyMove.Normalize();
-			m_nowPos += m_enemyMove * m_moveSpeed;
-		}
+			dir.Normalize();
+			m_nowPos += dir * m_moveSpeed;
+		};
 
 		Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
 		//Math::Matrix RotationX = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
 		Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
-		m_mWorld = ScaleMat * transMat;
+
+		m_mWorld = transMat;
 	}
 }
 
@@ -187,43 +194,32 @@ void Enemy::PostUpdate()
 		}
 	}
 
-	//	VS	武器
+	//プレイヤー
 	{
 		float maxOverlap = 0;
 		Math::Vector3 hitDir;
+		hit = false;
 
 		KdCollider::SphereInfo sphere;
 		sphere.m_sphere.Center = m_nowPos;
-		sphere.m_sphere.Center.y += 0.3f;
-		sphere.m_sphere.Radius = 0.35;
-		sphere.m_type = KdCollider::TypeDamage;
-		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius,kRedColor);
-		std::list<KdCollider::CollisionResult>retSphereList;
+		sphere.m_sphere.Center.y += 0.5f;
+		sphere.m_sphere.Radius = 0.5f;
+		sphere.m_type = KdCollider::TypeBump;
+
+		std::list<KdCollider::CollisionResult> retList;
 
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
-			if (obj.get() == this) continue;
-			if (!std::dynamic_pointer_cast<Weapons>(obj))continue;
-			obj->Intersects(sphere, &retSphereList);
-		}
+			if (obj.get() == this)continue;
+			auto player = std::dynamic_pointer_cast<Player>(obj);
+			if (!player) continue;
 
-		for (auto& ret : retSphereList)
-		{
-			if (maxOverlap < ret.m_overlapDistance)
+			obj->Intersects(sphere, &retList);
+
+			if (!retList.empty())
 			{
-				maxOverlap = ret.m_overlapDistance;
-				hitDir = ret.m_hitDir;
+				player->Damage(10.0f);
 			}
-		}
-
-		if (maxOverlap > 0)
-		{
-			//押し戻し弱化
-			float pushRate = 0.4f;
-			hitDir.y = 0;
-			hitDir.Normalize();
-
-			m_nowPos += hitDir * maxOverlap * pushRate;
 		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿#include "Player.h"
 #include <Application/Scene/SceneManager.h>
-#include <Application/Object/Enemy/Enemy.h>
 #include <Application/Object/Weapons/Weapons.h>
 
 void Player::Init()
@@ -74,20 +73,18 @@ void Player::Update()
 
 		//攻撃処理（オート）
 		{
-			m_attackInterval--;
-
-			mp_weapon = std::make_shared<Weapons>();
-
-			if (m_attackInterval <= 0)
+			if (m_aliveFlg)
 			{
-				
-				//Math::Vector3 forward = { 3,1,0 };	//全方向ベクトル
-				//float offset = 0.8f;					//オフセット
-				m_attackInterval = m_attackCoolTime;
-				//mp_weapon->SetPos(m_nowPos + forward * offset);
-				mp_weapon->SetPos(m_nowPos);
-				SceneManager::Instance().AddObject(mp_weapon);
+				m_attackInterval--;
 
+				m_weapons = std::make_shared<Weapons>();
+
+				if (m_attackInterval <= 0)
+				{
+					m_attackInterval = m_attackCoolTime;
+					m_weapons->SetPos(m_nowPos + Math::Vector3(1, 1, 0));
+					SceneManager::Instance().AddObject(m_weapons);
+				}
 			}
 		}
 	}
@@ -152,54 +149,7 @@ void Player::PostUpdate()
 			//押し戻し処理
 			m_nowPos += hitDir * maxOverlap;
 		}
-
-
 	}
-
-	//敵
-	{
-		float maxOverlap = 0;
-		Math::Vector3 hitDir;
-		hit = false;
-
-		KdCollider::SphereInfo sphere;
-		sphere.m_sphere.Center = m_nowPos;
-		sphere.m_sphere.Center.y += 0.5f;
-		sphere.m_sphere.Radius = 0.5f;
-		sphere.m_type = KdCollider::TypeBump;
-
-		std::list<KdCollider::CollisionResult> retList;
-
-		for (auto& obj : SceneManager::Instance().GetObjList())
-		{
-			if (obj.get() == this)continue;
-			if (std::dynamic_pointer_cast<Enemy>(obj)) continue;
-			obj->Intersects(sphere, &retList);
-		}
-
-		for (auto& ret : retList)
-		{
-			hit = true;
-			if (maxOverlap < ret.m_overlapDistance)
-			{
-				maxOverlap = ret.m_overlapDistance;
-				hitDir = ret.m_hitDir;
-			}
-		}
-
-		if (hit)
-		{
-			//重ならないようにする（今回は重なるように作るので不要（見本として残す））
-			
-			//hitDir.y = 0;          // 上下揺れ防止
-			//float pushRate = 0.4f; // 減衰でブルブル防止
-			//m_nowPos += hitDir * maxOverlap * pushRate;
-
-			Damage(0.05f);
-		}
-	}
-
-
 }
 
 void Player::GenerateDepthMapFromLight()
@@ -216,8 +166,6 @@ void Player::DrawLit()
 		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
 	}
 }
-
-
 
 void Player::Damage(float damage)
 {

@@ -4,7 +4,6 @@
 class GameScene;
 
 class Player;
-class Weapons;
 
 class Enemy : public Base
 {
@@ -33,19 +32,14 @@ public:
 
 	void SetPos(const Math::Vector3& _pos) override { m_nowPos = _pos; }
 
-	std::shared_ptr<Player>mp_player;
-	std::shared_ptr<Weapons>mp_weapon;
-
 private:
 
 	void Release() {}
 
 	//std::shared_ptr<GameScene>m_owner;
-
+	std::shared_ptr<Player>m_player;
 	std::shared_ptr<KdSquarePolygon>m_poly;
 	EnemyType m_type = EnemyType::Skelton;
-
-	Math::Vector3 m_enemyMove;
 
 	float m_anime = 0;
 
