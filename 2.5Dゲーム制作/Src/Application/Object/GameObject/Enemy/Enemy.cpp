@@ -1,7 +1,9 @@
 ﻿#include "Enemy.h"
 #include <Application/Scene/SceneManager.h>
-#include <Application/Object/GameObject/Player/Player.h>
 
+//追加
+#include <Application/Object/GameObject/Player/Player.h>
+#include<Application/Object/Score/Score.h>
 void Enemy::Init()
 {
 	Base::Init();
@@ -36,6 +38,7 @@ void Enemy::Init()
 	m_nowPos	= {};
 	m_moveVec	= { 0,0,0 };
 	m_movePow	= 0;
+	m_score		= 0;
 	m_aliveFlg	= true;
 
 	//当たり判定
@@ -248,10 +251,17 @@ void Enemy::Damage(float damage)
 	{
 		m_hitPoint = 0;
 		m_aliveFlg = false;
-
-		////死亡時のアニメーション後に呼び出す
-		//m_isExpired = true;
+		//m_spScore->SetScore(100);
+		ExpiredAnimation();
 	}
+}
+
+void Enemy::ExpiredAnimation()
+{
+
+	//死亡時のアニメーション後に呼び出す
+	//m_isExpired = true;
+
 }
 
 

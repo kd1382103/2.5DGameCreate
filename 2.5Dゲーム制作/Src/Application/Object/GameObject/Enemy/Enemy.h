@@ -5,6 +5,7 @@ class GameScene;
 
 class Player;
 
+class Score;
 class Enemy : public Base
 {
 public:
@@ -25,6 +26,8 @@ public:
 
 	void Damage(float damage)			override;
 
+	void ExpiredAnimation();
+
 
 	bool IsAlive() const { return m_aliveFlg; }
 
@@ -37,7 +40,8 @@ private:
 	void Release() {}
 
 	//std::shared_ptr<GameScene>m_owner;
-	std::shared_ptr<Player>m_player;
+	std::weak_ptr<Player>m_player;
+	std::shared_ptr<Score>m_spScore;
 	std::shared_ptr<KdSquarePolygon>m_poly;
 	EnemyType m_type = EnemyType::Skelton;
 

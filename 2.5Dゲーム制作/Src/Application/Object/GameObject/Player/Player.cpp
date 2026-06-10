@@ -89,7 +89,6 @@ void Player::Update()
 	}
 
 	Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
-	//Math::Matrix RotationX = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
 	m_mWorld = ScaleMat * transMat;
 
@@ -196,6 +195,52 @@ void Player::Damage(float damage)
 		m_hitPoint = 0;
 		m_aliveFlg = false; 
 		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
+	}
+}
+
+void Player::ChangeAnimetion()
+{
+	//上下左右
+	if (m_dirType & DirType::Up)
+	{
+		//m_animeInfo.start	= ;
+		//m_animeInfo.end	= ;
+	}
+	if (m_dirType & DirType::Down)
+	{
+		//m_animeInfo.start	= ;
+		//m_animeInfo.end	= ;
+	}
+	if (m_dirType & DirType::Left)
+	{
+		//m_animeInfo.start	= ;
+		//m_animeInfo.end	= ;
+	}
+	if (m_dirType & DirType::Right)
+	{
+		//m_animeInfo.start	= ;
+		//m_animeInfo.end	= ;
+	}
+	//斜め方向
+	if (m_dirType == (DirType::Up | DirType::Left))
+	{
+		//m_animeInfo.start	= ;
+		//m_animeInfo.end	= ;
+	}
+	if (m_dirType == (DirType::Up | DirType::Right))
+	{
+		//m_animeInfo.start	= ;
+		//m_animeInfo.end	= ;
+	}
+	if (m_dirType == (DirType::Down | DirType::Left))
+	{
+		m_animeInfo.start = 0;
+		m_animeInfo.end = 3;
+	}
+	if (m_dirType == (DirType::Down | DirType::Right))
+	{
+		m_animeInfo.start = 8;
+		m_animeInfo.end = 11;
 	}
 }
 

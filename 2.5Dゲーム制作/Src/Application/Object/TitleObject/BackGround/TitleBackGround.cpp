@@ -4,18 +4,29 @@ void TitleBackGround::Init()
 {
 	m_poly = std::make_shared<KdTexture>();
 	m_poly->Load("Asset/Textures/Object/Background/Title/Title.png");
+
+	m_bottonPoly = std::make_shared<KdTexture>();
+	m_bottonPoly->Load("Asset/Textures/Object/Background/Title/botton.png");
+}
+
+void TitleBackGround::Update()
+{
+	alpha += alphaCnt;
+	if (alpha >= alphaMax)
+	{
+		alpha = alphaMax;
+		alphaCnt *= -1;
+	}
+	if (alpha <= alphaMin)
+	{
+		alpha = alphaMin;
+		alphaCnt *= -1;
+	}
 }
 
 void TitleBackGround::DrawSprite()
 {
-	std::shared_ptr<KdCamera>m_camera = m_wpCamera.lock();
-	if (m_camera)
-	{
-		Math::Vector3 _3DPos = GetPos();
-		_3DPos.z = -5.0f;
-
-		Math::Vector3 _2DPos = Math::Vector3::Zero;
-		m_camera->ConvertWorldToScreenDetail(_3DPos, _2DPos);
-		KdShaderManager::Instance().m_spriteShader.DrawTex(m_poly, _2DPos.x, _2DPos.y);
-	}
+	KdShaderManager::Instance().m_spriteShader.DrawTex(m_poly, 0, 0);
+	Math::Color color = { 1,1,1,alpha };
+	KdShaderManager::Instance().m_spriteShader.DrawTex(m_bottonPoly, 0, -200,nullptr,&color);
 }

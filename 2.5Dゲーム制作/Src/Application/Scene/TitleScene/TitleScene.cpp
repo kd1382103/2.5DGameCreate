@@ -32,6 +32,5 @@ void TitleScene::Init()
 	m_camera = std::make_unique<KdCamera>();
 
 	m_titleBack = std::make_shared<TitleBackGround>();
-	m_titleBack->SetCamera(m_camera);
 	AddObject(m_titleBack);
 }

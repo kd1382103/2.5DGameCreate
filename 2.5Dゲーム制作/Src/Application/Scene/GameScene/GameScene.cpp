@@ -4,6 +4,8 @@
 #include<Application/Object/GameObject/Player/Player.h>
 #include<Application/Object/GameObject/Enemy/Enemy.h>
 
+#include<Application/Object/Score/Score.h>
+
 void GameScene::Event()
 {
 	if (!m_player->GetAlive())
@@ -37,8 +39,8 @@ void GameScene::Event()
 void GameScene::Init()
 {
 	//カメラ生成＆視野角設定
-	m_camera = std::make_unique<KdCamera>();		//メモリ確保
-	m_camera->SetProjectionMatrix(60);				//視野角設定
+	m_camera = std::make_unique<KdCamera>();
+	m_camera->SetProjectionMatrix(60);		
 
 	m_stage = std::make_shared<Stage>();
 	AddObject(m_stage);
@@ -58,4 +60,6 @@ void GameScene::Init()
 		AddObject(m_enemy);
 	}
 
+	m_score = std::make_shared<Score>();
+	AddObject(m_score);
 }

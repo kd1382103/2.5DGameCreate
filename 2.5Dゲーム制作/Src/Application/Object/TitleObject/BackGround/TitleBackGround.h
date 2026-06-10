@@ -8,16 +8,19 @@ public:
 	~TitleBackGround()	override { Release(); }
 
 	void Init()			override;
+	void Update()		override;
 	void DrawSprite()	override;
 
-	void SetCamera(std::shared_ptr<KdCamera> camera)
-	{
-		m_wpCamera = camera;
-	}
 
 private:
 
 	std::shared_ptr<KdTexture>	m_poly;
-	std::weak_ptr<KdCamera>		m_wpCamera;
+	std::shared_ptr<KdTexture>	m_bottonPoly;
+
+	//点滅
+	float alpha = 0;	//α値
+	float alphaCnt = 0.01f;	//α値用カウント
+	float alphaMax = 1;	//最大
+	float alphaMin = 0;	//最小
 
 };

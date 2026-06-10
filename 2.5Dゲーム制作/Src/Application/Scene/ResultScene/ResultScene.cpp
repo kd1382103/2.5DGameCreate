@@ -3,6 +3,7 @@
 
 //追加インクルード
 #include<Application/Object/ResultObject/Backgraound/ResultBackGround.h>
+#include<Application/Object/Score/Score.h>
 
 void ResultScene::Event()
 {
@@ -28,7 +29,9 @@ void ResultScene::Init()
 	m_camera = std::make_unique<KdCamera>();
 
 	m_resultBack = std::make_shared<ResultBackGround>();
-	m_resultBack->SetCamera(m_camera);
 	AddObject(m_resultBack);
+
+	m_score = std::make_shared<Score>();
+	AddObject(m_score);
 
 }

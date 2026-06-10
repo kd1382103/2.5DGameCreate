@@ -281,6 +281,7 @@
     <ClInclude Include="Src\Application\Object\GameObject\Stage\Stage.h" />
     <ClInclude Include="Src\Application\Object\GameObject\Weapons\Weapons.h" />
     <ClInclude Include="Src\Application\Object\ResultObject\Backgraound\ResultBackGround.h" />
+    <ClInclude Include="Src\Application\Object\Score\Score.h" />
     <ClInclude Include="Src\Application\Object\TitleObject\BackGround\TitleBackGround.h" />
     <ClInclude Include="Src\Application\Scene\BaseScene\BaseScene.h" />
     <ClInclude Include="Src\Application\Scene\GameScene\GameScene.h" />
@@ -342,6 +343,7 @@
     <ClCompile Include="Src\Application\Object\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\Weapons\Weapons.cpp" />
     <ClCompile Include="Src\Application\Object\ResultObject\Backgraound\ResultBackGround.cpp" />
+    <ClCompile Include="Src\Application\Object\Score\Score.cpp" />
     <ClCompile Include="Src\Application\Object\TitleObject\BackGround\TitleBackGround.cpp" />
     <ClCompile Include="Src\Application\Scene\BaseScene\BaseScene.cpp" />
     <ClCompile Include="Src\Application\Scene\GameScene\GameScene.cpp" />
