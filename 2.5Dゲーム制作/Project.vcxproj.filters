@@ -79,32 +79,35 @@
     <Filter Include="Src\Application\Object">
       <UniqueIdentifier>{4e7f1f17-ea80-4486-a6ad-cb5925ed0bc0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\Player">
-      <UniqueIdentifier>{05d206a7-5587-4679-9b08-597629f2e82a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Object\Enemy">
-      <UniqueIdentifier>{028601ae-374e-4d0e-a2fa-3d04fc46d14d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Object\Boss">
-      <UniqueIdentifier>{d5c728a8-ba93-4381-b18e-87b4ee6fb817}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Object\Bullet">
-      <UniqueIdentifier>{a0e5e896-0ebb-4b5a-b98c-71f6f0175b14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Object\Card">
-      <UniqueIdentifier>{1e8e41c8-b55e-4d59-8d55-19caf1601c27}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\Scene\ResultScene">
       <UniqueIdentifier>{94966f67-be78-4a0d-8f3f-9e3ab8c933a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\Starg">
-      <UniqueIdentifier>{8941b746-1b32-4f5a-8dc4-95f70bd34512}</UniqueIdentifier>
+    <Filter Include="Src\Application\Object\ResultObject">
+      <UniqueIdentifier>{75a8ce00-d8a7-4dff-bdf7-1c64577c1d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\ResultObject\Background">
+      <UniqueIdentifier>{f807c226-e1a9-4d47-8471-70c944f972dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\GameObject">
+      <UniqueIdentifier>{ac6e73db-ad03-4ced-ad59-2c8226e23c5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\GameObject\Enemy">
+      <UniqueIdentifier>{e8255002-0cec-41cb-8a65-de230b6c8f5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\GameObject\Player">
+      <UniqueIdentifier>{c7aaf525-e4bb-4652-9fde-bbe7d57345e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\GameObject\Stage">
+      <UniqueIdentifier>{b0747221-b85b-4ac1-b3ad-e760953866b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\GameObject\Weapons">
+      <UniqueIdentifier>{38d7dc02-3ebb-4cc7-a33d-da838a97796c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\TitleObject">
+      <UniqueIdentifier>{bcd3848f-cccd-4627-8594-3bed8de2ec44}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Application\Object\Base">
-      <UniqueIdentifier>{c0098f0d-3a6b-4d7c-9af9-4ba9012cf1bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\Object\Weapons">
-      <UniqueIdentifier>{9aca5f2d-b6cd-4907-9701-3c2c4a42abeb}</UniqueIdentifier>
+      <UniqueIdentifier>{7200fbbe-14e1-428d-aecb-06a8d232c5a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -282,23 +285,30 @@
     <ClInclude Include="Src\Application\Scene\BaseScene\BaseScene.h">
       <Filter>Src\Application\Scene\BaseScene</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Player\Player.h">
-      <Filter>Src\Application\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Scene\ResultScene\ResultScene.h">
       <Filter>Src\Application\Scene\ResultScene</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Enemy\Enemy.h">
-      <Filter>Src\Application\Object\Enemy</Filter>
+    <ClInclude Include="Src\Application\Object\GameObject\Weapons\Weapons.h">
+      <Filter>Src\Application\Object\GameObject\Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\Stage\Stage.h">
-      <Filter>Src\Application\Object\Starg</Filter>
+    <ClInclude Include="Src\Application\Object\GameObject\Stage\Stage.h">
+      <Filter>Src\Application\Object\GameObject\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\GameObject\Player\Player.h">
+      <Filter>Src\Application\Object\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\GameObject\Enemy\Enemy.h">
+      <Filter>Src\Application\Object\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\ResultObject\Backgraound\ResultBackGround.h">
+      <Filter>Src\Application\Object\ResultObject\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\TitleObject\BackGround\TitleBackGround.h">
+      <Filter>Src\Application\Object\TitleObject</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Application\Object\Base\BaseObject.h">
       <Filter>Src\Application\Object\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Application\Object\Weapons\Weapons.h">
-      <Filter>Src\Application\Object\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -446,23 +456,29 @@
     <ClCompile Include="Src\Application\Scene\BaseScene\BaseScene.cpp">
       <Filter>Src\Application\Scene\BaseScene</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Player\Player.cpp">
-      <Filter>Src\Application\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Scene\ResultScene\ResultScene.cpp">
       <Filter>Src\Application\Scene\ResultScene</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Enemy\Enemy.cpp">
-      <Filter>Src\Application\Object\Enemy</Filter>
+    <ClCompile Include="Src\Application\Object\GameObject\Weapons\Weapons.cpp">
+      <Filter>Src\Application\Object\GameObject\Weapons</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\Stage\Stage.cpp">
-      <Filter>Src\Application\Object\Starg</Filter>
+    <ClCompile Include="Src\Application\Object\GameObject\Stage\Stage.cpp">
+      <Filter>Src\Application\Object\GameObject\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\GameObject\Player\Player.cpp">
+      <Filter>Src\Application\Object\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\GameObject\Enemy\Enemy.cpp">
+      <Filter>Src\Application\Object\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\ResultObject\Backgraound\ResultBackGround.cpp">
+      <Filter>Src\Application\Object\ResultObject\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\TitleObject\BackGround\TitleBackGround.cpp">
+      <Filter>Src\Application\Object\TitleObject</Filter>
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Base\BaseObject.cpp">
       <Filter>Src\Application\Object\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Object\Weapons\Weapons.cpp">
-      <Filter>Src\Application\Object\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -516,5 +532,8 @@
     <FxCompile Include="Src\Framework\Shader\StandardShader\KdStandardShader_VS_UnLit.hlsl">
       <Filter>Src\Framework\Shader\StandardShader</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project.rc" />
   </ItemGroup>
 </Project>

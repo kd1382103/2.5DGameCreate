@@ -1,6 +1,6 @@
 ﻿#include "Enemy.h"
 #include <Application/Scene/SceneManager.h>
-#include <Application/Object/Player/Player.h>
+#include <Application/Object/GameObject/Player/Player.h>
 
 void Enemy::Init()
 {
@@ -111,10 +111,10 @@ void Enemy::Update()
 		};
 
 		Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
-		//Math::Matrix RotationX = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(0));
 		Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
 
-		m_mWorld = transMat;
+		m_mWorld = ScaleMat * transMat;
+		
 	}
 }
 
@@ -130,7 +130,7 @@ void Enemy::PostUpdate()
 		sphere.m_sphere.Center.y	+= 0.2f;
 		sphere.m_sphere.Radius		= 0.2;
 		sphere.m_type = KdCollider::TypeGround;
-		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+		//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
 		std::list<KdCollider::CollisionResult>retSphereList;
 
 		for (auto& obj : SceneManager::Instance().GetObjList())
@@ -164,7 +164,7 @@ void Enemy::PostUpdate()
 		sphere.m_sphere.Center.y += 0.5f;
 		sphere.m_sphere.Radius = 0.55;
 		sphere.m_type = KdCollider::TypeBump;
-		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+		//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
 		std::list<KdCollider::CollisionResult>retSphereList;
 
 		for (auto& obj : SceneManager::Instance().GetObjList())
@@ -218,7 +218,7 @@ void Enemy::PostUpdate()
 
 			if (!retList.empty())
 			{
-				player->Damage(10.0f);
+				player->Damage(0.05f);
 			}
 		}
 	}

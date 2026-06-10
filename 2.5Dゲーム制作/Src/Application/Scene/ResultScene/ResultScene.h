@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#include"../BaseScene/BaseScene.h"
+#include<Application/Scene/BaseScene/BaseScene.h>
 
+class ResultBackGround;
 class ResultScene : public BaseScene
 {
 public :
@@ -14,6 +15,5 @@ private :
 	void Event() override;
 	void Init()  override;
 
-	std::shared_ptr<KdSquarePolygon>m_poly;
-
+	std::shared_ptr<ResultBackGround>m_resultBack;
 };

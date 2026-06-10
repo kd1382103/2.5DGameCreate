@@ -1,19 +1,14 @@
 ﻿#include "GameScene.h"
-#include<Application/Scene/SceneManager.h>
+#include  <Application/Object/GameObject/Stage/Stage.h>
 
-#include <Application/Object/Stage/Stage.h>
-
-#include<Application/Object/Player/Player.h>
-#include<Application/Object/Enemy/Enemy.h>
+#include<Application/Object/GameObject/Player/Player.h>
+#include<Application/Object/GameObject/Enemy/Enemy.h>
 
 void GameScene::Event()
 {
 	if (!m_player->GetAlive())
 	{
-		SceneManager::Instance().SetNextScene
-		(
-			SceneManager::SceneType::Result
-		);
+		
 		return;
 	}
 
@@ -24,21 +19,19 @@ void GameScene::Event()
 	//Math::Vector3 camPos = { 0,20,0 };
 
 	//横からの挙動確認用
-	Math::Vector3 camPos = { 0,3,-10 };
+	//Math::Vector3 camPos = { 0,3,-10 };
 
 	//斜め上から斜め下に(メイン採用)
-	//Math::Vector3 camPos = { -5,10,-10 };
+	Math::Vector3 camPos = { -5,5,-5 };
 
 	Math::Matrix rotationXMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(30));
 	Math::Matrix rotationYMat = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(45));
 
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos + m_player->GetPos());
 
-	Math::Matrix camWorld = rotationXMat * transMat ;
-	//Math::Matrix camWorld = rotationXMat * rotationYMat * transMat;
+	//Math::Matrix camWorld = rotationXMat * transMat ;
+	Math::Matrix camWorld = rotationXMat * rotationYMat * transMat;
 	m_camera->SetCameraMatrix(camWorld);
-
-	
 }
 
 void GameScene::Init()

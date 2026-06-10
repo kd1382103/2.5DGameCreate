@@ -273,12 +273,15 @@
     <ClInclude Include="..\Library\tinygltf\stb_image.h" />
     <ClInclude Include="..\Library\tinygltf\stb_image_write.h" />
     <ClInclude Include="..\Library\tinygltf\tiny_gltf.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\Object\Base\BaseObject.h" />
-    <ClInclude Include="Src\Application\Object\Enemy\Enemy.h" />
-    <ClInclude Include="Src\Application\Object\Player\Player.h" />
-    <ClInclude Include="Src\Application\Object\Stage\Stage.h" />
-    <ClInclude Include="Src\Application\Object\Weapons\Weapons.h" />
+    <ClInclude Include="Src\Application\Object\GameObject\Enemy\Enemy.h" />
+    <ClInclude Include="Src\Application\Object\GameObject\Player\Player.h" />
+    <ClInclude Include="Src\Application\Object\GameObject\Stage\Stage.h" />
+    <ClInclude Include="Src\Application\Object\GameObject\Weapons\Weapons.h" />
+    <ClInclude Include="Src\Application\Object\ResultObject\Backgraound\ResultBackGround.h" />
+    <ClInclude Include="Src\Application\Object\TitleObject\BackGround\TitleBackGround.h" />
     <ClInclude Include="Src\Application\Scene\BaseScene\BaseScene.h" />
     <ClInclude Include="Src\Application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="Src\Application\Scene\ResultScene\ResultScene.h" />
@@ -334,10 +337,12 @@
     <ClCompile Include="..\Library\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\Object\Base\BaseObject.cpp" />
-    <ClCompile Include="Src\Application\Object\Enemy\Enemy.cpp" />
-    <ClCompile Include="Src\Application\Object\Player\Player.cpp" />
-    <ClCompile Include="Src\Application\Object\Stage\Stage.cpp" />
-    <ClCompile Include="Src\Application\Object\Weapons\Weapons.cpp" />
+    <ClCompile Include="Src\Application\Object\GameObject\Enemy\Enemy.cpp" />
+    <ClCompile Include="Src\Application\Object\GameObject\Player\Player.cpp" />
+    <ClCompile Include="Src\Application\Object\GameObject\Stage\Stage.cpp" />
+    <ClCompile Include="Src\Application\Object\GameObject\Weapons\Weapons.cpp" />
+    <ClCompile Include="Src\Application\Object\ResultObject\Backgraound\ResultBackGround.cpp" />
+    <ClCompile Include="Src\Application\Object\TitleObject\BackGround\TitleBackGround.cpp" />
     <ClCompile Include="Src\Application\Scene\BaseScene\BaseScene.cpp" />
     <ClCompile Include="Src\Application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="Src\Application\Scene\ResultScene\ResultScene.cpp" />
@@ -466,6 +471,9 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

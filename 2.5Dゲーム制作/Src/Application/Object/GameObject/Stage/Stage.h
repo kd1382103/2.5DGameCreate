@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../Base/BaseObject.h"
+#include <Application/Object/Base/BaseObject.h>
 
 class Stage :public Base
 {

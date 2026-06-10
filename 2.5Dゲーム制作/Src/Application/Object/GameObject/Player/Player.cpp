@@ -1,6 +1,6 @@
 ﻿#include "Player.h"
 #include <Application/Scene/SceneManager.h>
-#include <Application/Object/Weapons/Weapons.h>
+#include <Application/Object/GameObject/Weapons/Weapons.h>
 
 void Player::Init()
 {
@@ -11,16 +11,15 @@ void Player::Init()
 
 	m_poly = std::make_shared<KdSquarePolygon>();
 	m_poly->SetMaterial("Asset/Textures/Object/Player/Player.png");
-
 	m_poly->SetScale(1.25f);
-
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
-
 	m_poly->SetSplit(8, 16);
 
 	m_pCollider = std::make_unique<KdCollider>();
-
 	m_pCollider->RegisterCollisionShape("PlayerCollision", m_poly, KdCollider::TypeBump);
+
+	m_hpPoly = std::make_shared<KdTexture>();
+	m_hpPoly->Load("");
 
 	m_nowPos = {};
 	m_moveVec = {};
@@ -94,6 +93,12 @@ void Player::Update()
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
 	m_mWorld = ScaleMat * transMat;
 
+
+	//デバック（プレイヤー即死）
+	if (GetAsyncKeyState('1') & 0x8000)
+	{
+		Damage(100);
+	}
 }
 
 void Player::PostUpdate()
@@ -121,7 +126,7 @@ void Player::PostUpdate()
 		//当たり判定をしたいタイプ設定
 		sphere.m_type = KdCollider::TypeGround;
 
-		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+		//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
 
 		//球に当たったオブジェクト情報格納
 		std::list<KdCollider::CollisionResult>retSphereList;
@@ -167,6 +172,22 @@ void Player::DrawLit()
 	}
 }
 
+void Player::DrawSprite()
+{
+	std::shared_ptr<KdCamera>m_spCamera = m_wpCamera.lock();
+	if (m_spCamera)
+	{
+		Math::Vector3 m_3DPos = GetPos();
+		m_3DPos.y += 1.5f;
+
+		Math::Vector3 m_2DPos = Math::Vector3::Zero;
+		m_spCamera->ConvertWorldToScreenDetail(m_3DPos,m_2DPos);
+
+		KdShaderManager::Instance().m_spriteShader.DrawTex(m_hpPoly, m_2DPos.x, m_2DPos.y);
+	}
+
+}
+
 void Player::Damage(float damage)
 {
 	m_hitPoint -= damage; 
@@ -174,6 +195,7 @@ void Player::Damage(float damage)
 	{
 		m_hitPoint = 0;
 		m_aliveFlg = false; 
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
 	}
 }
 

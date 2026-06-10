@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include"../BaseScene/BaseScene.h"
+#include<Application/Scene/BaseScene/BaseScene.h>
 
 class Stage;
 

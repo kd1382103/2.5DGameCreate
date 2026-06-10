@@ -1,23 +1,34 @@
 ﻿#include "ResultScene.h"
-#include "../SceneManager.h"
+#include <Application/Scene/SceneManager.h>
+
+//追加インクルード
+#include<Application/Object/ResultObject/Backgraound/ResultBackGround.h>
 
 void ResultScene::Event()
 {
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 	{
-		SceneManager::Instance().SetNextScene
-		(
-			SceneManager::SceneType::Game
-		);
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Title);
 	}
+
+	//　カメラ処理
+	Math::Vector3 camPos = { 0,0,-20 };
+
+	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos);
+
+	Math::Matrix camWorld = transMat ;
+	m_camera->SetCameraMatrix(camWorld);
+
 }
 
 void ResultScene::Init()
 {
 	BaseScene::Init();
 
-	m_poly = std::make_shared<KdSquarePolygon>();
-	m_poly->SetMaterial("");
+	m_camera = std::make_unique<KdCamera>();
 
+	m_resultBack = std::make_shared<ResultBackGround>();
+	m_resultBack->SetCamera(m_camera);
+	AddObject(m_resultBack);
 
 }

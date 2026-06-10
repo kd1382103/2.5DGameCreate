@@ -17,6 +17,7 @@ public:
 	void PostUpdate()					override;
 	void GenerateDepthMapFromLight()	override;
 	void DrawLit()						override;
+	void DrawSprite()					override;
 
 	void Damage(float damage)			override;
 
@@ -29,8 +30,12 @@ private:
 
 	//GameScene* m_owner = nullptr;
 
-	std::shared_ptr<KdSquarePolygon>m_poly;
-	std::shared_ptr<Weapons>m_weapons;
+	std::shared_ptr<KdSquarePolygon>	m_poly		= nullptr;
+
+	std::shared_ptr<KdTexture>			m_hpPoly	= nullptr;
+	std::weak_ptr<KdCamera>				m_wpCamera;
+
+	std::shared_ptr<Weapons>			m_weapons = nullptr;
 
 	Math::Vector3 m_dir;
 
