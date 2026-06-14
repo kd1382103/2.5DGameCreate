@@ -1,10 +1,12 @@
 ﻿#include "GameScene.h"
+
 #include  <Application/Object/GameObject/Stage/Stage.h>
 
 #include<Application/Object/GameObject/Player/Player.h>
 #include<Application/Object/GameObject/Enemy/Enemy.h>
 
 #include<Application/Object/Score/Score.h>
+#include<Application/Object/Timer/Timer.h>
 
 void GameScene::Event()
 {
@@ -48,18 +50,31 @@ void GameScene::Init()
 	m_player = std::make_shared<Player>();
 	m_player->SetPos({ 0,0,10 });
 	m_player->SetAlive(true);
+	m_player->SetOwner(shared_from_this());
 	AddObject(m_player);
+
+	m_score = std::make_shared<Score>();
+	m_score->SetScorePos({ -550,300 });
+	AddObject(m_score);
 
 	for (int i = 0;i < 10;i++)
 	{
 		float x = KdRandom::GetFloat(-30, 30);
 		float y = KdRandom::GetFloat(-30, 30);
 		m_enemy = std::make_shared<Enemy>();
-		m_enemy->SetPos({x,0,y});
+		m_enemy->SetPos({ x,0,y });
 		m_enemy->SetTarget(m_player);
+		m_enemy->SetScore(m_score);
 		AddObject(m_enemy);
 	}
 
-	m_score = std::make_shared<Score>();
-	AddObject(m_score);
+	m_time = std::make_shared<Timer>();
+	m_time->SetTimePos({ 450,300 });
+	m_time->SetPlayer(m_player);
+
+	m_player->SetTime(m_time);
+
+	AddObject(m_time);
+
+
 }

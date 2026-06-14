@@ -35,11 +35,13 @@ public:
 
 	void SetPos(const Math::Vector3& _pos) override { m_nowPos = _pos; }
 
+	void SetScore(const std::shared_ptr<Score>&score) { m_spScore = score; }
+
 private:
 
 	void Release() {}
 
-	//std::shared_ptr<GameScene>m_owner;
+	std::shared_ptr<GameScene>m_owner;
 	std::weak_ptr<Player>m_player;
 	std::shared_ptr<Score>m_spScore;
 	std::shared_ptr<KdSquarePolygon>m_poly;

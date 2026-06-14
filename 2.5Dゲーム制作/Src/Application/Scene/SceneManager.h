@@ -35,6 +35,9 @@ public :
 	// 現在のシーンにオブジェクトを追加
 	void AddObject(const std::shared_ptr<KdGameObject>& _obj);
 
+	//追加
+	float	m_finalScore = 0.0f;
+	int		m_finalTime = 0;
 private :
 
 	// マネージャーの初期化

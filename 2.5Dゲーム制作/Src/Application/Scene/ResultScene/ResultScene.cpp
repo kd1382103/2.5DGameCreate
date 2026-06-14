@@ -4,6 +4,7 @@
 //追加インクルード
 #include<Application/Object/ResultObject/Backgraound/ResultBackGround.h>
 #include<Application/Object/Score/Score.h>
+#include<Application/Object/Timer/Timer.h>
 
 void ResultScene::Event()
 {
@@ -32,6 +33,14 @@ void ResultScene::Init()
 	AddObject(m_resultBack);
 
 	m_score = std::make_shared<Score>();
+	m_score->SetScorePos({ -150,-100 });
+	m_resultScore = SceneManager::Instance().m_finalScore;
+	m_score->SetScore(m_resultScore);
 	AddObject(m_score);
 
+	m_timer = std::make_shared<Timer>();
+	m_timer->SetTimePos({ -150,100 });
+	m_resultTimer = SceneManager::Instance().m_finalTime;
+	m_timer->SetTimer(m_resultTimer);
+	AddObject(m_timer);
 }

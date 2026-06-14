@@ -28,11 +28,12 @@ public :
 		m_objList.push_back(_obj);
 	}
 
+	virtual void Init();
+
 protected :
 
 	// 継承先シーンで必要ならオーバーライドする
 	virtual void Event();
-	virtual void Init();
 
 	std::shared_ptr<KdCamera> m_camera = nullptr;
 

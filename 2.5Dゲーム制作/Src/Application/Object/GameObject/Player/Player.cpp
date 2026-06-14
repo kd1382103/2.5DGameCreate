@@ -1,6 +1,12 @@
 ﻿#include "Player.h"
 #include <Application/Scene/SceneManager.h>
+
+//追加インクルード
 #include <Application/Object/GameObject/Weapons/Weapons.h>
+#include<Application/Object/Score/Score.h>
+#include <Application/Scene/GameScene/GameScene.h>
+#include <Application/Scene/ResultScene/ResultScene.h>
+#include<Application/Object/Timer/Timer.h>
 
 void Player::Init()
 {
@@ -194,6 +200,13 @@ void Player::Damage(float damage)
 	{
 		m_hitPoint = 0;
 		m_aliveFlg = false; 
+
+		if (auto owner = m_gameOwner.lock())
+		{
+			SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
+			SceneManager::Instance().m_finalTime = m_timer->GetTime();
+		}
+
 		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
 	}
 }

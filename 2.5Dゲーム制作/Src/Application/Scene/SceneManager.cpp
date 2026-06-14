@@ -71,7 +71,8 @@ void SceneManager::ChangeScene(SceneType _sceneType)
 		m_currentScene = std::make_shared<ResultScene>();
 		break;
 	}
-
+	
+	m_currentScene->Init();
 	// 現在のシーン情報を更新
 	m_currentSceneType = _sceneType;
 }

@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include <Application/Object/Base/BaseObject.h>
 
-//class GameScene;
-
+class GameScene;
 class Enemy;
 class Weapons;
-
+class Timer;
 class Player : public Base
 {
 public:
@@ -39,22 +38,24 @@ public:
 	void DrawLit()						override;
 	void DrawSprite()					override;
 
-	void Damage(float damage)			override;
-
+	void Damage		(float damage)		override;
+	void SetOwner	(const std::shared_ptr<GameScene>& owner) { m_gameOwner =owner;}
+	void SetTime	(const	std::shared_ptr<Timer>& timer) { m_timer = timer; }
 private:
 
 	void ChangeAnimetion();
 
 	void Release() {}
 
-	//GameScene* m_owner = nullptr;
+	std::weak_ptr<GameScene>			m_gameOwner;
 
 	std::shared_ptr<KdSquarePolygon>	m_poly		= nullptr;
 
 	std::shared_ptr<KdTexture>			m_hpPoly	= nullptr;
 	std::weak_ptr<KdCamera>				m_wpCamera;
 
-	std::shared_ptr<Weapons>			m_weapons = nullptr;
+	std::shared_ptr<Weapons>			m_weapons	= nullptr;
+	std::shared_ptr<Timer>				m_timer		= nullptr;
 
 	AnimationInfo m_animeInfo = {};
 	UINT m_dirType = 0;

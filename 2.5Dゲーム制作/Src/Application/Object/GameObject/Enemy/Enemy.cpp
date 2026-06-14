@@ -251,7 +251,11 @@ void Enemy::Damage(float damage)
 	{
 		m_hitPoint = 0;
 		m_aliveFlg = false;
-		//m_spScore->SetScore(100);
+
+		if (m_spScore)
+		{
+			m_spScore->SetScore(100);
+		}
 		ExpiredAnimation();
 	}
 }

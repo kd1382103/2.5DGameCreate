@@ -12,6 +12,8 @@ public:
 	void DrawSprite()	override;
 
 	void SetScore(const float score) { m_score += score; }
+	float GetScore() const { return m_score; }
+	void SetScorePos(const Math::Vector2 pos) { m_scorePos = pos; }
 
 private:
 

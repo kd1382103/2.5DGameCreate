@@ -57,7 +57,7 @@ public:
 
 	virtual void SetTarget(const std::shared_ptr<KdGameObject>target) { m_target = target; }
 
-	virtual void SetScore(const float score) { m_score = score; }
+	virtual void SetScore(const float score) { m_score += score; }
 	virtual float GerScore()const { return m_score; }
 
 	virtual void Damage(const float damage) { m_damage = damage; }
