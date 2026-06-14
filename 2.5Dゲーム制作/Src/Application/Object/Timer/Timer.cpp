@@ -15,7 +15,6 @@ void Timer::Init()
 
 void Timer::Update()
 {
-	if (!m_player)return;
 
 	if (m_player && m_player->GetAlive())
 	{
