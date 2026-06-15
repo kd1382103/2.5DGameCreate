@@ -120,6 +120,7 @@ void Player::Update()
 					m_attackInterval = m_attackCoolTime;
 					m_weapons->SetPos(m_nowPos + Math::Vector3(1, 1, 0));
 					SceneManager::Instance().AddObject(m_weapons);
+					KdAudioManager::Instance().Play("Asset/Sounds/Attack.WAV", false);
 				}
 			}
 		}
