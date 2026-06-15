@@ -27,53 +27,84 @@ void Player::Init()
 	m_hpPoly = std::make_shared<KdTexture>();
 	m_hpPoly->Load("");
 
+	m_animeInfo.start = 0;		// 開始コマ
+	m_animeInfo.end = 7;		// 終了コマ
+	m_animeInfo.count = 0;		// 現在のカウント数
+	m_animeInfo.speed = 0.2f;	// アニメーションの速度
+
 	m_nowPos = {};
 	m_moveVec = {};
+	m_dir = {};
+
 	m_moveSpeed = 0.3f;
 	m_movePow = 1.0f;
+
 	m_attackInterval = 0;
 	m_aliveFlg = true;
+
+	m_mWorld = Math::Matrix::Identity;
+
 }
 
 void Player::Update()
 {
-	//アニメーション制御
-	{
-		int run[8] = { 0,1,2,3,4,5,6,7 };
-
-		m_poly->SetUVRect(run[(int)m_anime]);
-
-		m_anime += 0.05f;
-		if (m_anime >= 8)
-		{
-			m_anime = 0;
-		}
-	}
-
 	//移動処理
 	{
+		UINT oldDirType = m_dirType;
+
 		m_dir = {};
+		m_dirType = 0;
 
 		if (m_aliveFlg)
 		{
 			if (GetAsyncKeyState('W') & 0x8000)
 			{
-				m_dir.z += 1;
+				m_dir.z += 1;		
+				m_dirType |= DirType::Up;
+
 			}
 			if (GetAsyncKeyState('S') & 0x8000)
 			{
-				m_dir.z -= 1;
+				m_dir.z -= 1;		
+				m_dirType |= DirType::Down;
+
 			}
 			if (GetAsyncKeyState('D') & 0x8000)
 			{
 				m_dir.x += 1;
+				m_dirType |= DirType::Right;
 			}
 			if (GetAsyncKeyState('A') & 0x8000)
 			{
 				m_dir.x -= 1;
+				m_dirType |= DirType::Left;
 			}
+
+			if (m_dirType != oldDirType && m_dirType != 0)
+			{
+				ChangeAnimetion();
+			}
+			else
+			{
+				m_dirType = oldDirType;
+			}
+
 			m_dir.Normalize();
 			m_nowPos += m_dir * m_moveSpeed;
+
+			//アニメーション制御
+			{
+				m_animeInfo.count += m_animeInfo.speed;
+				int animeCnt = static_cast<int>(m_animeInfo.start + m_animeInfo.count);
+
+				if (animeCnt > m_animeInfo.end)
+				{
+					animeCnt = m_animeInfo.start;
+					m_animeInfo.count = 0;
+				}
+				m_poly->SetUVRect(animeCnt);
+
+			}
 		}
 
 		//攻撃処理（オート）
@@ -216,44 +247,23 @@ void Player::ChangeAnimetion()
 	//上下左右
 	if (m_dirType & DirType::Up)
 	{
-		//m_animeInfo.start	= ;
-		//m_animeInfo.end	= ;
+		m_animeInfo.start	= 56;
+		m_animeInfo.end	= 63;
 	}
 	if (m_dirType & DirType::Down)
 	{
-		//m_animeInfo.start	= ;
-		//m_animeInfo.end	= ;
+		m_animeInfo.start	= 32;
+		m_animeInfo.end	= 39;
 	}
 	if (m_dirType & DirType::Left)
 	{
-		//m_animeInfo.start	= ;
-		//m_animeInfo.end	= ;
+		m_animeInfo.start	= 40;
+		m_animeInfo.end	= 47;
 	}
 	if (m_dirType & DirType::Right)
 	{
-		//m_animeInfo.start	= ;
-		//m_animeInfo.end	= ;
-	}
-	//斜め方向
-	if (m_dirType == (DirType::Up | DirType::Left))
-	{
-		//m_animeInfo.start	= ;
-		//m_animeInfo.end	= ;
-	}
-	if (m_dirType == (DirType::Up | DirType::Right))
-	{
-		//m_animeInfo.start	= ;
-		//m_animeInfo.end	= ;
-	}
-	if (m_dirType == (DirType::Down | DirType::Left))
-	{
-		m_animeInfo.start = 0;
-		m_animeInfo.end = 3;
-	}
-	if (m_dirType == (DirType::Down | DirType::Right))
-	{
-		m_animeInfo.start = 8;
-		m_animeInfo.end = 11;
+		m_animeInfo.start	= 48;
+		m_animeInfo.end	= 55;
 	}
 }
 
