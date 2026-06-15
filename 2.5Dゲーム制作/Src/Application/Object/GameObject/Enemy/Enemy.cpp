@@ -55,6 +55,13 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+	if (m_outroFlg)
+	{
+		ExpiredAnimation();
+		return;
+	}
+
+
 	if (!m_aliveFlg) return;
 
 	switch (m_type)
@@ -250,22 +257,50 @@ void Enemy::Damage(float damage)
 	if (m_hitPoint <= 0)
 	{
 		m_hitPoint = 0;
-		m_aliveFlg = false;
+		m_outroFlg = true;
+		m_anime = 0;
 
 		if (m_spScore)
 		{
 			m_spScore->SetScore(100);
 		}
-		ExpiredAnimation();
 	}
 }
 
 void Enemy::ExpiredAnimation()
 {
+	switch (m_type)
+	{
+	case Skelton:
+	{
+		//アニメーション制御
+		int expiredAnime[16] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 };
 
-	//死亡時のアニメーション後に呼び出す
-	//m_isExpired = true;
+		m_poly->SetUVRect(expiredAnime[(int)m_anime]);
 
+		m_anime += 0.2f;
+		if (m_anime >= 16)
+		{
+			m_isExpired = true;
+		}
+	}
+	break;
+
+	case Necromancer:
+	{
+		//アニメーション制御
+		int expiredAnime[10] = {108,109,110,111,112.113,114,115,116,117};
+
+		m_poly->SetUVRect(expiredAnime[(int)m_anime]);
+
+		m_anime += 0.15f;
+		if (m_anime >= 10)
+		{
+			m_isExpired = true;
+		}
+	}
+	break;
+	}
 }
 
 

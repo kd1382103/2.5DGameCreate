@@ -52,4 +52,7 @@ private:
 	float m_hitPoint = 100;
 	bool hit = false;
 
+	float m_dissolve = 0;
+	bool m_outroFlg = false;
+
 };
