@@ -1,6 +1,7 @@
 ﻿#include "GameScene.h"
 
 #include  <Application/Object/GameObject/Stage/Stage.h>
+#include  <Application/Object/GameObject/Goal/Goal.h>
 
 #include<Application/Object/GameObject/Player/Player.h>
 #include<Application/Object/GameObject/Enemy/Enemy.h>
@@ -27,7 +28,7 @@ void GameScene::Event()
 	//横からの挙動確認用
 	//Math::Vector3 camPos = { 0,3,-10 };
 
-	//斜め上から斜め下に(メイン採用)
+	//斜め上から斜め下に(メイン採用予定)
 	//Math::Vector3 camPos = { -5,5,-5 };
 
 	Math::Matrix rotationXMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(30));
@@ -48,10 +49,14 @@ void GameScene::Init()
 	//ステージ
 	m_stage = std::make_shared<Stage>();
 	AddObject(m_stage);
+	
+	//ゴール
+	m_goal = std::make_shared<Goal>();
+	AddObject(m_goal);
 
 	//プレイヤー
 	m_player = std::make_shared<Player>();
-	m_player->SetPos({ 0,0,-200 });
+	m_player->SetPos({ 0,0,-100 });
 	m_player->SetAlive(true);
 	m_player->SetOwner(shared_from_this());
 	AddObject(m_player);
@@ -66,7 +71,7 @@ void GameScene::Init()
 		int enemyNum = 5;
 		{
 			auto sp = std::make_shared<SpawnArea>();
-			sp->SetCenter({ 0,0,0 });
+			sp->SetCenter({ 0,0,-150 });
 			sp->SetRadius(3.0f);
 			//sp->SetSpawnCount(1, 3);
 			sp->SetSpawnCount(enemyNum);
@@ -75,7 +80,7 @@ void GameScene::Init()
 		}
 		{
 			auto sp = std::make_shared<SpawnArea>();
-			sp->SetCenter({ -100,0,-50 });
+			sp->SetCenter({ -100,0,-75 });
 			sp->SetRadius(4.0f);
 			//sp->SetSpawnCount(2, 4);
 			sp->SetSpawnCount(enemyNum);
@@ -84,7 +89,7 @@ void GameScene::Init()
 		}
 		{
 			auto sp = std::make_shared<SpawnArea>();
-			sp->SetCenter({ 100,0,-10 });
+			sp->SetCenter({ 100,0,-20 });
 			sp->SetRadius(2.5f);
 			//sp->SetSpawnCount(1, 2);
 			sp->SetSpawnCount(enemyNum);

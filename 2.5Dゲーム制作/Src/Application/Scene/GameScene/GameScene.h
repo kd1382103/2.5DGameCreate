@@ -3,6 +3,7 @@
 #include<Application/Scene/BaseScene/BaseScene.h>
 
 class Stage;
+class Goal;
 
 class Player;
 class Enemy;
@@ -29,8 +30,9 @@ private:
 
 	void SpawnEnemies();
 
-	//ステージ
+	//ステージ類
 	std::shared_ptr<Stage>m_stage;
+	std::shared_ptr<Goal>m_goal;
 
 	//キャラクター類
 	std::shared_ptr<Player>m_player;

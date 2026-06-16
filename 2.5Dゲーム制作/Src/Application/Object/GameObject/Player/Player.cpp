@@ -49,6 +49,12 @@ void Player::Init()
 
 void Player::Update()
 {
+	if (m_outroFlg)
+	{
+		OutroUpdate();
+		return;
+	}
+
 	//移動処理
 	{
 		UINT oldDirType = m_dirType;
@@ -58,24 +64,24 @@ void Player::Update()
 
 		if (m_aliveFlg)
 		{
-			if (GetAsyncKeyState('W') & 0x8000)
+			if (GetAsyncKeyState(VK_UP) & 0x8000)
 			{
 				m_dir.z += 1;		
 				m_dirType |= DirType::Up;
 
 			}
-			if (GetAsyncKeyState('S') & 0x8000)
+			if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 			{
 				m_dir.z -= 1;		
 				m_dirType |= DirType::Down;
 
 			}
-			if (GetAsyncKeyState('D') & 0x8000)
+			if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 			{
 				m_dir.x += 1;
 				m_dirType |= DirType::Right;
 			}
-			if (GetAsyncKeyState('A') & 0x8000)
+			if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 			{
 				m_dir.x -= 1;
 				m_dirType |= DirType::Left;
@@ -192,6 +198,28 @@ void Player::PostUpdate()
 			//押し戻し処理
 			m_nowPos += hitDir * maxOverlap;
 		}
+
+		//ゴール
+		sphere.m_sphere.Center = m_nowPos;
+		sphere.m_sphere.Center.y += 0.5f;
+		sphere.m_sphere.Radius = 0.5;
+		sphere.m_type = KdCollider::TypeGoal;
+		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+			
+		for (auto& obj : SceneManager::Instance().GetObjList())
+		{
+			obj->Intersects(sphere, &retSphereList);
+		}
+		
+		if (!retSphereList.empty())
+		{
+			goalHit = true;
+		}
+
+		if (goalHit)
+		{
+			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
+		}
 	}
 }
 
@@ -204,43 +232,57 @@ void Player::GenerateDepthMapFromLight()
 }
 void Player::DrawLit()
 {
+	if (m_outroFlg)
+	{
+		float range = 0.2;
+		Math::Vector3 color = { 1,0.3,0.3 };
+		KdShaderManager::Instance().m_StandardShader.SetDissolve(m_dissolve, &range, &color);
+	}
+
 	if (m_aliveFlg)
 	{
 		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
 	}
 }
 
-void Player::DrawSprite()
+void Player::OutroUpdate()
 {
-	std::shared_ptr<KdCamera>m_spCamera = m_wpCamera.lock();
-	if (m_spCamera)
+	m_dissolve += 0.01;
+	if (m_dissolve > 1)
 	{
-		Math::Vector3 m_3DPos = GetPos();
-		m_3DPos.y += 1.5f;
-
-		Math::Vector3 m_2DPos = Math::Vector3::Zero;
-		m_spCamera->ConvertWorldToScreenDetail(m_3DPos,m_2DPos);
-
-		KdShaderManager::Instance().m_spriteShader.DrawTex(m_hpPoly, m_2DPos.x, m_2DPos.y);
+		m_aliveFlg = false;
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
 	}
-
 }
+
+//void Player::DrawSprite()
+//{
+//	std::shared_ptr<KdCamera>m_spCamera = m_wpCamera.lock();
+//	if (m_spCamera)
+//	{
+//		Math::Vector3 m_3DPos = GetPos();
+//		m_3DPos.y += 1.5f;
+//
+//		Math::Vector3 m_2DPos = Math::Vector3::Zero;
+//		m_spCamera->ConvertWorldToScreenDetail(m_3DPos,m_2DPos);
+//
+//		KdShaderManager::Instance().m_spriteShader.DrawTex(m_hpPoly, m_2DPos.x, m_2DPos.y);
+//	}
+//}
 
 void Player::Damage(float damage)
 {
-	m_hitPoint -= damage; 
-	if (m_hitPoint <= 0) 
+	m_hitPoint -= damage;
+	if (m_hitPoint <= 0)
 	{
 		m_hitPoint = 0;
-		m_aliveFlg = false; 
+		m_outroFlg = true;
 
 		if (auto owner = m_gameOwner.lock())
 		{
 			SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
 			SceneManager::Instance().m_finalTime = m_timer->GetTime();
 		}
-
-		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
 	}
 }
 

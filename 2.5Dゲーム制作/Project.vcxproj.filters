@@ -118,6 +118,9 @@
     <Filter Include="Src\Application\Object\GameObject\SpwanArea">
       <UniqueIdentifier>{1eb20ed5-a99f-4cbf-8c8a-348fdae838c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\GameObject\Goal">
+      <UniqueIdentifier>{ef843557-0aa5-4c16-9bc8-6a3d6faf0f58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -328,6 +331,9 @@
     <ClInclude Include="Src\Application\Object\GameObject\SpawnArea\SpawnArea.h">
       <Filter>Src\Application\Object\GameObject\SpwanArea</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\GameObject\Goal\Goal.h">
+      <Filter>Src\Application\Object\GameObject\Goal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -506,6 +512,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\GameObject\SpawnArea\SpawnArea.cpp">
       <Filter>Src\Application\Object\GameObject\SpwanArea</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\GameObject\Goal\Goal.cpp">
+      <Filter>Src\Application\Object\GameObject\Goal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -36,7 +36,9 @@ public:
 	void PostUpdate()					override;
 	void GenerateDepthMapFromLight()	override;
 	void DrawLit()						override;
-	void DrawSprite()					override;
+	//void DrawSprite()					override;
+
+	void OutroUpdate();
 
 	void Damage		(float damage)		override;
 	void SetOwner	(const std::shared_ptr<GameScene>& owner) { m_gameOwner =owner;}
@@ -68,6 +70,7 @@ private:
 
 	float m_hitPoint = 100;
 	bool hit = false;
+	bool goalHit = false;
 
 	float m_anime = 0;
 	int m_run[8];
@@ -75,4 +78,6 @@ private:
 	float m_attackInterval = 0;
 	const int m_attackCoolTime = 40;
 
+	float m_dissolve = 0;
+	bool m_outroFlg = false;
 };

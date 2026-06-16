@@ -229,7 +229,8 @@ private:
 
 	KdAmbientController m_ambientController;
 
-	bool m_pixelArtStyle = true;
+	//ゆるやかに消えるように変更
+	bool m_pixelArtStyle = false;
 
 	//==========================
 	//

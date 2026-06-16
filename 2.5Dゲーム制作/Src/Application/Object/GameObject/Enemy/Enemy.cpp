@@ -39,7 +39,6 @@ void Enemy::Init()
 	m_moveVec	= { 0,0,0 };
 	m_movePow	= 0;
 	m_score		= 0;
-	m_aliveFlg	= true;
 
 	//当たり判定
 	m_pCollider = std::make_unique<KdCollider>();
@@ -62,7 +61,7 @@ void Enemy::Update()
 	}
 
 
-	if (!m_aliveFlg) return;
+	if (m_isExpired) return;
 
 	switch (m_type)
 	{
@@ -98,7 +97,7 @@ void Enemy::Update()
 	}
 
 	//移動処理
-	if (m_aliveFlg)
+	if (!m_isExpired)
 	{
 		Math::Vector3 targetPos;
 		if (m_target.expired() == false)
@@ -241,7 +240,7 @@ void Enemy::PostUpdate()
 
 void Enemy::GenerateDepthMapFromLight()
 {
-	if (m_aliveFlg)
+	if (!m_isExpired)
 	{
 		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
 	}
@@ -249,7 +248,7 @@ void Enemy::GenerateDepthMapFromLight()
 
 void Enemy::DrawLit()
 {
-	if (m_aliveFlg)
+	if (!m_isExpired)
 	{
 		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
 	}
@@ -258,6 +257,8 @@ void Enemy::DrawLit()
 
 void Enemy::Damage(float damage)
 {
+	if (m_outroFlg)return;
+
 	m_hitPoint -= damage;
 	if (m_hitPoint <= 0)
 	{
