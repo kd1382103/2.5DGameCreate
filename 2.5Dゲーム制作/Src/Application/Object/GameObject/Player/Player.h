@@ -41,6 +41,10 @@ public:
 	void Damage		(float damage)		override;
 	void SetOwner	(const std::shared_ptr<GameScene>& owner) { m_gameOwner =owner;}
 	void SetTime	(const	std::shared_ptr<Timer>& timer) { m_timer = timer; }
+
+	void SetPos(const Math::Vector3& _pos) override { m_nowPos = _pos; }
+
+
 private:
 
 	void ChangeAnimetion();

@@ -116,6 +116,7 @@ void Enemy::Update()
 		}
 		else
 		{
+			dir.y = 0;
 			dir.Normalize();
 			m_nowPos += dir * m_moveSpeed;
 		};
@@ -130,37 +131,41 @@ void Enemy::Update()
 
 void Enemy::PostUpdate()
 {
-	//	VS	地面
+	//	VS	ステージ
 	{
-		float maxOverlap = 0;
-		Math::Vector3 hitPos;
-
-		KdCollider::SphereInfo sphere;
-		sphere.m_sphere.Center		= m_nowPos;
-		sphere.m_sphere.Center.y	+= 0.2f;
-		sphere.m_sphere.Radius		= 0.2;
-		sphere.m_type = KdCollider::TypeGround;
-		//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
-		std::list<KdCollider::CollisionResult>retSphereList;
-
-		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
-			obj->Intersects(sphere, &retSphereList);
-		}
+			float maxOverlap = 0;
+			Math::Vector3 hitDir;
 
-		for (auto& ret : retSphereList)
-		{
-			if (maxOverlap < ret.m_overlapDistance)
+			KdCollider::SphereInfo sphere;
+
+			sphere.m_sphere.Center = m_nowPos;
+			sphere.m_sphere.Center.y += 0.5f;
+			sphere.m_sphere.Radius = 0.5;
+			sphere.m_type = KdCollider::TypeGround;
+			//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+
+			std::list<KdCollider::CollisionResult>retSphereList;
+			for (auto& obj : SceneManager::Instance().GetObjList())
 			{
-				maxOverlap = ret.m_overlapDistance;
-				hitPos = ret.m_hitDir;
-				hit = true;
+				obj->Intersects(sphere, &retSphereList);
 			}
-		}
+		
+			for (auto& ret : retSphereList)
+			{
+				if (maxOverlap < ret.m_overlapDistance)
+				{
+					maxOverlap = ret.m_overlapDistance;
+					hitDir = ret.m_hitDir;
+					hit = true;
+				}
+			}
 
-		if (hit)
-		{
-			m_nowPos += hitPos * maxOverlap;
+			if (hit)
+			{
+				//押し戻し処理
+				m_nowPos += hitDir * maxOverlap;
+			}
 		}
 	}
 

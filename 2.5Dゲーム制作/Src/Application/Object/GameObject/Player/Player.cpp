@@ -20,6 +20,7 @@ void Player::Init()
 	m_poly->SetScale(1.25f);
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 	m_poly->SetSplit(8, 16);
+	
 
 	m_pCollider = std::make_unique<KdCollider>();
 	m_pCollider->RegisterCollisionShape("PlayerCollision", m_poly, KdCollider::TypeBump);

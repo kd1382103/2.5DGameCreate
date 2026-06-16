@@ -10,7 +10,9 @@ class Enemy;
 class Score;
 class Timer;
 
-class GameScene : public BaseScene,public std::enable_shared_from_this<GameScene>
+class SpawnArea;
+
+class GameScene : public BaseScene ,public std::enable_shared_from_this<GameScene>
 {
 public :
 
@@ -25,6 +27,8 @@ private:
 	void Event() override;
 	void Init()  override;
 
+	void SpawnEnemies();
+
 	//ステージ
 	std::shared_ptr<Stage>m_stage;
 
@@ -32,6 +36,9 @@ private:
 	std::shared_ptr<Player>m_player;
 	std::shared_ptr<Enemy>m_enemy;
 
+	//敵の出現場所
+	std::vector<std::shared_ptr<SpawnArea>> m_spawnAreas;
+	
 	//スコア
 	std::shared_ptr<Score>m_score;
 

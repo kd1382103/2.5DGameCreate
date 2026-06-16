@@ -5,6 +5,8 @@
 #include<Application/Object/GameObject/Player/Player.h>
 #include<Application/Object/GameObject/Enemy/Enemy.h>
 
+#include<Application/Object/GameObject/SpawnArea/SpawnArea.h>
+
 #include<Application/Object/Score/Score.h>
 #include<Application/Object/Timer/Timer.h>
 
@@ -17,7 +19,7 @@ void GameScene::Event()
 	}
 
 	//　カメラ処理
-	//Math::Vector3 camPos = { 0,10,-10 };
+	Math::Vector3 camPos = { 0,10,-10 };
 
 	//上からの挙動確認用
 	//Math::Vector3 camPos = { 0,20,0 };
@@ -26,48 +28,74 @@ void GameScene::Event()
 	//Math::Vector3 camPos = { 0,3,-10 };
 
 	//斜め上から斜め下に(メイン採用)
-	Math::Vector3 camPos = { -5,5,-5 };
+	//Math::Vector3 camPos = { -5,5,-5 };
 
 	Math::Matrix rotationXMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(30));
 	Math::Matrix rotationYMat = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(45));
 
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos + m_player->GetPos());
 
-	//Math::Matrix camWorld = rotationXMat * transMat ;
-	Math::Matrix camWorld = rotationXMat * rotationYMat * transMat;
+	Math::Matrix camWorld = rotationXMat * transMat ;
+	//Math::Matrix camWorld = rotationXMat * rotationYMat * transMat;
 	m_camera->SetCameraMatrix(camWorld);
 }
 
 void GameScene::Init()
 {
-	//カメラ生成＆視野角設定
 	m_camera = std::make_unique<KdCamera>();
-	m_camera->SetProjectionMatrix(60);		
+	m_camera->SetProjectionMatrix(60);
 
+	//ステージ
 	m_stage = std::make_shared<Stage>();
 	AddObject(m_stage);
 
+	//プレイヤー
 	m_player = std::make_shared<Player>();
-	m_player->SetPos({ 0,0,10 });
+	m_player->SetPos({ 0,0,-200 });
 	m_player->SetAlive(true);
 	m_player->SetOwner(shared_from_this());
 	AddObject(m_player);
 
+	//スコア
 	m_score = std::make_shared<Score>();
 	m_score->SetScorePos({ -550,300 });
 	AddObject(m_score);
 
-	for (int i = 0;i < 10;i++)
+	//敵の出現場所配置
 	{
-		float x = KdRandom::GetFloat(-30, 30);
-		float y = KdRandom::GetFloat(-30, 30);
-		m_enemy = std::make_shared<Enemy>();
-		m_enemy->SetPos({ x,0,y });
-		m_enemy->SetTarget(m_player);
-		m_enemy->SetScore(m_score);
-		AddObject(m_enemy);
+		int enemyNum = 5;
+		{
+			auto sp = std::make_shared<SpawnArea>();
+			sp->SetCenter({ 0,0,0 });
+			sp->SetRadius(3.0f);
+			//sp->SetSpawnCount(1, 3);
+			sp->SetSpawnCount(enemyNum);
+			AddObject(sp);
+			m_spawnAreas.push_back(sp);
+		}
+		{
+			auto sp = std::make_shared<SpawnArea>();
+			sp->SetCenter({ -100,0,-50 });
+			sp->SetRadius(4.0f);
+			//sp->SetSpawnCount(2, 4);
+			sp->SetSpawnCount(enemyNum);
+			AddObject(sp);
+			m_spawnAreas.push_back(sp);
+		}
+		{
+			auto sp = std::make_shared<SpawnArea>();
+			sp->SetCenter({ 100,0,-10 });
+			sp->SetRadius(2.5f);
+			//sp->SetSpawnCount(1, 2);
+			sp->SetSpawnCount(enemyNum);
+			AddObject(sp);
+			m_spawnAreas.push_back(sp);
+		}
+
+		SpawnEnemies();
 	}
 
+	//タイマー
 	m_time = std::make_shared<Timer>();
 	m_time->SetTimePos({ 450,300 });
 	m_time->SetPlayer(m_player);
@@ -75,6 +103,22 @@ void GameScene::Init()
 	m_player->SetTime(m_time);
 
 	AddObject(m_time);
+}
 
+void GameScene::SpawnEnemies()
+{
+	for (auto& sp : m_spawnAreas)
+	{
+		//int count = KdRandom::GetInt(sp->GetMinSpawn(), sp->GetMaxSpawn());
+		int count = sp->GetSpawnCount();
 
+		for (int i = 0; i < count; i++)
+		{
+			auto enemy = std::make_shared<Enemy>();
+			enemy->SetPos(sp->GetRandomPos());
+			enemy->SetTarget(m_player);
+			enemy->SetScore(m_score);
+			AddObject(enemy);
+		}
+	}
 }

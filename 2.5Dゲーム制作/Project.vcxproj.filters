@@ -115,6 +115,9 @@
     <Filter Include="Src\Application\Object\GameObject\Timer">
       <UniqueIdentifier>{f39a720e-72be-4c51-82cf-d63a966a89dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\GameObject\SpwanArea">
+      <UniqueIdentifier>{1eb20ed5-a99f-4cbf-8c8a-348fdae838c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -322,6 +325,9 @@
     <ClInclude Include="Src\Application\Object\Timer\Timer.h">
       <Filter>Src\Application\Object\GameObject\Timer</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\GameObject\SpawnArea\SpawnArea.h">
+      <Filter>Src\Application\Object\GameObject\SpwanArea</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -497,6 +503,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\Timer\Timer.cpp">
       <Filter>Src\Application\Object\GameObject\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\GameObject\SpawnArea\SpawnArea.cpp">
+      <Filter>Src\Application\Object\GameObject\SpwanArea</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
