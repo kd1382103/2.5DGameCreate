@@ -110,22 +110,26 @@ void Player::Update()
 			}
 		}
 
-		//攻撃処理（オート）
+		//攻撃処理
 		{
-			if (m_aliveFlg)
+			//現状連打でいけてしまうのでクールタイムをつけて、テクスチャでわかりやすくしたい
+
+			// 攻撃キーの現在状態
+			bool attackKeyNow = (GetAsyncKeyState(VK_SPACE) & 0x8000);
+			
+			// 押した瞬間（立ち上がり）判定
+			bool attackKeyPressed = attackKeyNow && !m_keyFlg;
+
+			if (m_aliveFlg && attackKeyPressed)
 			{
-				m_attackInterval--;
-
 				m_weapons = std::make_shared<Weapons>();
-
-				if (m_attackInterval <= 0)
-				{
-					m_attackInterval = m_attackCoolTime;
-					m_weapons->SetPos(m_nowPos + Math::Vector3(1, 1, 0));
-					SceneManager::Instance().AddObject(m_weapons);
-					KdAudioManager::Instance().Play("Asset/Sounds/Attack.WAV", false);
-				}
+				m_weapons->SetPos(m_nowPos + Math::Vector3(1, 1, 0));
+				SceneManager::Instance().AddObject(m_weapons);
+				KdAudioManager::Instance().Play("Asset/Sounds/Attack.WAV", false);
 			}
+
+			// 次のフレームのために保存
+			m_keyFlg = attackKeyNow;
 		}
 	}
 

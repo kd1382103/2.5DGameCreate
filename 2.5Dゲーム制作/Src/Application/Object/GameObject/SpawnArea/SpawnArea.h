@@ -19,6 +19,17 @@ public:
 	void SetRadius(float r) { m_radius = r; }
 	float GetRadius() const { return m_radius; }
 
+	// ★ プレイヤーが近づいたらスポーンする範囲（トリガー）
+	void SetTriggerRadius(float r) { m_triggerRadius = r; }
+	float GetTriggerRadius() const { return m_triggerRadius; }
+
+	// ★ トリガー範囲チェック（スポーン判定用）
+	bool IsPlayerInTrigger(const Math::Vector3& playerPos) const
+	{
+		float dist = (playerPos - m_center).Length();
+		return dist <= m_triggerRadius;
+	}
+
 	/////////////////////////////////////////////////////////
 
 	//出現数ランダムの場合
@@ -54,6 +65,8 @@ private:
 
 	Math::Vector3 m_center = { 0,0,0 }; // スポーン中心
 	float m_radius = 3.0f;              // スポーン範囲（円形）
+
+	float m_triggerRadius = 10.0f;  // ★ プレイヤーが近づいたら湧く範囲（自由に設定可能）
 
 	//int m_minSpawn = 8;                 // 最低出現数
 	//int m_maxSpawn = 10;                // 最大出現数

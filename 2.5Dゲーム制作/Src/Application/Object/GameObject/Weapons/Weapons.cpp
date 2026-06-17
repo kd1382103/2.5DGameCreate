@@ -60,7 +60,7 @@ void Weapons::PostUpdate()
 
 	KdCollider::SphereInfo sphere;
 	sphere.m_sphere.Center = GetPos();
-	sphere.m_sphere.Radius = 0.5;
+	sphere.m_sphere.Radius = 0.8;
 	sphere.m_type = KdCollider::TypeDamage;
 
 	//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
@@ -69,7 +69,7 @@ void Weapons::PostUpdate()
 	{
 		if (obj->Intersects(sphere, nullptr) == true)	
 		{
-			obj->Damage(10.0f);
+			obj->Damage(12.5f);
 		}
 	}
 }

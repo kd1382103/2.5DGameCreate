@@ -78,7 +78,8 @@ private:
 	int m_run[8];
 
 	float m_attackInterval = 0;
-	const int m_attackCoolTime = 40;
+	const int m_attackCoolTime = 10;
+	bool m_keyFlg = false;
 
 	float m_dissolve = 0;
 	bool m_outroFlg = false;

@@ -9,8 +9,8 @@ class Score;
 class Enemy : public Base
 {
 public:
-	Enemy() { Init(); }
-	~Enemy() { Release(); }
+	Enemy() {}
+	~Enemy() override{ Release(); }
 
 	enum EnemyType
 	{
@@ -47,7 +47,7 @@ private:
 	std::shared_ptr<KdSquarePolygon>m_poly;
 	EnemyType m_type = EnemyType::Skelton;
 
-	float m_anime = 0;
+	float m_anime = 0.0f;
 
 	float m_hitPoint = 100;
 	bool hit = false;

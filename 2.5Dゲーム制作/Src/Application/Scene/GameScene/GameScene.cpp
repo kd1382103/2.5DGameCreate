@@ -1,4 +1,5 @@
 ﻿#include "GameScene.h"
+#include<Application/Scene/SceneManager.h>
 
 #include  <Application/Object/GameObject/Stage/Stage.h>
 #include  <Application/Object/GameObject/Goal/Goal.h>
@@ -15,30 +16,92 @@ void GameScene::Event()
 {
 	if (!m_player->GetAlive())
 	{
-		
+
 		return;
 	}
 
 	//　カメラ処理
-	Math::Vector3 camPos = { 0,10,-10 };
+	{
+		Math::Vector3 camPos = { 0,10,-10 };
 
-	//上からの挙動確認用
-	//Math::Vector3 camPos = { 0,20,0 };
+		//上からの挙動確認用
+		//Math::Vector3 camPos = { 0,20,0 };
 
-	//横からの挙動確認用
-	//Math::Vector3 camPos = { 0,3,-10 };
+		//横からの挙動確認用
+		//Math::Vector3 camPos = { 0,3,-10 };
 
-	//斜め上から斜め下に(メイン採用予定)
-	//Math::Vector3 camPos = { -5,5,-5 };
+		//斜め上から斜め下に(メイン採用予定)
+		//Math::Vector3 camPos = { -5,5,-5 };
 
-	Math::Matrix rotationXMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(30));
-	Math::Matrix rotationYMat = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(45));
+		Math::Matrix rotationXMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(30));
+		Math::Matrix rotationYMat = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(45));
 
-	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos + m_player->GetPos());
+		Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos + m_player->GetPos());
 
-	Math::Matrix camWorld = rotationXMat * transMat ;
-	//Math::Matrix camWorld = rotationXMat * rotationYMat * transMat;
-	m_camera->SetCameraMatrix(camWorld);
+		Math::Matrix camWorld = rotationXMat * transMat;
+		//Math::Matrix camWorld = rotationXMat * rotationYMat * transMat;
+		m_camera->SetCameraMatrix(camWorld);
+	}
+
+	//敵の追加スポーン
+	{
+		int now = m_time->GetTime();   // Timer の秒数
+		if (now >= m_nextSpawnTime)
+		{
+
+			// ③ 敵の最大数チェック
+			int enemyCount = 0;
+			for (auto& obj : SceneManager::Instance().GetObjList())
+			{
+				if (dynamic_cast<Enemy*>(obj.get()))
+				{
+					enemyCount++;
+				}
+			}
+
+			// 上限以下ならスポーン
+			if (enemyCount < 60)
+			{
+				// ② 経過時間で敵の種類を変える
+				bool spawnNecromancer = (now >= 60);  // 60秒経過でネクロマンサー解禁
+
+				for (auto& sp : m_spawnAreas)
+				{
+					//範囲チェック（プレイヤー）
+					if (!sp->IsPlayerInTrigger(m_player->GetPos()))
+					{
+						continue; 
+					}
+
+					int count = sp->GetSpawnCount();
+
+					for (int i = 0; i < count; i++)
+					{
+						m_enemy = std::make_shared<Enemy>();
+
+						// ② 敵の種類を時間で変える
+						if (spawnNecromancer)
+						{
+							m_enemy->SetEnemyType(Enemy::Necromancer);
+						}
+						else
+						{
+							m_enemy->SetEnemyType(Enemy::Skelton);
+						}
+
+						m_enemy->Init();
+						m_enemy->SetPos(sp->GetRandomPos());
+						m_enemy->SetTarget(m_player);
+						m_enemy->SetScore(m_score);
+						AddObject(m_enemy);
+					}
+				}
+			}
+
+			// 次のスポーン時間を更新
+			m_nextSpawnTime += m_spawnInterval;
+		}
+	}
 }
 
 void GameScene::Init()
@@ -56,7 +119,7 @@ void GameScene::Init()
 
 	//プレイヤー
 	m_player = std::make_shared<Player>();
-	m_player->SetPos({ 0,0,-100 });
+	m_player->SetPos({ 0,0,-200 });
 	m_player->SetAlive(true);
 	m_player->SetOwner(shared_from_this());
 	m_player->SetCamera(m_camera);
@@ -69,12 +132,11 @@ void GameScene::Init()
 
 	//敵の出現場所配置
 	{
-		int enemyNum = 5;
+		int enemyNum = 8;
 		{
 			auto sp = std::make_shared<SpawnArea>();
 			sp->SetCenter({ 0,0,-150 });
 			sp->SetRadius(3.0f);
-			//sp->SetSpawnCount(1, 3);
 			sp->SetSpawnCount(enemyNum);
 			AddObject(sp);
 			m_spawnAreas.push_back(sp);
@@ -83,7 +145,6 @@ void GameScene::Init()
 			auto sp = std::make_shared<SpawnArea>();
 			sp->SetCenter({ -100,0,-75 });
 			sp->SetRadius(4.0f);
-			//sp->SetSpawnCount(2, 4);
 			sp->SetSpawnCount(enemyNum);
 			AddObject(sp);
 			m_spawnAreas.push_back(sp);
@@ -92,7 +153,14 @@ void GameScene::Init()
 			auto sp = std::make_shared<SpawnArea>();
 			sp->SetCenter({ 100,0,-20 });
 			sp->SetRadius(2.5f);
-			//sp->SetSpawnCount(1, 2);
+			sp->SetSpawnCount(enemyNum);
+			AddObject(sp);
+			m_spawnAreas.push_back(sp);
+		}
+		{
+			auto sp = std::make_shared<SpawnArea>();
+			sp->SetCenter({ 190,0,50 });
+			sp->SetRadius(2.5f);
 			sp->SetSpawnCount(enemyNum);
 			AddObject(sp);
 			m_spawnAreas.push_back(sp);
@@ -120,11 +188,12 @@ void GameScene::SpawnEnemies()
 
 		for (int i = 0; i < count; i++)
 		{
-			auto enemy = std::make_shared<Enemy>();
-			enemy->SetPos(sp->GetRandomPos());
-			enemy->SetTarget(m_player);
-			enemy->SetScore(m_score);
-			AddObject(enemy);
+			m_enemy= std::make_shared<Enemy>();
+			m_enemy->Init();
+			m_enemy->SetPos(sp->GetRandomPos());
+			m_enemy->SetTarget(m_player);
+			m_enemy->SetScore(m_score);
+			AddObject(m_enemy);
 		}
 	}
 }

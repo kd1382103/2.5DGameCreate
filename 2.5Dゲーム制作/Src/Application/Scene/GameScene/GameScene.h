@@ -46,4 +46,7 @@ private:
 
 	//タイマー
 	std::shared_ptr<Timer>m_time;
+
+	float m_nextSpawnTime = 20.0f;
+	float m_spawnInterval = 20.0f;
 };

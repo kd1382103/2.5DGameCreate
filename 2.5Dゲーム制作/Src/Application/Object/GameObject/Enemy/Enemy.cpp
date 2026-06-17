@@ -8,6 +8,17 @@ void Enemy::Init()
 {
 	Base::Init();
 
+	m_anime = 0;
+
+	m_nowPos = {};
+	m_moveVec = { 0,0,0 };
+	m_movePow = 0;
+	m_score = 0;
+
+	m_outroFlg = false;
+	m_isExpired = false;
+	hit = false;
+
 	//デバック用
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
@@ -22,7 +33,7 @@ void Enemy::Init()
 		m_poly->SetMaterial("Asset/Textures/Object/Enemy/skeleton1.png");
 		m_poly->SetScale(1.0f);
 		m_poly->SetSplit(17, 5);
-		m_hitPoint = 50;
+		m_hitPoint = 15;
 		m_moveSpeed = 0.15f;
 		break;
 
@@ -30,15 +41,12 @@ void Enemy::Init()
 		m_poly->SetMaterial("Asset/Textures/Object/Enemy/Necromancer.png");
 		m_poly->SetScale(2.5f);
 		m_poly->SetSplit(17, 7);
-		m_hitPoint = 200;
+		m_hitPoint = 30;
 		m_moveSpeed = 0.1f;
 		break;
 	}
 
-	m_nowPos	= {};
-	m_moveVec	= { 0,0,0 };
-	m_movePow	= 0;
-	m_score		= 0;
+	
 
 	//当たり判定
 	m_pCollider = std::make_unique<KdCollider>();
@@ -59,9 +67,6 @@ void Enemy::Update()
 		ExpiredAnimation();
 		return;
 	}
-
-
-	if (m_isExpired) return;
 
 	switch (m_type)
 	{
@@ -184,7 +189,8 @@ void Enemy::PostUpdate()
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
 			if (obj.get() == this) continue;
-			if (!std::dynamic_pointer_cast<Enemy>(obj))continue;
+			Enemy* enemy = dynamic_cast<Enemy*>(obj.get());
+			if (!enemy)continue;
 			obj->Intersects(sphere, &retSphereList);
 		}
 
@@ -225,7 +231,7 @@ void Enemy::PostUpdate()
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
 			if (obj.get() == this)continue;
-			auto player = std::dynamic_pointer_cast<Player>(obj);
+			Player* player = dynamic_cast<Player*>(obj.get());
 			if (!player) continue;
 
 			obj->Intersects(sphere, &retList);
@@ -248,10 +254,8 @@ void Enemy::GenerateDepthMapFromLight()
 
 void Enemy::DrawLit()
 {
-	if (!m_isExpired)
-	{
+
 		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
-	}
 }
 
 
@@ -295,7 +299,7 @@ void Enemy::ExpiredAnimation()
 	case Necromancer:
 	{
 		//アニメーション制御
-		int expiredAnime[10] = {108,109,110,111,112.113,114,115,116,117};
+		int expiredAnime[10] = {108,109,110,111,112,113,114,115,116,117};
 
 		m_poly->SetUVRect(expiredAnime[(int)m_anime]);
 
@@ -308,5 +312,3 @@ void Enemy::ExpiredAnimation()
 	break;
 	}
 }
-
-
