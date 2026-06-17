@@ -20,7 +20,7 @@ void Enemy::Init()
 	{
 	case Skelton:
 		m_poly->SetMaterial("Asset/Textures/Object/Enemy/skeleton1.png");
-		m_poly->SetScale(1.0f);
+		m_poly->SetScale(2.0f);
 		m_poly->SetSplit(17, 5);
 		m_hitPoint = 50;
 		m_moveSpeed = 0.15f;
@@ -28,7 +28,7 @@ void Enemy::Init()
 
 	case Necromancer:
 		m_poly->SetMaterial("Asset/Textures/Object/Enemy/Necromancer.png");
-		m_poly->SetScale(1.5f);
+		m_poly->SetScale(2.5f);
 		m_poly->SetSplit(17, 7);
 		m_hitPoint = 200;
 		m_moveSpeed = 0.1f;

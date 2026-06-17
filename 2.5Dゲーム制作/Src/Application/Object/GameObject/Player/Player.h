@@ -57,9 +57,6 @@ private:
 
 	std::shared_ptr<KdSquarePolygon>	m_poly		= nullptr;
 
-	std::shared_ptr<KdTexture>			m_hpPoly	= nullptr;
-	std::weak_ptr<KdCamera>				m_wpCamera;
-
 	std::shared_ptr<Weapons>			m_weapons	= nullptr;
 	std::shared_ptr<Timer>				m_timer		= nullptr;
 

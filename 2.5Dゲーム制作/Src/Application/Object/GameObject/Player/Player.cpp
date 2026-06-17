@@ -17,16 +17,12 @@ void Player::Init()
 
 	m_poly = std::make_shared<KdSquarePolygon>();
 	m_poly->SetMaterial("Asset/Textures/Object/Player/Player.png");
-	m_poly->SetScale(1.25f);
+	m_poly->SetScale(1.5f);
 	m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 	m_poly->SetSplit(8, 16);
-	
 
 	m_pCollider = std::make_unique<KdCollider>();
 	m_pCollider->RegisterCollisionShape("PlayerCollision", m_poly, KdCollider::TypeBump);
-
-	m_hpPoly = std::make_shared<KdTexture>();
-	m_hpPoly->Load("");
 
 	m_animeInfo.start = 0;		// 開始コマ
 	m_animeInfo.end = 7;		// 終了コマ
@@ -198,19 +194,26 @@ void Player::PostUpdate()
 			//押し戻し処理
 			m_nowPos += hitDir * maxOverlap;
 		}
+	}
 
-		//ゴール
+	//ゴール
+	{
+		KdCollider::SphereInfo sphere;
+		sphere.m_sphere.Center = m_nowPos;
+		sphere.m_sphere.Center.y += 0.5f;
+		sphere.m_sphere.Radius = 0.5;
+
 		sphere.m_sphere.Center = m_nowPos;
 		sphere.m_sphere.Center.y += 0.5f;
 		sphere.m_sphere.Radius = 0.5;
 		sphere.m_type = KdCollider::TypeGoal;
 		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
-			
+		std::list<KdCollider::CollisionResult>retSphereList;
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
 			obj->Intersects(sphere, &retSphereList);
 		}
-		
+
 		if (!retSphereList.empty())
 		{
 			goalHit = true;
@@ -218,6 +221,12 @@ void Player::PostUpdate()
 
 		if (goalHit)
 		{
+			if (auto owner = m_gameOwner.lock())
+			{
+				SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
+				SceneManager::Instance().m_finalTime = m_timer->GetTime();
+			}
+
 			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
 		}
 	}
@@ -255,21 +264,6 @@ void Player::OutroUpdate()
 	}
 }
 
-//void Player::DrawSprite()
-//{
-//	std::shared_ptr<KdCamera>m_spCamera = m_wpCamera.lock();
-//	if (m_spCamera)
-//	{
-//		Math::Vector3 m_3DPos = GetPos();
-//		m_3DPos.y += 1.5f;
-//
-//		Math::Vector3 m_2DPos = Math::Vector3::Zero;
-//		m_spCamera->ConvertWorldToScreenDetail(m_3DPos,m_2DPos);
-//
-//		KdShaderManager::Instance().m_spriteShader.DrawTex(m_hpPoly, m_2DPos.x, m_2DPos.y);
-//	}
-//}
-
 void Player::Damage(float damage)
 {
 	m_hitPoint -= damage;
@@ -280,8 +274,32 @@ void Player::Damage(float damage)
 
 		if (auto owner = m_gameOwner.lock())
 		{
+			//クリアタイム取得
+			int finalTime = m_timer->GetTime();
+
+			// ★ 現在のスコア取得
+			float finalScore = owner->GetScore()->GetScore();
+
+			// ★ クリアタイムボーナス
+			// （１分ごとにボーナスが減少し、その時間のところのボーナス値を加算）
+
+			float timeBonus = 0.0f;
+
+			if (finalTime < 60) {
+				timeBonus = 5000;
+			}
+			else if (finalTime < 120) {
+				timeBonus = 3000;
+			}
+			else if (finalTime < 180) {
+				timeBonus = 1000;
+			}
+
+			
+			owner->GetScore()->SetScore(timeBonus);
+
 			SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
-			SceneManager::Instance().m_finalTime = m_timer->GetTime();
+			SceneManager::Instance().m_finalTime = finalTime;
 		}
 	}
 }
