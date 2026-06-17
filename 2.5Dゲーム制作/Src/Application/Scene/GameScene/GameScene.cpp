@@ -59,6 +59,7 @@ void GameScene::Init()
 	m_player->SetPos({ 0,0,-100 });
 	m_player->SetAlive(true);
 	m_player->SetOwner(shared_from_this());
+	m_player->SetCamera(m_camera);
 	AddObject(m_player);
 
 	//スコア

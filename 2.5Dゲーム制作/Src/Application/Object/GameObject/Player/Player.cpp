@@ -223,9 +223,35 @@ void Player::PostUpdate()
 		{
 			if (auto owner = m_gameOwner.lock())
 			{
+				//クリアタイム取得
+				int finalTime = m_timer->GetTime();
+
+				// ★ 現在のスコア取得
+				float finalScore = owner->GetScore()->GetScore();
+
+				// ★ クリアタイムボーナス
+				// （１分ごとにボーナスが減少し、その時間のところのボーナス値を加算）
+
+				float timeBonus = 0.0f;
+
+				if (finalTime < 60) {
+					timeBonus = 5000;
+				}
+				else if (finalTime < 120) {
+					timeBonus = 3000;
+				}
+				else if (finalTime < 180) {
+					timeBonus = 1000;
+				}
+
+
+				owner->GetScore()->SetScore(timeBonus);
+
 				SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
-				SceneManager::Instance().m_finalTime = m_timer->GetTime();
+				SceneManager::Instance().m_finalTime = finalTime;
+
 			}
+		
 
 			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
 		}
@@ -254,9 +280,72 @@ void Player::DrawLit()
 	}
 }
 
+void Player::DrawSprite()
+{
+	std::shared_ptr<KdCamera> _spCamera = m_wpCamera.lock();
+
+	if (_spCamera)
+	{
+		// プレイヤーの頭上位置
+		Math::Vector3	_3DPos		= GetPos();
+		_3DPos.y += 2.5f;
+
+		Math::Matrix	camWorld	= _spCamera->GetCameraMatrix();
+		Math::Vector3	camRight	= camWorld.Right();
+
+		_3DPos += camRight * 0.2f;
+
+		// 3D → 2D 座標変換
+		Math::Vector3 _2DPos = Math::Vector3::Zero;
+		_spCamera->ConvertWorldToScreenDetail(_3DPos, _2DPos);
+
+		// ゲージの基本サイズ
+		float gaugeWidth = 80.0f;   // 横幅
+		float gaugeHeight = 10.0f;  // 高さ
+
+		// HP割合（0.0 ～ 1.0）
+		float hpRate = std::clamp(m_hitPoint / m_maxHitPoint,0.0f,1.0f);
+		hpRate = std::clamp(hpRate, 0.0f, 1.0f);
+
+		// 現在HPに応じた幅
+		float currentWidth = gaugeWidth * hpRate;
+
+		// DrawBox は extentX = 幅の半分
+		float halfGaugeW = gaugeWidth * 0.5f;
+		float halfCurrentW = currentWidth * 0.5f;
+
+		float left = _2DPos.x - halfGaugeW;
+
+		Math::Color color = { 0,0,0,1 };
+
+		// 背景（黒枠）
+		KdShaderManager::Instance().m_spriteShader.DrawBox
+		(
+			_2DPos.x,
+			_2DPos.y,
+			halfGaugeW,
+			gaugeHeight * 0.5,
+			&color
+		);
+
+		color = { 1,0,0,1 };
+		float hpCenterX = left + currentWidth / 2;
+
+		// HPゲージ本体（赤）
+		KdShaderManager::Instance().m_spriteShader.DrawBox
+		(
+			hpCenterX,
+			_2DPos.y,
+			halfCurrentW,
+			gaugeHeight * 0.5,
+			&color
+		);
+	}
+}
+
 void Player::OutroUpdate()
 {
-	m_dissolve += 0.01;
+	m_dissolve += 0.025;
 	if (m_dissolve > 1)
 	{
 		m_aliveFlg = false;
@@ -266,6 +355,9 @@ void Player::OutroUpdate()
 
 void Player::Damage(float damage)
 {
+	// すでに死んでたら何もしない
+	if (m_outroFlg || !m_aliveFlg) return;
+
 	m_hitPoint -= damage;
 	if (m_hitPoint <= 0)
 	{
@@ -274,32 +366,8 @@ void Player::Damage(float damage)
 
 		if (auto owner = m_gameOwner.lock())
 		{
-			//クリアタイム取得
-			int finalTime = m_timer->GetTime();
-
-			// ★ 現在のスコア取得
-			float finalScore = owner->GetScore()->GetScore();
-
-			// ★ クリアタイムボーナス
-			// （１分ごとにボーナスが減少し、その時間のところのボーナス値を加算）
-
-			float timeBonus = 0.0f;
-
-			if (finalTime < 60) {
-				timeBonus = 5000;
-			}
-			else if (finalTime < 120) {
-				timeBonus = 3000;
-			}
-			else if (finalTime < 180) {
-				timeBonus = 1000;
-			}
-
-			
-			owner->GetScore()->SetScore(timeBonus);
-
 			SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
-			SceneManager::Instance().m_finalTime = finalTime;
+			SceneManager::Instance().m_finalTime = m_timer->GetTime();
 		}
 	}
 }

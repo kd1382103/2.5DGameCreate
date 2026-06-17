@@ -36,7 +36,7 @@ public:
 	void PostUpdate()					override;
 	void GenerateDepthMapFromLight()	override;
 	void DrawLit()						override;
-	//void DrawSprite()					override;
+	void DrawSprite()					override;
 
 	void OutroUpdate();
 
@@ -45,7 +45,7 @@ public:
 	void SetTime	(const	std::shared_ptr<Timer>& timer) { m_timer = timer; }
 
 	void SetPos(const Math::Vector3& _pos) override { m_nowPos = _pos; }
-
+	void SetCamera(std::shared_ptr<KdCamera> cam) { m_wpCamera = cam; }
 
 private:
 
@@ -60,12 +60,17 @@ private:
 	std::shared_ptr<Weapons>			m_weapons	= nullptr;
 	std::shared_ptr<Timer>				m_timer		= nullptr;
 
+	std::shared_ptr<KdTexture>			m_hpPoly	= nullptr;
+	std::weak_ptr<KdCamera>				m_wpCamera;
+
+
 	AnimationInfo m_animeInfo = {};
 	UINT m_dirType = 0;
 
 	Math::Vector3 m_dir;
 
 	float m_hitPoint = 100;
+	float m_maxHitPoint = 100;
 	bool hit = false;
 	bool goalHit = false;
 
