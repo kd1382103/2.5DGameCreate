@@ -277,6 +277,7 @@ void Player::DrawSprite()
 		float gaugeHeight = 10.0f;  // 高さ
 
 		// HP割合（0.0 ～ 1.0）
+		//clamp -> 値を指定した範囲に収める（はみ出さないようにする）関数
 		float hpRate = std::clamp(m_hitPoint / m_maxHitPoint,0.0f,1.0f);
 		hpRate = std::clamp(hpRate, 0.0f, 1.0f);
 
