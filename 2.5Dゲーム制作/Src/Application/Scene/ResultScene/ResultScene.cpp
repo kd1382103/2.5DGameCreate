@@ -32,9 +32,29 @@ void ResultScene::Init()
 	m_resultBack = std::make_shared<ResultBackGround>();
 	AddObject(m_resultBack);
 
+	//ゲーム結果取得
+	float baseScore = SceneManager::Instance().m_finalScore;
+	float finalTime = SceneManager::Instance().m_finalTime;
+
+	// ★ クリアタイムボーナスの計算
+	// （１分ごとにボーナスが減少し、その時間のところのボーナス値を加算）
+
+	float timeBonus = 0.0f;
+
+	if (finalTime < 60) {
+		timeBonus = 5000;
+	}
+	else if (finalTime < 120) {
+		timeBonus = 3000;
+	}
+	else if (finalTime < 180) {
+		timeBonus = 1000;
+	}
+	// 最終スコア決定 
+	m_resultScore = baseScore + timeBonus;
+
 	m_score = std::make_shared<Score>();
 	m_score->SetScorePos({ -150,-100 });
-	m_resultScore = SceneManager::Instance().m_finalScore;
 	m_score->SetScore(m_resultScore);
 	AddObject(m_score);
 

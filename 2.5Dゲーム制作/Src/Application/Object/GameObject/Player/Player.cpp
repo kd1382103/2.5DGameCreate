@@ -223,36 +223,9 @@ void Player::PostUpdate()
 		{
 			if (auto owner = m_gameOwner.lock())
 			{
-				//クリアタイム取得
-				int finalTime = m_timer->GetTime();
-
-				// ★ 現在のスコア取得
-				float finalScore = owner->GetScore()->GetScore();
-
-				// ★ クリアタイムボーナス
-				// （１分ごとにボーナスが減少し、その時間のところのボーナス値を加算）
-
-				float timeBonus = 0.0f;
-
-				if (finalTime < 60) {
-					timeBonus = 5000;
-				}
-				else if (finalTime < 120) {
-					timeBonus = 3000;
-				}
-				else if (finalTime < 180) {
-					timeBonus = 1000;
-				}
-
-
-				owner->GetScore()->SetScore(timeBonus);
-
 				SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
-				SceneManager::Instance().m_finalTime = finalTime;
-
+				SceneManager::Instance().m_finalTime = m_timer->GetTime();
 			}
-		
-
 			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
 		}
 	}
@@ -355,7 +328,6 @@ void Player::OutroUpdate()
 
 void Player::Damage(float damage)
 {
-	// すでに死んでたら何もしない
 	if (m_outroFlg || !m_aliveFlg) return;
 
 	m_hitPoint -= damage;
