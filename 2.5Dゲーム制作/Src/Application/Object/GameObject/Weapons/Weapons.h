@@ -9,12 +9,10 @@ public:
 	enum WeaponType
 	{
 		Sword,			//剣
-		Gun,			//銃
-		Axe,			//斧
-		boomerang,		//ブーメラン
+		UltimateSlash,	//大技 : 剣
 	};
 
-	Weapons()	{ Init(); }
+	Weapons(WeaponType type = Sword):m_type(type)	{ Init(); }
 	~Weapons()	{ Release(); }
 
 	void Init	()		override;
@@ -35,4 +33,5 @@ private:
 	float m_anime = 0;
 	
 	int m_run[8];
+
 };

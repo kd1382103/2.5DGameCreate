@@ -28,5 +28,5 @@ void TitleBackGround::DrawSprite()
 {
 	KdShaderManager::Instance().m_spriteShader.DrawTex(m_poly, 0, 0);
 	Math::Color color = { 1,1,1,alpha };
-	KdShaderManager::Instance().m_spriteShader.DrawTex(m_bottonPoly, 0, -200,nullptr,&color);
+	KdShaderManager::Instance().m_spriteShader.DrawTex(m_bottonPoly, 0, -100,nullptr,&color);
 }

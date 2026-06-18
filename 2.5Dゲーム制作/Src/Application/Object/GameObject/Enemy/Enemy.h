@@ -37,6 +37,15 @@ public:
 
 	void SetScore(const std::shared_ptr<Score>&score) { m_spScore = score; }
 
+	void SetTarget(const std::shared_ptr<KdGameObject> target) override
+	{
+		m_target = target;
+
+		if (auto spPlayer = std::dynamic_pointer_cast<Player>(target))
+		{
+			m_player = spPlayer;
+		}
+	}
 private:
 
 	void Release() {}

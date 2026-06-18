@@ -309,7 +309,7 @@ void KdSpriteShader::DrawCircle(int x, int y, int radius, const Math::Color* col
 		std::vector<Vertex> vertex(faceNum * 3);		// 半径により頂点数を調整
 
 		// 描画
-		for (int i = 0; i < faceNum; i++)
+		for (int i = 0; i < faceNum - 1; i++)
 		{
 			int idx = i * 3;
 			vertex[idx].Pos.x = (float)x;

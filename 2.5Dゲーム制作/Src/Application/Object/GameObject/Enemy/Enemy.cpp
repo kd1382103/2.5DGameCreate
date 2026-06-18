@@ -262,7 +262,10 @@ void Enemy::DrawLit()
 
 void Enemy::Damage(float damage)
 {
+	if (m_outroFlg)return;
+
 	m_hitPoint -= damage;
+
 	if (m_hitPoint <= 0)
 	{
 		m_hitPoint = 0;
@@ -273,6 +276,12 @@ void Enemy::Damage(float damage)
 		{
 			m_spScore->SetScore(100);
 		}
+		// ★ プレイヤーの大技ゲージ加算
+		if (auto m_spPlayer = m_player.lock())
+		{
+			m_spPlayer->AddUltimateGauge(20.0f);
+		}
+
 	}
 }
 

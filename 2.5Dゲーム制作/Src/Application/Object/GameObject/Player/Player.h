@@ -47,6 +47,16 @@ public:
 	void SetPos(const Math::Vector3& _pos) override { m_nowPos = _pos; }
 	void SetCamera(std::shared_ptr<KdCamera> cam) { m_wpCamera = cam; }
 
+	void AddUltimateGauge(float v)
+	{
+		m_ultimateGauge += v;
+		if (m_ultimateGauge > m_ultimateMax)
+			m_ultimateGauge = m_ultimateMax;
+	}
+
+	float GetUltimateGauge() const { return m_ultimateGauge; }
+	float GetUltimateMax() const { return m_ultimateMax; }
+
 private:
 
 	void ChangeAnimetion();
@@ -68,6 +78,8 @@ private:
 	UINT m_dirType = 0;
 
 	Math::Vector3 m_dir;
+	Math::Vector3 m_attackDir;
+
 
 	float m_hitPoint = 100;
 	float m_maxHitPoint = 100;
@@ -80,6 +92,10 @@ private:
 	float m_attackInterval = 0;
 	const int m_attackCoolTime = 10;
 	bool m_keyFlg = false;
+
+	float m_ultimateGauge = 0.0f;
+	float m_ultimateMax = 100.0f;
+	bool m_ultimateFlg = false;
 
 	float m_dissolve = 0;
 	bool m_outroFlg = false;

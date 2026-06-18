@@ -15,11 +15,21 @@ void Weapons::Init()
 		{
 			m_poly = std::make_shared<KdSquarePolygon>();
 			m_poly->SetMaterial("Asset/Textures/Object/AttackEffect/Sword/Slash1/color3/sprite.png");
-			m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Middle);
+			m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 			m_poly->SetSplit(5, 2);
 			m_poly->SetScale(4.0f);
 			m_nowPos = {};
 
+			break;
+		}
+		case UltimateSlash:
+		{
+			m_poly = std::make_shared<KdSquarePolygon>();
+			m_poly->SetMaterial("Asset/Textures/Object/AttackEffect/Ultimet/sprite.png");
+			m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
+			m_poly->SetSplit(5, 2); // 24フレーム
+			m_poly->SetScale(8.0f); // 画面全体
+			m_nowPos = {};
 			break;
 		}
 	}
@@ -32,13 +42,26 @@ void Weapons::Update()
 	{
 		case Sword:
 		{
-			//アニメーション制御
 			int attack[8] = { 0,1,2,3,4,5,6,7 };
 
 			m_poly->SetUVRect(attack[(int)m_anime]);
 
 			m_anime += 0.75f;
 			if (m_anime >= 8) 
+			{ 
+				m_isExpired = true;
+			}
+
+			break;
+		}
+		case UltimateSlash:
+		{
+			int attack[9] = { 0,1,2,3,4,5,6,7,8 };
+
+			m_poly->SetUVRect(attack[(int)m_anime]);
+
+			m_anime += 0.5f;
+			if (m_anime >= 9) 
 			{ 
 				m_isExpired = true;
 			}
@@ -53,23 +76,45 @@ void Weapons::Update()
 
 void Weapons::PostUpdate()
 {
-	if (m_anime >= 2)
+	switch (m_type)
 	{
-		return;
-	}
-
-	KdCollider::SphereInfo sphere;
-	sphere.m_sphere.Center = GetPos();
-	sphere.m_sphere.Radius = 0.8;
-	sphere.m_type = KdCollider::TypeDamage;
-
-	//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
-
-	for (auto& obj : SceneManager::Instance().GetObjList())
-	{
-		if (obj->Intersects(sphere, nullptr) == true)	
+		case Sword:
 		{
-			obj->Damage(12.5f);
+			if (m_anime >= 2) { return; }
+
+			KdCollider::SphereInfo sphere;
+			sphere.m_sphere.Center = GetPos();
+			sphere.m_sphere.Radius = 0.8;
+			sphere.m_type = KdCollider::TypeDamage;
+
+			//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
+
+			for (auto& obj : SceneManager::Instance().GetObjList())
+			{
+				if (obj->Intersects(sphere, nullptr) == true)
+				{
+					obj->Damage(12.5f);
+				}
+			}
+			break;
+		}
+
+		case UltimateSlash:
+		{
+			if (m_anime > 7) return; // 多段ヒットは最初だけ
+
+			KdCollider::SphereInfo sphere;
+			sphere.m_sphere.Center = m_nowPos;
+			sphere.m_sphere.Radius = 5.0f; // 広範囲
+			sphere.m_type = KdCollider::TypeDamage;
+
+			for (auto& obj : SceneManager::Instance().GetObjList())
+			{
+				if (obj->Intersects(sphere, nullptr))
+				{
+					obj->Damage(10.0f); // 多段ヒットなので1発は控えめ
+				}
+			}
 		}
 	}
 }

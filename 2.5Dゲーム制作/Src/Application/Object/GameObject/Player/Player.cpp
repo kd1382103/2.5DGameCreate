@@ -37,6 +37,7 @@ void Player::Init()
 	m_movePow = 1.0f;
 
 	m_attackInterval = 0;
+	m_attackDir = {};
 	m_aliveFlg = true;
 
 	m_mWorld = Math::Matrix::Identity;
@@ -86,6 +87,10 @@ void Player::Update()
 			if (m_dirType != oldDirType && m_dirType != 0)
 			{
 				ChangeAnimetion();
+
+				m_attackDir = m_dir;
+				m_attackDir.Normalize();
+
 			}
 			else
 			{
@@ -112,24 +117,49 @@ void Player::Update()
 
 		//攻撃処理
 		{
-			//現状連打でいけてしまうのでクールタイムをつけて、テクスチャでわかりやすくしたい
+			//クールタイム追加予定
 
 			// 攻撃キーの現在状態
+			//通常
 			bool attackKeyNow = (GetAsyncKeyState(VK_SPACE) & 0x8000);
-			
-			// 押した瞬間（立ち上がり）判定
 			bool attackKeyPressed = attackKeyNow && !m_keyFlg;
 
-			if (m_aliveFlg && attackKeyPressed)
+			//大技
+			bool ultimateKeyNow = (GetAsyncKeyState('Z') & 0x8000);
+			bool ultimateKeyPressed = ultimateKeyNow && !m_ultimateFlg;
+
+			//大技発動条件
+			bool canUltimate = (m_ultimateGauge >= m_ultimateMax);
+
+			if (m_aliveFlg)
 			{
-				m_weapons = std::make_shared<Weapons>();
-				m_weapons->SetPos(m_nowPos + Math::Vector3(1, 1, 0));
-				SceneManager::Instance().AddObject(m_weapons);
-				KdAudioManager::Instance().Play("Asset/Sounds/Attack.WAV", false);
+				// 攻撃オブジェクトを出現させる座標を確定する
+				Math::Vector3 attackPos = m_nowPos + m_attackDir * 0.4f;
+
+				// ★ 大技（Z）
+				if (ultimateKeyPressed && m_ultimateGauge >= m_ultimateMax)
+				{
+					m_ultimateGauge = 0; // 消費
+					
+					m_weapons = std::make_shared<Weapons>(Weapons::UltimateSlash);
+					m_weapons->SetPos(attackPos);
+					SceneManager::Instance().AddObject(m_weapons);
+					KdAudioManager::Instance().Play("Asset/Sounds/Attack.WAV", false);
+				}
+			
+				// ★ 通常攻撃（SPACE）
+				if (attackKeyPressed)
+				{
+					m_weapons = std::make_shared<Weapons>(Weapons::Sword);
+					m_weapons->SetPos(attackPos);
+					SceneManager::Instance().AddObject(m_weapons);
+					KdAudioManager::Instance().Play("Asset/Sounds/Attack.WAV", false);
+				}
 			}
 
 			// 次のフレームのために保存
 			m_keyFlg = attackKeyNow;
+			m_ultimateFlg = ultimateKeyNow;
 		}
 	}
 

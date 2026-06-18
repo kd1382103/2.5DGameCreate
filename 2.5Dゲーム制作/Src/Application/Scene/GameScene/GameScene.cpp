@@ -45,7 +45,7 @@ void GameScene::Event()
 		m_camera->SetCameraMatrix(camWorld);
 	}
 
-	//敵の追加スポーン
+	//敵のスポーン
 	{
 		int now = m_time->GetTime();   // Timer の秒数
 		for (auto& sp : m_spawnAreas)
@@ -174,6 +174,7 @@ void GameScene::Init()
 
 	//キーUI
 	m_KeyUI = std::make_shared<KeyUI>();
+	m_KeyUI->SetTarget(m_player);
 	AddObject(m_KeyUI);
 
 }
