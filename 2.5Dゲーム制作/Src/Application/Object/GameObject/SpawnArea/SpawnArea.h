@@ -29,6 +29,22 @@ public:
 		float dist = (playerPos - m_center).Length();
 		return dist <= m_triggerRadius;
 	}
+	void UpdateTimer(int now, float interval)
+	{
+		if (now >= m_nextSpawnTime)
+		{
+			m_canSpawn = true;
+		}
+	}
+
+	void ResetTimer(int now, float interval)
+	{
+		m_nextSpawnTime = now + interval;
+		m_canSpawn = false;
+	}
+
+	bool CanSpawn() const { return m_canSpawn; }
+
 
 	/////////////////////////////////////////////////////////
 
@@ -66,7 +82,7 @@ private:
 	Math::Vector3 m_center = { 0,0,0 }; // スポーン中心
 	float m_radius = 3.0f;              // スポーン範囲（円形）
 
-	float m_triggerRadius = 10.0f;  // ★ プレイヤーが近づいたら湧く範囲（自由に設定可能）
+	float m_triggerRadius = 50.0f;  // ★ プレイヤーが近づいたら湧く範囲（自由に設定可能）
 
 	//int m_minSpawn = 8;                 // 最低出現数
 	//int m_maxSpawn = 10;                // 最大出現数
@@ -74,4 +90,7 @@ private:
 	int m_spawnCount = 0;
 
 	std::unique_ptr<KdDebugWireFrame>m_debug;
+
+	float	m_nextSpawnTime		= 0.0f;   // 次にスポーン可能になる時間
+	bool	m_canSpawn			= false;  // スポーン可能フラグ
 };
