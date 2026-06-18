@@ -13,6 +13,8 @@ class Timer;
 
 class SpawnArea;
 
+class KeyUI;
+
 class GameScene : public BaseScene ,public std::enable_shared_from_this<GameScene>
 {
 public :
@@ -46,6 +48,9 @@ private:
 
 	//タイマー
 	std::shared_ptr<Timer>m_time;
+
+	//キーUI
+	std::shared_ptr<KeyUI>m_KeyUI;
 
 	float m_nextSpawnTime = 20.0f;
 	float m_spawnInterval = 20.0f;

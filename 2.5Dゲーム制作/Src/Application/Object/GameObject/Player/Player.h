@@ -28,7 +28,7 @@ public:
 	};
 
 
-	Player() { Init(); }
+	Player() { Init();}
 	~Player() { Release(); }
 
 	void Init()							override;

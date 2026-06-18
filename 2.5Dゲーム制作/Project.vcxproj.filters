@@ -121,6 +121,9 @@
     <Filter Include="Src\Application\Object\GameObject\Goal">
       <UniqueIdentifier>{ef843557-0aa5-4c16-9bc8-6a3d6faf0f58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\GameObject\KeyUI">
+      <UniqueIdentifier>{5c1856c0-7487-43ee-aea0-493d42d072e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -334,6 +337,9 @@
     <ClInclude Include="Src\Application\Object\GameObject\Goal\Goal.h">
       <Filter>Src\Application\Object\GameObject\Goal</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\GameObject\KeyUI\KeyUI.h">
+      <Filter>Src\Application\Object\GameObject\KeyUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -515,6 +521,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\GameObject\Goal\Goal.cpp">
       <Filter>Src\Application\Object\GameObject\Goal</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\GameObject\KeyUI\KeyUI.cpp">
+      <Filter>Src\Application\Object\GameObject\KeyUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

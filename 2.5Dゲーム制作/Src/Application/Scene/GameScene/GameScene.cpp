@@ -9,6 +9,8 @@
 
 #include<Application/Object/GameObject/SpawnArea/SpawnArea.h>
 
+#include<Application/Object/GameObject/KeyUI/KeyUI.h>
+
 #include<Application/Object/Score/Score.h>
 #include<Application/Object/Timer/Timer.h>
 
@@ -92,6 +94,7 @@ void GameScene::Event()
 			sp->ResetTimer(now, m_spawnInterval);
 		}
 	}
+
 }
 
 void GameScene::Init()
@@ -102,14 +105,15 @@ void GameScene::Init()
 	//ステージ
 	m_stage = std::make_shared<Stage>();
 	AddObject(m_stage);
-	
+
 	//ゴール
 	m_goal = std::make_shared<Goal>();
 	AddObject(m_goal);
 
 	//プレイヤー
 	m_player = std::make_shared<Player>();
-	m_player->SetPos({ 0,0,-200 });
+	m_player->Init();
+	m_player->SetPos({ 0,0,-190 });
 	m_player->SetAlive(true);
 	m_player->SetOwner(shared_from_this());
 	m_player->SetCamera(m_camera);
@@ -167,6 +171,11 @@ void GameScene::Init()
 	m_player->SetTime(m_time);
 
 	AddObject(m_time);
+
+	//キーUI
+	m_KeyUI = std::make_shared<KeyUI>();
+	AddObject(m_KeyUI);
+
 }
 
 void GameScene::SpawnEnemies()
