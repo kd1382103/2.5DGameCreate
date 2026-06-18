@@ -76,7 +76,6 @@ void Enemy::Update()
 		int run[5] = { 69,70,71,72,73 };
 
 		m_poly->SetUVRect(run[(int)m_anime]);
-
 		m_anime += 0.1f;
 		if (m_anime >= 5)
 		{
@@ -216,6 +215,8 @@ void Enemy::PostUpdate()
 
 	//プレイヤー
 	{
+		if (m_outroFlg || m_isExpired) return;
+
 		float maxOverlap = 0;
 		Math::Vector3 hitDir;
 		hit = false;
@@ -255,14 +256,12 @@ void Enemy::GenerateDepthMapFromLight()
 void Enemy::DrawLit()
 {
 
-		KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
+	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_poly, m_mWorld);
 }
 
 
 void Enemy::Damage(float damage)
 {
-	if (m_outroFlg)return;
-
 	m_hitPoint -= damage;
 	if (m_hitPoint <= 0)
 	{

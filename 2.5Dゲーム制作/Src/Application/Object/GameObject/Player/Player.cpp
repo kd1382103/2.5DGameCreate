@@ -373,5 +373,3 @@ void Player::ChangeAnimetion()
 		m_animeInfo.end	= 55;
 	}
 }
-
-

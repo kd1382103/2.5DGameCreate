@@ -29,6 +29,8 @@ public:
 		float dist = (playerPos - m_center).Length();
 		return dist <= m_triggerRadius;
 	}
+
+	//タイマー更新&フラグの有効化
 	void UpdateTimer(int now, float interval)
 	{
 		if (now >= m_nextSpawnTime)
@@ -37,18 +39,20 @@ public:
 		}
 	}
 
+	//タイマーの秒数リセット
 	void ResetTimer(int now, float interval)
 	{
 		m_nextSpawnTime = now + interval;
 		m_canSpawn = false;
 	}
 
+	//出現できるかどうか
 	bool CanSpawn() const { return m_canSpawn; }
 
 
 	/////////////////////////////////////////////////////////
 
-	//出現数ランダムの場合
+	//出現数ランダムにしたい場合
 
 	//// このエリアから出す敵の数
 	//void SetSpawnCount(int min, int max)
@@ -84,9 +88,14 @@ private:
 
 	float m_triggerRadius = 50.0f;  // ★ プレイヤーが近づいたら湧く範囲（自由に設定可能）
 
+	///////////////////////////////////////////////////////
+	
+	//出現数をランダムにしたいとき
+
 	//int m_minSpawn = 8;                 // 最低出現数
 	//int m_maxSpawn = 10;                // 最大出現数
 
+	//////////////////////////////////////////////////////
 	int m_spawnCount = 0;
 
 	std::unique_ptr<KdDebugWireFrame>m_debug;

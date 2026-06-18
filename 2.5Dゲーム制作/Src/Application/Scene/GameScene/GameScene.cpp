@@ -44,65 +44,6 @@ void GameScene::Event()
 	}
 
 	//敵の追加スポーン
-	//{
-	//	int now = m_time->GetTime();   // Timer の秒数
-	//	if (now >= m_nextSpawnTime)
-	//	{
-
-	//		// ③ 敵の最大数チェック
-	//		int enemyCount = 0;
-	//		for (auto& obj : SceneManager::Instance().GetObjList())
-	//		{
-	//			if (dynamic_cast<Enemy*>(obj.get()))
-	//			{
-	//				enemyCount++;
-	//			}
-	//		}
-
-	//		// 上限以下ならスポーン
-	//		if (enemyCount < 60)
-	//		{
-	//			// ② 経過時間で敵の種類を変える
-	//			bool spawnNecromancer = (now >= 60);  // 60秒経過でネクロマンサー解禁
-
-	//			for (auto& sp : m_spawnAreas)
-	//			{
-	//				//範囲チェック（プレイヤー）
-	//				if (!sp->IsPlayerInTrigger(m_player->GetPos()))
-	//				{
-	//					continue; 
-	//				}
-
-	//				int count = sp->GetSpawnCount();
-
-	//				for (int i = 0; i < count; i++)
-	//				{
-	//					m_enemy = std::make_shared<Enemy>();
-
-	//					// ② 敵の種類を時間で変える
-	//					if (spawnNecromancer)
-	//					{
-	//						m_enemy->SetEnemyType(Enemy::Necromancer);
-	//					}
-	//					else
-	//					{
-	//						m_enemy->SetEnemyType(Enemy::Skelton);
-	//					}
-
-	//					m_enemy->Init();
-	//					m_enemy->SetPos(sp->GetRandomPos());
-	//					m_enemy->SetTarget(m_player);
-	//					m_enemy->SetScore(m_score);
-	//					AddObject(m_enemy);
-	//				}
-	//			}
-	//		}
-
-	//		// 次のスポーン時間を更新
-	//		m_nextSpawnTime += m_spawnInterval;
-	//	}
-	//}
-
 	{
 		int now = m_time->GetTime();   // Timer の秒数
 		for (auto& sp : m_spawnAreas)
@@ -129,18 +70,22 @@ void GameScene::Event()
 				continue;
 
 			// 敵の種類切り替え
-			bool spawnNecromancer = (now >= 60);
+			bool spawnNecromancer = ((now / 40) % 2) == 1;
 
 			int count = sp->GetSpawnCount();
 			for (int i = 0; i < count; i++)
 			{
-				auto enemy = std::make_shared<Enemy>();
-				enemy->SetEnemyType(spawnNecromancer ? Enemy::Necromancer : Enemy::Skelton);
-				enemy->Init();
-				enemy->SetPos(sp->GetRandomPos());
-				enemy->SetTarget(m_player);
-				enemy->SetScore(m_score);
-				AddObject(enemy);
+				m_enemy = std::make_shared<Enemy>();
+				m_enemy->SetEnemyType(spawnNecromancer ? Enemy::Necromancer : Enemy::Skelton);
+
+				//三項演算子 ? ->true なら「? の右側（左側の値）」,false なら「: の右側（右側の値）」
+				//今回だとtrueならネクロマンサー、falseならスケルトンが出現
+
+				m_enemy->Init();
+				m_enemy->SetPos(sp->GetRandomPos());
+				m_enemy->SetTarget(m_player);
+				m_enemy->SetScore(m_score);
+				AddObject(m_enemy);
 			}
 
 			// ★スポーンしたので、このスポーンエリアだけ時間リセット

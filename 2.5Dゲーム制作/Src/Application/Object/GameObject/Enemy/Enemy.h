@@ -47,6 +47,7 @@ private:
 	std::shared_ptr<KdSquarePolygon>m_poly;
 	EnemyType m_type = EnemyType::Skelton;
 
+	Math::Color color = { 1,1,1,1 };
 	float m_anime = 0.0f;
 
 	float m_hitPoint = 100;
