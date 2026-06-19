@@ -40,4 +40,7 @@ private:
 	KeyIcon m_space;
 	KeyIcon m_z;
 
+	//ゲージが満たされているかどうか
+	float m_prevUltimateGauge = 0.0f;
+
 };

@@ -134,7 +134,11 @@ void Player::Update()
 			if (m_aliveFlg)
 			{
 				// 攻撃オブジェクトを出現させる座標を確定する
-				Math::Vector3 attackPos = m_nowPos + m_attackDir * 0.4f;
+				//通常用
+				Math::Vector3 attackPos = m_nowPos + m_attackDir * 1.5f;
+
+				//大技用
+				Math::Vector3 ultimatePos = m_nowPos + m_attackDir;
 
 				// ★ 大技（Z）
 				if (ultimateKeyPressed && m_ultimateGauge >= m_ultimateMax)
@@ -144,7 +148,7 @@ void Player::Update()
 					m_weapons = std::make_shared<Weapons>(Weapons::UltimateSlash);
 					m_weapons->SetPos(attackPos);
 					SceneManager::Instance().AddObject(m_weapons);
-					KdAudioManager::Instance().Play("Asset/Sounds/Attack.WAV", false);
+					KdAudioManager::Instance().Play("Asset/Sounds/ULTAtttack.wav", false);
 				}
 			
 				// ★ 通常攻撃（SPACE）

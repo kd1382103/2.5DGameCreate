@@ -60,7 +60,11 @@ public:
 	virtual void SetScore(const float score) { m_score += score; }
 	virtual float GerScore()const { return m_score; }
 
+	//ダメージ数だけ送る
 	virtual void Damage(const float damage) { m_damage = damage; }
+	
+	//ダメージ数と攻撃タイプを送る
+	virtual void Damage(const float damage, int attackType) { m_damage = damage; }
 	//////////////////////////////////////////////////////////////////
 
 	virtual bool IsExpired() const { return m_isExpired; }

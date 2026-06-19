@@ -52,6 +52,6 @@ private:
 	//キーUI
 	std::shared_ptr<KeyUI>m_KeyUI;
 
-	float m_nextSpawnTime = 20.0f;
-	float m_spawnInterval = 20.0f;
+	float m_nextSpawnTime = 15.0f;
+	float m_spawnInterval = 15.0f;
 };

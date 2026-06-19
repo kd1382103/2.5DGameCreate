@@ -21,6 +21,10 @@ void ResultScene::Event()
 	Math::Matrix camWorld = transMat ;
 	m_camera->SetCameraMatrix(camWorld);
 
+	//BGM（ループ）
+	//KdAudioManager::Instance().Play("", true);
+
+
 }
 
 void ResultScene::Init()

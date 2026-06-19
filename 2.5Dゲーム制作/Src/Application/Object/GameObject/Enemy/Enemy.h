@@ -1,11 +1,9 @@
 ﻿#pragma once
 #include <Application/Object/Base/BaseObject.h>
 
-class GameScene;
-
 class Player;
-
 class Score;
+
 class Enemy : public Base
 {
 public:
@@ -24,7 +22,7 @@ public:
 	void GenerateDepthMapFromLight()	override;
 	void DrawLit()						override;
 
-	void Damage(float damage)			override;
+	void Damage(float damage,int attackType)			override;
 
 	void ExpiredAnimation();
 
@@ -46,22 +44,24 @@ public:
 			m_player = spPlayer;
 		}
 	}
+	Math::Vector3 CalcAvoidWallVector();
+	Math::Vector3 CalcAvoidEnemyVector();
 private:
 
 	void Release() {}
 
-	std::shared_ptr<GameScene>m_owner;
-	std::weak_ptr<Player>m_player;
-	std::shared_ptr<Score>m_spScore;
-	std::shared_ptr<KdSquarePolygon>m_poly;
 	EnemyType m_type = EnemyType::Skelton;
 
-	Math::Color color = { 1,1,1,1 };
-	float m_anime = 0.0f;
-
 	float m_hitPoint = 100;
-	bool hit = false;
 
+	bool hit = false;
 	bool m_outroFlg = false;
 
+	float m_anime = 0.0f;
+
+	std::shared_ptr<KdSquarePolygon>m_poly;
+
+	std::shared_ptr<Score>m_spScore;
+
+	std::weak_ptr<Player>m_player;
 };

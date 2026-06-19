@@ -38,12 +38,24 @@ void KeyUI::Update()
 
 	// ★ 大技ゲージが満タンのときだけ Z を反応させる
 	bool canUltimate = false;
+	float gauge = 0.0f;
+	float maxGauge = 1.0f;
 
 	if (auto sp = m_player.lock())
 	{
-		canUltimate = (sp->GetUltimateGauge() >= sp->GetUltimateMax());
+		gauge = sp->GetUltimateGauge();
+		maxGauge = sp->GetUltimateMax();
+		canUltimate = (gauge >= maxGauge);
 	}
 
+	if (m_prevUltimateGauge < maxGauge && gauge >= maxGauge)
+	{
+		// ここで SE 再生
+		//KdAudioManager::Instance().Play("",false);
+	}
+
+	// 前フレーム値を更新
+	m_prevUltimateGauge = gauge;
 	if (canUltimate)
 	{
 		m_z.isOn = (GetAsyncKeyState('Z') & 0x8000);

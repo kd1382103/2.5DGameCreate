@@ -34,7 +34,7 @@ void Enemy::Init()
 		m_poly->SetScale(1.0f);
 		m_poly->SetSplit(17, 5);
 		m_hitPoint = 15;
-		m_moveSpeed = 0.15f;
+		m_moveSpeed = 0.2f;
 		break;
 
 	case Necromancer:
@@ -42,7 +42,7 @@ void Enemy::Init()
 		m_poly->SetScale(2.5f);
 		m_poly->SetSplit(17, 7);
 		m_hitPoint = 30;
-		m_moveSpeed = 0.1f;
+		m_moveSpeed = 0.15f;
 		break;
 	}
 
@@ -103,32 +103,61 @@ void Enemy::Update()
 	//移動処理
 	if (!m_isExpired)
 	{
-		Math::Vector3 targetPos;
-		if (m_target.expired() == false)
+		//Math::Vector3 targetPos;
+		//if (m_target.expired() == false)
+		//{
+		//	targetPos = m_target.lock()->GetPos();
+		//}
+
+		//Math::Vector3 dir = targetPos - m_nowPos;
+		//
+		//// ★ 距離が小さければ停止（震え防止）
+		//float dist = dir.Length();
+		//if (dist < 0.5f)
+		//{
+		//	dir = { 0,0,0 };
+		//}
+		//else
+		//{
+		//	dir.y = 0;
+		//	dir.Normalize();
+		//	m_nowPos += dir * m_moveSpeed;
+		//};
+
+		//Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
+		//Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
+
+		//m_mWorld = ScaleMat * transMat;
+		Math::Vector3 targetPos = m_nowPos;
+
+		if (!m_target.expired())
 		{
 			targetPos = m_target.lock()->GetPos();
 		}
 
-		Math::Vector3 dir = targetPos - m_nowPos;
-		
-		// ★ 距離が小さければ停止（震え防止）
-		float dist = dir.Length();
-		if (dist < 0.5f)
+		Math::Vector3 toPlayer = targetPos - m_nowPos;
+		toPlayer.y = 0;
+		if (toPlayer.LengthSquared() > 0.0001f)
 		{
-			dir = { 0,0,0 };
+			toPlayer.Normalize();
 		}
-		else
-		{
-			dir.y = 0;
-			dir.Normalize();
-			m_nowPos += dir * m_moveSpeed;
-		};
 
-		Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
+		//回転ベクトル
+		Math::Vector3 avoidWall = CalcAvoidWallVector();
+		Math::Vector3 avoidEnemy = CalcAvoidEnemyVector(); 
+
+		Math::Vector3 finalDir = toPlayer * 1.0f + avoidWall * 2.0f + avoidEnemy * 1.5f;
+
+		if (finalDir.LengthSquared() > 0.0001f)
+		{
+			finalDir.Normalize();
+			m_nowPos += finalDir * m_moveSpeed;
+		}
+
+		Math::Matrix scaleMat = Math::Matrix::CreateScale(2.0f); // 敵の大きさに合わせて調整
 		Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
 
-		m_mWorld = ScaleMat * transMat;
-		
+		m_mWorld = scaleMat * transMat;
 	}
 }
 
@@ -260,7 +289,7 @@ void Enemy::DrawLit()
 }
 
 
-void Enemy::Damage(float damage)
+void Enemy::Damage(float damage, int attackType)
 {
 	if (m_outroFlg)return;
 
@@ -277,11 +306,13 @@ void Enemy::Damage(float damage)
 			m_spScore->SetScore(100);
 		}
 		// ★ プレイヤーの大技ゲージ加算
-		if (auto m_spPlayer = m_player.lock())
+		if (attackType != 1)
 		{
-			m_spPlayer->AddUltimateGauge(20.0f);
+			if (auto p = m_player.lock())
+			{
+				p->AddUltimateGauge(20.0f);
+			}
 		}
-
 	}
 }
 
@@ -319,4 +350,56 @@ void Enemy::ExpiredAnimation()
 	}
 	break;
 	}
+}
+
+Math::Vector3 Enemy::CalcAvoidWallVector()
+{
+	Math::Vector3 avoid = {};
+
+	KdCollider::SphereInfo sphere;
+	sphere.m_sphere.Center = m_nowPos + Math::Vector3(0, 0.5f, 0);
+	sphere.m_sphere.Radius = 0.5f;
+	sphere.m_type = KdCollider::TypeGround;
+
+	std::list<KdCollider::CollisionResult> retList;
+	for (auto& obj : SceneManager::Instance().GetObjList())
+	{
+		obj->Intersects(sphere, &retList);
+	}
+
+	for (auto& ret : retList)
+	{
+		avoid += ret.m_hitDir * ret.m_overlapDistance;
+	}
+
+	return avoid;
+}
+
+Math::Vector3 Enemy::CalcAvoidEnemyVector()
+{
+	 Math::Vector3 avoid = {};
+
+    KdCollider::SphereInfo sphere;
+    sphere.m_sphere.Center = m_nowPos + Math::Vector3(0, 0.5f, 0);
+    sphere.m_sphere.Radius = 0.55f;
+    sphere.m_type = KdCollider::TypeBump;
+
+    std::list<KdCollider::CollisionResult> retList;
+
+    for (auto& obj : SceneManager::Instance().GetObjList())
+    {
+        if (obj.get() == this) continue;
+
+        Enemy* enemy = dynamic_cast<Enemy*>(obj.get());
+        if (!enemy) continue;
+
+        obj->Intersects(sphere, &retList);
+    }
+
+    for (auto& ret : retList)
+    {
+        avoid += ret.m_hitDir * ret.m_overlapDistance;
+    }
+
+    return avoid;
 }

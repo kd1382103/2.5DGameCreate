@@ -29,14 +29,20 @@ void Score::Update()
 
 void Score::DrawSprite()
 {
+	static const int DIGIT_W = 10;   // 元画像の1桁幅
+	static const int DIGIT_H = 20;   // 元画像の1桁高さ
+	static const int DRAW_W = 30;   // 描画時の幅
+	static const int DRAW_H = 50;   // 描画時の高さ
+	static const int DIGIT_SPACING = 30; // 桁間の距離
+
 	//スコア表示
 	for (int i = 0;i < maxDigits;++i)
 	{
-		Math::Rectangle rc = { 7 * m_digits[i],0,7,10 };
+		Math::Rectangle rc = { DIGIT_W * m_digits[i],0,DIGIT_W,DIGIT_H };
 	
 		//表示サイズ変更
 		KdShaderManager::Instance().m_spriteShader.
-			DrawTex(m_tex, m_scorePos.x + (i * 50), m_scorePos.y, 50, 70, &rc);
+			DrawTex(m_tex, m_scorePos.x + (i * DIGIT_SPACING), m_scorePos.y, DRAW_W, DRAW_H, &rc);
 		// テクスチャデータ,x,y,幅,高さ,矩形データ
 	}
 }

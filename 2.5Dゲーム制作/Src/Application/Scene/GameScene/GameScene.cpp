@@ -24,7 +24,7 @@ void GameScene::Event()
 
 	//　カメラ処理
 	{
-		Math::Vector3 camPos = { 0,10,-10 };
+		Math::Vector3 camPos = { 0,30,-30 };
 
 		//上からの挙動確認用
 		//Math::Vector3 camPos = { 0,20,0 };
@@ -68,7 +68,7 @@ void GameScene::Event()
 				if (dynamic_cast<Enemy*>(obj.get()))
 					enemyCount++;
 			}
-			if (enemyCount >= 60)
+			if (enemyCount >= 80)
 				continue;
 
 			// 敵の種類切り替え
@@ -95,6 +95,8 @@ void GameScene::Event()
 		}
 	}
 
+	//BGM（ループ）
+	//KdAudioManager::Instance().Play("", true);
 }
 
 void GameScene::Init()
@@ -113,7 +115,7 @@ void GameScene::Init()
 	//プレイヤー
 	m_player = std::make_shared<Player>();
 	m_player->Init();
-	m_player->SetPos({ 0,0,-190 });
+	m_player->SetPos({ 0,0,-180 });
 	m_player->SetAlive(true);
 	m_player->SetOwner(shared_from_this());
 	m_player->SetCamera(m_camera);
@@ -126,10 +128,18 @@ void GameScene::Init()
 
 	//敵の出現場所配置
 	{
-		int enemyNum = 8;
+		int enemyNum = 10;
 		{
 			auto sp = std::make_shared<SpawnArea>();
 			sp->SetCenter({ 0,0,-150 });
+			sp->SetRadius(3.0f);
+			sp->SetSpawnCount(enemyNum);
+			AddObject(sp);
+			m_spawnAreas.push_back(sp);
+		}
+		{
+			auto sp = std::make_shared<SpawnArea>();
+			sp->SetCenter({ 0,0,140 });
 			sp->SetRadius(3.0f);
 			sp->SetSpawnCount(enemyNum);
 			AddObject(sp);

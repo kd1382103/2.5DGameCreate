@@ -14,7 +14,7 @@ void Weapons::Init()
 		case Sword:
 		{
 			m_poly = std::make_shared<KdSquarePolygon>();
-			m_poly->SetMaterial("Asset/Textures/Object/AttackEffect/Sword/Slash1/color3/sprite.png");
+			m_poly->SetMaterial("Asset/Textures/Object/AttackEffect/Sword/sprite.png");
 			m_poly->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 			m_poly->SetSplit(5, 2);
 			m_poly->SetScale(4.0f);
@@ -60,13 +60,18 @@ void Weapons::Update()
 
 			m_poly->SetUVRect(attack[(int)m_anime]);
 
-			m_anime += 0.5f;
-			if (m_anime >= 9) 
-			{ 
-				m_isExpired = true;
+			for (int i = 0;i < 5;++i)
+			{
+				m_anime += 0.2f;
+				if (m_anime >= 9)
+				{
+					m_anime = 0;
+					if (i >= 4)
+					{
+						m_isExpired = true;
+					}
+				}
 			}
-
-			break;
 		}
 	}	
 
@@ -87,13 +92,13 @@ void Weapons::PostUpdate()
 			sphere.m_sphere.Radius = 0.8;
 			sphere.m_type = KdCollider::TypeDamage;
 
-			//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
+			m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
 
 			for (auto& obj : SceneManager::Instance().GetObjList())
 			{
 				if (obj->Intersects(sphere, nullptr) == true)
 				{
-					obj->Damage(12.5f);
+					obj->Damage(12.5f , 0);
 				}
 			}
 			break;
@@ -108,11 +113,13 @@ void Weapons::PostUpdate()
 			sphere.m_sphere.Radius = 5.0f; // 広範囲
 			sphere.m_type = KdCollider::TypeDamage;
 
+			m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
+
 			for (auto& obj : SceneManager::Instance().GetObjList())
 			{
 				if (obj->Intersects(sphere, nullptr))
 				{
-					obj->Damage(10.0f); // 多段ヒットなので1発は控えめ
+					obj->Damage(10.0f , 1); // 多段ヒットなので1発は控えめ
 				}
 			}
 		}

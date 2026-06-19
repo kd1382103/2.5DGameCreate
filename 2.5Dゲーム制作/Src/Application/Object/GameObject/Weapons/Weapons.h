@@ -8,8 +8,8 @@ public:
 	//武器タイプ
 	enum WeaponType
 	{
-		Sword,			//剣
-		UltimateSlash,	//大技 : 剣
+		Sword = 0,			//剣
+		UltimateSlash = 1,	//大技 : 剣
 	};
 
 	Weapons(WeaponType type = Sword):m_type(type)	{ Init(); }
