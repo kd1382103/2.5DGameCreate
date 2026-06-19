@@ -124,9 +124,6 @@
     <Filter Include="Src\Application\Object\GameObject\KeyUI">
       <UniqueIdentifier>{5c1856c0-7487-43ee-aea0-493d42d072e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\GameObject\Fog">
-      <UniqueIdentifier>{28d87c3d-20fc-4a25-b334-b57fddcbbe83}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -343,9 +340,6 @@
     <ClInclude Include="Src\Application\Object\GameObject\KeyUI\KeyUI.h">
       <Filter>Src\Application\Object\GameObject\KeyUI</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\GameObject\Fog\Fog.h">
-      <Filter>Src\Application\Object\GameObject\Fog</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -530,9 +524,6 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\GameObject\KeyUI\KeyUI.cpp">
       <Filter>Src\Application\Object\GameObject\KeyUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Object\GameObject\Fog\Fog.cpp">
-      <Filter>Src\Application\Object\GameObject\Fog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

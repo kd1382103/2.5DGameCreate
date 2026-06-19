@@ -44,19 +44,17 @@ void ResultScene::Init()
 	// （１分ごとにボーナスが減少し、その時間のところのボーナス値を加算）
 
 	float timeBonus = 0.0f;
-	if (SceneManager::Instance().m_isClear)
-	{
-		if (finalTime < 60) {
-			timeBonus = 5000;
-		}
-		else if (finalTime < 120) {
-			timeBonus = 3000;
-		}
-		else if (finalTime < 180) {
-			timeBonus = 1000;
-		}
+
+	if (finalTime < 60) {
+		timeBonus = 5000;
 	}
-	
+	else if (finalTime < 120) {
+		timeBonus = 3000;
+	}
+	else if (finalTime < 180) {
+		timeBonus = 1000;
+	}
+
 	// 最終スコア決定 
 	m_resultScore = baseScore + timeBonus;
 

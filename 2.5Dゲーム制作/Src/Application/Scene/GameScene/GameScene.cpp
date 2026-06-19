@@ -3,7 +3,6 @@
 
 #include  <Application/Object/GameObject/Stage/Stage.h>
 #include  <Application/Object/GameObject/Goal/Goal.h>
-#include  <Application/Object/GameObject/Fog/Fog.h>
 
 #include<Application/Object/GameObject/Player/Player.h>
 #include<Application/Object/GameObject/Enemy/Enemy.h>
@@ -17,17 +16,13 @@
 
 void GameScene::Event()
 {
-	//高さfog
-	KdShaderManager::Instance().WorkAmbientController().
-		SetheightFog({ 0,0,0.75 }, 0.0f, -5.0f, 0.25f);
-
 	if (!m_player->GetAlive())
 	{
 		return;
 	}
 
 	// ★ クリアしたら敵を全削除
-	if (SceneManager::Instance().m_isClear)
+	if (m_player->GetClear())
 	{
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
@@ -64,11 +59,6 @@ void GameScene::Event()
 	
 	//敵のスポーン
 	{
-		// ★ クリアしたら敵のスポーンを止める
-		if (SceneManager::Instance().m_isClear)
-		{
-			return; // 敵スポーン処理を全部スキップ
-		}
 
 		int now = m_time->GetTime();   // Timer の秒数
 
@@ -125,9 +115,6 @@ void GameScene::Event()
 
 void GameScene::Init()
 {
-	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
-	
-
 
 	m_camera = std::make_unique<KdCamera>();
 	m_camera->SetProjectionMatrix(60);
@@ -140,14 +127,11 @@ void GameScene::Init()
 	m_goal = std::make_shared<Goal>();
 	AddObject(m_goal);
 
-	//霧
-	m_fog = std::make_shared<Fog>();
-	//AddObject(m_fog);
 
 	//プレイヤー
 	m_player = std::make_shared<Player>();
 	m_player->Init();
-	m_player->SetPos({ 0,0,160 });
+	m_player->SetPos({ 0,0,-195 });
 	m_player->SetAlive(true);
 	m_player->SetOwner(shared_from_this());
 	m_player->SetCamera(m_camera);

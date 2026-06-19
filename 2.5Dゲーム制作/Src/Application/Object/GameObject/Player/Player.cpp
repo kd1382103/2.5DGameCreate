@@ -177,6 +177,11 @@ void Player::Update()
 	{
 		Damage(100);
 	}
+	//デバック（ゴール）
+	if (GetAsyncKeyState('2') & 0x8000)
+	{
+		goalHit = true;
+	}
 }
 
 void Player::PostUpdate()

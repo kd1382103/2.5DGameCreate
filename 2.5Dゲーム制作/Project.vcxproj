@@ -277,7 +277,6 @@
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\Object\Base\BaseObject.h" />
     <ClInclude Include="Src\Application\Object\GameObject\Enemy\Enemy.h" />
-    <ClInclude Include="Src\Application\Object\GameObject\Fog\Fog.h" />
     <ClInclude Include="Src\Application\Object\GameObject\Goal\Goal.h" />
     <ClInclude Include="Src\Application\Object\GameObject\KeyUI\KeyUI.h" />
     <ClInclude Include="Src\Application\Object\GameObject\Player\Player.h" />
@@ -344,7 +343,6 @@
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\Object\Base\BaseObject.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\Enemy\Enemy.cpp" />
-    <ClCompile Include="Src\Application\Object\GameObject\Fog\Fog.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\Goal\Goal.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\KeyUI\KeyUI.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\Player\Player.cpp" />

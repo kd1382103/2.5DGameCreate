@@ -36,7 +36,6 @@ public :
 	void AddObject(const std::shared_ptr<KdGameObject>& _obj);
 
 	//追加
-	bool	m_isClear = false;
 	float	m_finalScore = 0.0f;
 	int		m_finalTime = 0;
 private :
