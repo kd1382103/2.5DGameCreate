@@ -103,61 +103,31 @@ void Enemy::Update()
 	//移動処理
 	if (!m_isExpired)
 	{
-		//Math::Vector3 targetPos;
-		//if (m_target.expired() == false)
-		//{
-		//	targetPos = m_target.lock()->GetPos();
-		//}
-
-		//Math::Vector3 dir = targetPos - m_nowPos;
-		//
-		//// ★ 距離が小さければ停止（震え防止）
-		//float dist = dir.Length();
-		//if (dist < 0.5f)
-		//{
-		//	dir = { 0,0,0 };
-		//}
-		//else
-		//{
-		//	dir.y = 0;
-		//	dir.Normalize();
-		//	m_nowPos += dir * m_moveSpeed;
-		//};
-
-		//Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
-		//Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
-
-		//m_mWorld = ScaleMat * transMat;
-		Math::Vector3 targetPos = m_nowPos;
-
-		if (!m_target.expired())
+		Math::Vector3 targetPos;
+		if (m_target.expired() == false)
 		{
 			targetPos = m_target.lock()->GetPos();
 		}
 
-		Math::Vector3 toPlayer = targetPos - m_nowPos;
-		toPlayer.y = 0;
-		if (toPlayer.LengthSquared() > 0.0001f)
+		Math::Vector3 dir = targetPos - m_nowPos;
+		
+		// ★ 距離が小さければ停止（震え防止）
+		float dist = dir.Length();
+		if (dist < 0.5f)
 		{
-			toPlayer.Normalize();
+			dir = { 0,0,0 };
 		}
-
-		//回転ベクトル
-		Math::Vector3 avoidWall = CalcAvoidWallVector();
-		Math::Vector3 avoidEnemy = CalcAvoidEnemyVector(); 
-
-		Math::Vector3 finalDir = toPlayer * 1.0f + avoidWall * 2.0f + avoidEnemy * 1.5f;
-
-		if (finalDir.LengthSquared() > 0.0001f)
+		else
 		{
-			finalDir.Normalize();
-			m_nowPos += finalDir * m_moveSpeed;
-		}
+			dir.y = 0;
+			dir.Normalize();
+			m_nowPos += dir * m_moveSpeed;
+		};
 
-		Math::Matrix scaleMat = Math::Matrix::CreateScale(2.0f); // 敵の大きさに合わせて調整
+		Math::Matrix ScaleMat = Math::Matrix::CreateScale(2);
 		Math::Matrix transMat = Math::Matrix::CreateTranslation(m_nowPos);
 
-		m_mWorld = scaleMat * transMat;
+		m_mWorld = ScaleMat * transMat;
 	}
 }
 

@@ -31,9 +31,9 @@ void Score::DrawSprite()
 {
 	static const int DIGIT_W = 10;   // 元画像の1桁幅
 	static const int DIGIT_H = 20;   // 元画像の1桁高さ
-	static const int DRAW_W = 30;   // 描画時の幅
+	static const int DRAW_W = 40;   // 描画時の幅
 	static const int DRAW_H = 50;   // 描画時の高さ
-	static const int DIGIT_SPACING = 30; // 桁間の距離
+	static const int DIGIT_SPACING = 40; // 桁間の距離
 
 	//スコア表示
 	for (int i = 0;i < maxDigits;++i)

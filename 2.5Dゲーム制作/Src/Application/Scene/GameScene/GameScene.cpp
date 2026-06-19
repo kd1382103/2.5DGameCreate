@@ -24,7 +24,7 @@ void GameScene::Event()
 
 	//　カメラ処理
 	{
-		Math::Vector3 camPos = { 0,30,-30 };
+		Math::Vector3 camPos = { 0,10,-10 };
 
 		//上からの挙動確認用
 		//Math::Vector3 camPos = { 0,20,0 };
