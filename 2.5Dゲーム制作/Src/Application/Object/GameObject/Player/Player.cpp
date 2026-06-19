@@ -261,7 +261,6 @@ void Player::PostUpdate()
 		{
 			if (auto owner = m_gameOwner.lock())
 			{
-				SceneManager::Instance().m_isClear = true;
 				SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
 				SceneManager::Instance().m_finalTime = m_timer->GetTime();
 			}
@@ -377,8 +376,7 @@ void Player::Damage(float damage)
 		m_outroFlg = true;
 
 		if (auto owner = m_gameOwner.lock())
-		{	
-			SceneManager::Instance().m_isClear = false;
+		{
 			SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
 			SceneManager::Instance().m_finalTime = m_timer->GetTime();
 		}

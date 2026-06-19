@@ -3,6 +3,7 @@
 
 #include  <Application/Object/GameObject/Stage/Stage.h>
 #include  <Application/Object/GameObject/Goal/Goal.h>
+#include  <Application/Object/GameObject/Fog/Fog.h>
 
 #include<Application/Object/GameObject/Player/Player.h>
 #include<Application/Object/GameObject/Enemy/Enemy.h>
@@ -16,10 +17,25 @@
 
 void GameScene::Event()
 {
+	//高さfog
+	KdShaderManager::Instance().WorkAmbientController().
+		SetheightFog({ 0,0,0.75 }, 0.0f, -5.0f, 0.25f);
+
 	if (!m_player->GetAlive())
 	{
-
 		return;
+	}
+
+	// ★ クリアしたら敵を全削除
+	if (SceneManager::Instance().m_isClear)
+	{
+		for (auto& obj : SceneManager::Instance().GetObjList())
+		{
+			if (dynamic_cast<Enemy*>(obj.get()))
+			{
+				obj->SetAlive(false); // 消滅
+			}
+		}
 	}
 
 	//　カメラ処理
@@ -45,9 +61,17 @@ void GameScene::Event()
 		m_camera->SetCameraMatrix(camWorld);
 	}
 
+	
 	//敵のスポーン
 	{
+		// ★ クリアしたら敵のスポーンを止める
+		if (SceneManager::Instance().m_isClear)
+		{
+			return; // 敵スポーン処理を全部スキップ
+		}
+
 		int now = m_time->GetTime();   // Timer の秒数
+
 		for (auto& sp : m_spawnAreas)
 		{
 			// まずタイマー更新
@@ -101,6 +125,10 @@ void GameScene::Event()
 
 void GameScene::Init()
 {
+	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
+	
+
+
 	m_camera = std::make_unique<KdCamera>();
 	m_camera->SetProjectionMatrix(60);
 
@@ -112,10 +140,14 @@ void GameScene::Init()
 	m_goal = std::make_shared<Goal>();
 	AddObject(m_goal);
 
+	//霧
+	m_fog = std::make_shared<Fog>();
+	//AddObject(m_fog);
+
 	//プレイヤー
 	m_player = std::make_shared<Player>();
 	m_player->Init();
-	m_player->SetPos({ 0,0,-180 });
+	m_player->SetPos({ 0,0,160 });
 	m_player->SetAlive(true);
 	m_player->SetOwner(shared_from_this());
 	m_player->SetCamera(m_camera);
@@ -186,6 +218,15 @@ void GameScene::Init()
 	m_KeyUI = std::make_shared<KeyUI>();
 	m_KeyUI->SetTarget(m_player);
 	AddObject(m_KeyUI);
+
+	auto bg = std::make_shared<KdModelData>();
+	bg->Load("Asset/Models/Stage/backgroundPlane.gltf");
+
+	Math::Matrix scaleMat = Math::Matrix::CreateScale(100);
+	Math::Matrix transMat = Math::Matrix::CreateTranslation(0, -10, 0);
+	Math::Matrix world = scaleMat * transMat;
+
+	KdShaderManager::Instance().m_StandardShader.DrawModel(*bg, world);
 
 }
 
