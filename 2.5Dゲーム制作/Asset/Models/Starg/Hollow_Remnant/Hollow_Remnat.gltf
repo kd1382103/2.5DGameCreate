@@ -65,7 +65,10 @@
 				54,
 				55,
 				56,
-				57
+				57,
+				58,
+				59,
+				60
 			]
 		}
 	],
@@ -610,7 +613,7 @@
 		},
 		{
 			"mesh":57,
-			"name":"COL",
+			"name":"COL1",
 			"rotation":[
 				0,
 				0,
@@ -621,6 +624,33 @@
 				-1,
 				1,
 				-9
+			]
+		},
+		{
+			"mesh":58,
+			"name":"COL2",
+			"translation":[
+				0,
+				1,
+				0
+			]
+		},
+		{
+			"mesh":59,
+			"name":"COL3",
+			"translation":[
+				0,
+				1,
+				0
+			]
+		},
+		{
+			"mesh":60,
+			"name":"COL4",
+			"translation":[
+				0,
+				1,
+				0
 			]
 		}
 	],
@@ -1236,6 +1266,36 @@
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
 					"index":55
+				},
+				"metallicFactor":0,
+				"roughnessFactor":0.5
+			}
+		},
+		{
+			"doubleSided":true,
+			"name":"\u30de\u30c6\u30ea\u30a2\u30eb.012",
+			"pbrMetallicRoughness":{
+				"metallicFactor":0,
+				"roughnessFactor":0.5
+			}
+		},
+		{
+			"doubleSided":true,
+			"name":"\u30de\u30c6\u30ea\u30a2\u30eb.015",
+			"pbrMetallicRoughness":{
+				"baseColorTexture":{
+					"index":56
+				},
+				"metallicFactor":0,
+				"roughnessFactor":0.5
+			}
+		},
+		{
+			"doubleSided":true,
+			"name":"\u30de\u30c6\u30ea\u30a2\u30eb.017",
+			"pbrMetallicRoughness":{
+				"baseColorTexture":{
+					"index":57
 				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
@@ -2052,6 +2112,48 @@
 					"indices":182
 				}
 			]
+		},
+		{
+			"name":"\u5e73\u9762.002",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":183,
+						"NORMAL":184,
+						"TEXCOORD_0":185
+					},
+					"indices":3,
+					"material":56
+				}
+			]
+		},
+		{
+			"name":"\u5e73\u9762.004",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":186,
+						"NORMAL":187,
+						"TEXCOORD_0":188
+					},
+					"indices":7,
+					"material":57
+				}
+			]
+		},
+		{
+			"name":"\u5e73\u9762.006",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":189,
+						"NORMAL":190,
+						"TEXCOORD_0":191
+					},
+					"indices":7,
+					"material":58
+				}
+			]
 		}
 	],
 	"textures":[
@@ -2278,6 +2380,14 @@
 		{
 			"sampler":0,
 			"source":1
+		},
+		{
+			"sampler":0,
+			"source":0
+		},
+		{
+			"sampler":0,
+			"source":0
 		}
 	],
 	"images":[
@@ -3970,6 +4080,90 @@
 			"componentType":5123,
 			"count":222,
 			"type":"SCALAR"
+		},
+		{
+			"bufferView":183,
+			"componentType":5126,
+			"count":4,
+			"max":[
+				-9.99999713897705,
+				9.157699584960938,
+				10
+			],
+			"min":[
+				-10.000001907348633,
+				-3.3043062686920166,
+				-9.999999046325684
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":184,
+			"componentType":5126,
+			"count":4,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":185,
+			"componentType":5126,
+			"count":4,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":186,
+			"componentType":5126,
+			"count":4,
+			"max":[
+				10,
+				9.157699584960938,
+				-9.999999046325684
+			],
+			"min":[
+				-10,
+				-3.3043055534362793,
+				-10
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":187,
+			"componentType":5126,
+			"count":4,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":188,
+			"componentType":5126,
+			"count":4,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":189,
+			"componentType":5126,
+			"count":4,
+			"max":[
+				10.000000953674316,
+				9.157699584960938,
+				9.999999046325684
+			],
+			"min":[
+				10,
+				-3.3043055534362793,
+				-10
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":190,
+			"componentType":5126,
+			"count":4,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":191,
+			"componentType":5126,
+			"count":4,
+			"type":"VEC2"
 		}
 	],
 	"bufferViews":[
@@ -5070,6 +5264,60 @@
 			"byteLength":444,
 			"byteOffset":12128,
 			"target":34963
+		},
+		{
+			"buffer":0,
+			"byteLength":48,
+			"byteOffset":12572,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":48,
+			"byteOffset":12620,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":32,
+			"byteOffset":12668,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":48,
+			"byteOffset":12700,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":48,
+			"byteOffset":12748,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":32,
+			"byteOffset":12796,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":48,
+			"byteOffset":12828,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":48,
+			"byteOffset":12876,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":32,
+			"byteOffset":12924,
+			"target":34962
 		}
 	],
 	"samplers":[
@@ -5080,7 +5328,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":12572,
+			"byteLength":12956,
 			"uri":"Hollow_Remnat.bin"
 		}
 	]

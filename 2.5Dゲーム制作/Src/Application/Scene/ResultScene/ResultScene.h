@@ -21,6 +21,8 @@ private :
 	void Event() override;
 
 	std::shared_ptr<ResultBackGround>m_resultBack;
+	std::shared_ptr<KdSoundInstance> m_resultBgm;
+
 	std::shared_ptr<Score>m_score;
 	std::shared_ptr<Enemy>m_enemy;
 	std::shared_ptr<Timer>m_timer;

@@ -38,6 +38,8 @@ public :
 	//追加
 	float	m_finalScore = 0.0f;
 	int		m_finalTime = 0;
+	bool    m_isClear = false;
+
 private :
 
 	// マネージャーの初期化

@@ -16,4 +16,6 @@ private :
 	void Init()  override;
 
 	std::shared_ptr<TitleBackGround>m_titleBack;
+	std::shared_ptr<KdSoundInstance> m_titleBgm;
+
 };

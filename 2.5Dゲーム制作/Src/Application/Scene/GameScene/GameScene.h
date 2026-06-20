@@ -25,6 +25,8 @@ public :
 	std::shared_ptr<Score> GetScore() { return m_score; }
 	std::shared_ptr<Timer> GetTimer() { return m_time; }
 
+	std::shared_ptr<KdSoundInstance> m_gameBgm;
+
 private:
 
 	void Event() override;
@@ -54,4 +56,5 @@ private:
 
 	float m_nextSpawnTime = 15.0f;
 	float m_spawnInterval = 15.0f;
+
 };

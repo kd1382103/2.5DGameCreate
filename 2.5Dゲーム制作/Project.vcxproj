@@ -276,6 +276,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\Object\Base\BaseObject.h" />
+    <ClInclude Include="Src\Application\Object\GameObject\Effect\Effect.h" />
     <ClInclude Include="Src\Application\Object\GameObject\Enemy\Enemy.h" />
     <ClInclude Include="Src\Application\Object\GameObject\Goal\Goal.h" />
     <ClInclude Include="Src\Application\Object\GameObject\KeyUI\KeyUI.h" />
@@ -342,6 +343,7 @@
     <ClCompile Include="..\Library\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\Object\Base\BaseObject.cpp" />
+    <ClCompile Include="Src\Application\Object\GameObject\Effect\Effect.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\Enemy\Enemy.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\Goal\Goal.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\KeyUI\KeyUI.cpp" />

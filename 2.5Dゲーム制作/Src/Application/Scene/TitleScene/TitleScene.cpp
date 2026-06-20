@@ -8,10 +8,13 @@ void TitleScene::Event()
 {
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 	{
-		SceneManager::Instance().SetNextScene
-		(
-			SceneManager::SceneType::Game
-		);
+		if (m_titleBgm)
+		{
+			m_titleBgm->Stop();
+			m_titleBgm.reset();
+		}
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
+		return;
 	}
 
 	//　カメラ処理
@@ -21,10 +24,6 @@ void TitleScene::Event()
 
 	Math::Matrix camWorld = transMat;
 	m_camera->SetCameraMatrix(camWorld);
-
-	//BGM（ループ）
-	//KdAudioManager::Instance().Play("", true);
-
 }
 
 void TitleScene::Init()
@@ -35,4 +34,6 @@ void TitleScene::Init()
 
 	m_titleBack = std::make_shared<TitleBackGround>();
 	AddObject(m_titleBack);
+
+	m_titleBgm = KdAudioManager::Instance().Play("Asset/Sounds/Bgm/Title.wav", true);
 }

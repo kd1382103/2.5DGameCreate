@@ -18,6 +18,11 @@ void GameScene::Event()
 {
 	if (!m_player->GetAlive())
 	{
+		if (m_gameBgm)
+		{
+			m_gameBgm->Stop();
+			m_gameBgm.reset();   
+		}
 		return;
 	}
 
@@ -109,8 +114,6 @@ void GameScene::Event()
 		}
 	}
 
-	//BGM（ループ）
-	//KdAudioManager::Instance().Play("", true);
 }
 
 void GameScene::Init()
@@ -211,7 +214,8 @@ void GameScene::Init()
 	Math::Matrix world = scaleMat * transMat;
 
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*bg, world);
-
+	
+	m_gameBgm = KdAudioManager::Instance().Play("Asset/Sounds/Bgm/Game.wav", true);
 }
 
 void GameScene::SpawnEnemies()

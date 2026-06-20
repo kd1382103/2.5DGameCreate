@@ -10,7 +10,13 @@ void ResultScene::Event()
 {
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 	{
+		if (m_resultBgm)
+		{
+			m_resultBgm->Stop();
+			m_resultBgm.reset();
+		}
 		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Title);
+		return;
 	}
 
 	//　カメラ処理
@@ -18,13 +24,8 @@ void ResultScene::Event()
 
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos);
 
-	Math::Matrix camWorld = transMat ;
+	Math::Matrix camWorld = transMat;
 	m_camera->SetCameraMatrix(camWorld);
-
-	//BGM（ループ）
-	//KdAudioManager::Instance().Play("", true);
-
-
 }
 
 void ResultScene::Init()
@@ -44,15 +45,17 @@ void ResultScene::Init()
 	// （１分ごとにボーナスが減少し、その時間のところのボーナス値を加算）
 
 	float timeBonus = 0.0f;
-
-	if (finalTime < 60) {
-		timeBonus = 5000;
-	}
-	else if (finalTime < 120) {
-		timeBonus = 3000;
-	}
-	else if (finalTime < 180) {
-		timeBonus = 1000;
+	if (SceneManager::Instance().m_isClear)
+	{
+		if (finalTime < 60) {
+			timeBonus = 5000;
+		}
+		else if (finalTime < 120) {
+			timeBonus = 3000;
+		}
+		else if (finalTime < 180) {
+			timeBonus = 1000;
+		}
 	}
 
 	// 最終スコア決定 
@@ -68,4 +71,6 @@ void ResultScene::Init()
 	m_resultTimer = SceneManager::Instance().m_finalTime;
 	m_timer->SetTimer(m_resultTimer);
 	AddObject(m_timer);
+
+	m_resultBgm = KdAudioManager::Instance().Play("Asset/Sounds/Bgm/Result.wav", true);
 }

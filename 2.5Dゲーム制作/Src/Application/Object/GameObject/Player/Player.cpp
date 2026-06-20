@@ -148,7 +148,7 @@ void Player::Update()
 					m_weapons = std::make_shared<Weapons>(Weapons::UltimateSlash);
 					m_weapons->SetPos(attackPos);
 					SceneManager::Instance().AddObject(m_weapons);
-					KdAudioManager::Instance().Play("Asset/Sounds/ULTAtttack.wav", false);
+					KdAudioManager::Instance().Play("Asset/Sounds/SE/ULTAtttack.wav", false);
 				}
 			
 				// ★ 通常攻撃（SPACE）
@@ -157,7 +157,7 @@ void Player::Update()
 					m_weapons = std::make_shared<Weapons>(Weapons::Sword);
 					m_weapons->SetPos(attackPos);
 					SceneManager::Instance().AddObject(m_weapons);
-					KdAudioManager::Instance().Play("Asset/Sounds/Attack.WAV", false);
+					KdAudioManager::Instance().Play("Asset/Sounds/SE/Attack.WAV", false);
 				}
 			}
 
@@ -379,6 +379,16 @@ void Player::Damage(float damage)
 	{
 		m_hitPoint = 0;
 		m_outroFlg = true;
+
+		// ★ GameScene の BGM を止める
+		if (auto owner = m_gameOwner.lock())
+		{
+			if (owner->m_gameBgm)
+			{
+				owner->m_gameBgm->Stop();
+				owner->m_gameBgm.reset();
+			}
+		}
 
 		if (auto owner = m_gameOwner.lock())
 		{
