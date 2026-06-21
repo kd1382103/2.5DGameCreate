@@ -282,7 +282,9 @@
     <ClInclude Include="Src\Application\Object\GameObject\KeyUI\KeyUI.h" />
     <ClInclude Include="Src\Application\Object\GameObject\Player\Player.h" />
     <ClInclude Include="Src\Application\Object\GameObject\SpawnArea\SpawnArea.h" />
-    <ClInclude Include="Src\Application\Object\GameObject\StageObject\Rock\Rock.h" />
+    <ClInclude Include="Src\Application\Object\GameObject\StageObject\Rock1\Rock1.h" />
+    <ClInclude Include="Src\Application\Object\GameObject\StageObject\Rock2\Rock2.h" />
+    <ClInclude Include="Src\Application\Object\GameObject\StageObject\Rock3\Rock3.h" />
     <ClInclude Include="Src\Application\Object\GameObject\Stage\Stage.h" />
     <ClInclude Include="Src\Application\Object\GameObject\Weapons\Weapons.h" />
     <ClInclude Include="Src\Application\Object\ResultObject\Backgraound\ResultBackGround.h" />
@@ -350,7 +352,9 @@
     <ClCompile Include="Src\Application\Object\GameObject\KeyUI\KeyUI.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\Player\Player.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\SpawnArea\SpawnArea.cpp" />
-    <ClCompile Include="Src\Application\Object\GameObject\StageObject\Rock\Rock.cpp" />
+    <ClCompile Include="Src\Application\Object\GameObject\StageObject\Rock1\Rock1.cpp" />
+    <ClCompile Include="Src\Application\Object\GameObject\StageObject\Rock2\Rock2.cpp" />
+    <ClCompile Include="Src\Application\Object\GameObject\StageObject\Rock3\Rock3.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="Src\Application\Object\GameObject\Weapons\Weapons.cpp" />
     <ClCompile Include="Src\Application\Object\ResultObject\Backgraound\ResultBackGround.cpp" />

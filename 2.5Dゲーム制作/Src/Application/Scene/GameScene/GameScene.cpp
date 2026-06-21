@@ -3,7 +3,9 @@
 
 #include  <Application/Object/GameObject/Stage/Stage.h>
 #include  <Application/Object/GameObject/Goal/Goal.h>
-#include  <Application/Object/GameObject/StageObject/Rock/Rock.h>
+#include  <Application/Object/GameObject/StageObject/Rock1/Rock1.h>
+#include  <Application/Object/GameObject/StageObject/Rock2/Rock2.h>
+#include  <Application/Object/GameObject/StageObject/Rock3/Rock3.h>
 
 #include<Application/Object/GameObject/Player/Player.h>
 #include<Application/Object/GameObject/Enemy/Enemy.h>
@@ -17,39 +19,17 @@
 
 void GameScene::Event()
 {
-	if (!m_player->GetAlive())
-	{
-		if (m_gameBgm)
-		{
-			m_gameBgm->Stop();
-			m_gameBgm.reset();   
-		}
-		return;
-	}
-
-	// ★ クリアしたら敵を全削除
-	if (m_player->GetClear())
-	{
-		for (auto& obj : SceneManager::Instance().GetObjList())
-		{
-			if (dynamic_cast<Enemy*>(obj.get()))
-			{
-				obj->SetAlive(false); // 消滅
-			}
-		}
-	}
-
 	//　カメラ処理
 	{
 		Math::Vector3 camPos = { 0,10,-10 };
 
 		//上からの挙動確認用
-		//Math::Vector3 camPos = { 0,20,0 };
+		//Math::Vector3 camPos = { 0,150,0 };
 
 		//横からの挙動確認用
 		//Math::Vector3 camPos = { 0,3,-10 };
 
-		//斜め上から斜め下に(メイン採用予定)
+		//斜め上から斜め下に
 		//Math::Vector3 camPos = { -5,5,-5 };
 
 		Math::Matrix rotationXMat = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(30));
@@ -132,13 +112,18 @@ void GameScene::Init()
 	m_goal = std::make_shared<Goal>();
 	AddObject(m_goal);
 
-	//岩
-	m_rock = std::make_shared<Rock>();
-	m_rock->SetPos({0,0,50});
-	m_rock->Init();
-	AddObject(m_rock);
+	//岩配置
+	{
+		//複数設置
+		CreateRocksEX<Rock1>({ 0,100 ,190,-110,-140,-115}, 0, { 0,0,80,-70,160,55 });
+		//CreateRocksEX<Rock2>({ -120,-20 }, -2, { 0,-120 });
+		CreateRocksEX<Rock3>({ 20,-20,70,90,-95,-110 }, 0, { -70,-120,-110,-15,70 ,-70});
 
-
+		//単体設置
+		// 教材として残す
+		//CreateRocks<Rock>(X, Y,Z, 岩のタイプ,スケール );
+	}
+	
 	//プレイヤー
 	m_player = std::make_shared<Player>();
 	m_player->Init();
@@ -196,8 +181,6 @@ void GameScene::Init()
 			AddObject(sp);
 			m_spawnAreas.push_back(sp);
 		}
-
-		SpawnEnemies();
 	}
 
 	//タイマー

@@ -1,11 +1,12 @@
 ﻿#pragma once
+
 #include <Application/Object/Base/BaseObject.h>
 
-class Rock :public Base
+class Rock3 :public Base
 {
 public:
-	Rock() {}
-	~Rock()	override { Release(); }
+	Rock3() {}
+	~Rock3()	override { Release(); }
 
 	void Init()			override;
 	void Update()		override;

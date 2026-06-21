@@ -35,7 +35,8 @@ void Player::Init()
 	m_moveVec = {};
 	m_dir = {};
 
-	m_moveSpeed = 0.3f;
+	//m_moveSpeed = 2.0f;
+	m_moveSpeed = 0.3f;	//実装はこっち
 	m_movePow = 1.0f;
 
 	m_attackInterval = 0;
@@ -140,7 +141,7 @@ void Player::Update()
 			{
 				// 攻撃オブジェクトを出現させる座標を確定する
 				//通常用
-				Math::Vector3 attackPos = m_nowPos + m_attackDir * 1.5f;
+				Math::Vector3 attackPos = m_nowPos + m_attackDir * 1.25f;
 
 				//大技用
 				Math::Vector3 ultimatePos = m_nowPos + m_attackDir;
@@ -253,7 +254,7 @@ void Player::PostUpdate()
 		sphere.m_sphere.Center.y += 0.5f;
 		sphere.m_sphere.Radius = 0.5;
 		sphere.m_type = KdCollider::TypeGoal;
-		m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
+		//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius);
 		std::list<KdCollider::CollisionResult>retSphereList;
 		for (auto& obj : SceneManager::Instance().GetObjList())
 		{
@@ -272,8 +273,53 @@ void Player::PostUpdate()
 				SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
 				SceneManager::Instance().m_finalTime = m_timer->GetTime();
 				SceneManager::Instance().m_isClear = true;
+
+			}			
+
+			// ★ GameScene の BGM を止める
+			if (auto owner = m_gameOwner.lock())
+			{
+				if (owner->m_gameBgm)
+				{
+					owner->m_gameBgm->Stop();
+					owner->m_gameBgm.reset();
+				}
 			}
 			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
+		}
+
+		//岩
+		{
+			float maxOverlap = 0;
+			Math::Vector3 hitDir;
+			KdCollider::SphereInfo sphere;
+			sphere.m_sphere.Center = m_nowPos;
+			sphere.m_sphere.Center.y += 0.5f;
+			sphere.m_sphere.Radius = 0.5;
+
+			sphere.m_type = KdCollider::TypeRock;
+			std::list<KdCollider::CollisionResult>retSphereList;
+
+			for (auto& obj : SceneManager::Instance().GetObjList())
+			{
+				obj->Intersects(sphere, &retSphereList);
+			}
+
+			for (auto& ret : retSphereList)
+			{
+				if (maxOverlap < ret.m_overlapDistance)
+				{
+					maxOverlap = ret.m_overlapDistance;
+					hitDir = ret.m_hitDir;
+					hitDir.y = 0;
+					hit = true;
+				}
+			}
+
+			if (hit)
+			{
+				m_nowPos += hitDir * maxOverlap;
+			}
 		}
 	}
 }

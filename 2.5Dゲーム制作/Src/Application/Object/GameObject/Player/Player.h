@@ -48,7 +48,6 @@ public:
 	void SetPos(const Math::Vector3& _pos) override { m_nowPos = _pos; }
 	void SetCamera(std::shared_ptr<KdCamera> cam) { m_wpCamera = cam; }
 
-	bool GetClear()const { return goalHit; };
 
 	void AddUltimateGauge(float v)
 	{

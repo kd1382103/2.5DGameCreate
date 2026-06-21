@@ -92,7 +92,7 @@ void Weapons::PostUpdate()
 			sphere.m_sphere.Radius = 0.8;
 			sphere.m_type = KdCollider::TypeDamage;
 
-			m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
+			//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
 
 			for (auto& obj : SceneManager::Instance().GetObjList())
 			{
@@ -113,7 +113,7 @@ void Weapons::PostUpdate()
 			sphere.m_sphere.Radius = 5.0f; // 広範囲
 			sphere.m_type = KdCollider::TypeDamage;
 
-			m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
+			//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
 
 			for (auto& obj : SceneManager::Instance().GetObjList())
 			{

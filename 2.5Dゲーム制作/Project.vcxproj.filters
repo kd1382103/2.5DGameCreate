@@ -130,8 +130,14 @@
     <Filter Include="Src\Application\Object\GameObject\StageObject">
       <UniqueIdentifier>{01f09b56-0cf5-4541-bdaf-5e1c266dd635}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\Object\GameObject\StageObject\Rock">
+    <Filter Include="Src\Application\Object\GameObject\StageObject\Rock1">
       <UniqueIdentifier>{e25797ed-c2e1-4365-82d6-63bc963a0611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\GameObject\StageObject\Rock2">
+      <UniqueIdentifier>{c78a28f4-f1a8-492b-85cf-b9f9b8917696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\GameObject\StageObject\Rock3">
+      <UniqueIdentifier>{4de54d10-de21-4f07-aec2-dae134ba9ef2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -352,8 +358,14 @@
     <ClInclude Include="Src\Application\Object\GameObject\Effect\Effect.h">
       <Filter>Src\Application\Object\GameObject\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Object\GameObject\StageObject\Rock\Rock.h">
-      <Filter>Src\Application\Object\GameObject\StageObject\Rock</Filter>
+    <ClInclude Include="Src\Application\Object\GameObject\StageObject\Rock1\Rock1.h">
+      <Filter>Src\Application\Object\GameObject\StageObject\Rock1</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\GameObject\StageObject\Rock2\Rock2.h">
+      <Filter>Src\Application\Object\GameObject\StageObject\Rock2</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Object\GameObject\StageObject\Rock3\Rock3.h">
+      <Filter>Src\Application\Object\GameObject\StageObject\Rock3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -543,8 +555,14 @@
     <ClCompile Include="Src\Application\Object\GameObject\Effect\Effect.cpp">
       <Filter>Src\Application\Object\GameObject\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Object\GameObject\StageObject\Rock\Rock.cpp">
-      <Filter>Src\Application\Object\GameObject\StageObject\Rock</Filter>
+    <ClCompile Include="Src\Application\Object\GameObject\StageObject\Rock1\Rock1.cpp">
+      <Filter>Src\Application\Object\GameObject\StageObject\Rock1</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\GameObject\StageObject\Rock2\Rock2.cpp">
+      <Filter>Src\Application\Object\GameObject\StageObject\Rock2</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\GameObject\StageObject\Rock3\Rock3.cpp">
+      <Filter>Src\Application\Object\GameObject\StageObject\Rock3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

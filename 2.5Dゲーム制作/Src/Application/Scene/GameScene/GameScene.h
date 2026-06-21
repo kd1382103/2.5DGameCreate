@@ -4,7 +4,9 @@
 
 class Stage;
 class Goal;
-class Rock;
+class Rock1;
+class Rock2;
+class Rock3;
 
 class Player;
 class Enemy;
@@ -28,6 +30,8 @@ public :
 
 	std::shared_ptr<KdSoundInstance> m_gameBgm;
 
+
+
 private:
 
 	void Event() override;
@@ -38,7 +42,9 @@ private:
 	//ステージ類
 	std::shared_ptr<Stage>m_stage;
 	std::shared_ptr<Goal>m_goal;
-	std::shared_ptr<Rock>m_rock;
+	std::shared_ptr<Rock1>m_rock1;
+	std::shared_ptr<Rock2>m_rock2;
+	std::shared_ptr<Rock3>m_rock3;
 
 	//キャラクター類
 	std::shared_ptr<Player>m_player;
@@ -56,7 +62,42 @@ private:
 	//キーUI
 	std::shared_ptr<KeyUI>m_KeyUI;
 
+	//岩の設置テンプレート
+	
+	//単体
+	template <class TRock>
+	void CreateRocks(float x, float y, float z);
+
+	//複数
+	template <class TRock>
+	void CreateRocksEX(const std::vector<float>& xs,float y,const std::vector<float>& zs);
+
 	float m_nextSpawnTime = 15.0f;
 	float m_spawnInterval = 15.0f;
 
 };
+
+//単体版
+template<class TRock>
+inline void GameScene::CreateRocks(float x, float y, float z)
+{
+	auto rock = std::make_shared<TRock>();
+	rock->SetPos({ x, y, z });
+	rock->Init();
+	AddObject(rock);
+}
+
+//複数版
+template<class TRock>
+inline void GameScene::CreateRocksEX(const std::vector<float>& xs, float y, const std::vector<float>& zs)
+{
+	int count = std::min(xs.size(), zs.size());
+
+	for (int i = 0; i < count; i++)
+	{
+		auto rock = std::make_shared<TRock>();
+		rock->SetPos({ xs[i], y, zs[i] });
+		rock->Init();
+		AddObject(rock);
+	}
+}

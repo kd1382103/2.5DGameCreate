@@ -214,6 +214,39 @@ void Enemy::PostUpdate()
 
 			m_nowPos += hitDir * maxOverlap * pushRate;
 		}
+		//岩
+		{
+			float maxOverlap = 0;
+			Math::Vector3 hitDir;
+			KdCollider::SphereInfo sphere;
+			sphere.m_sphere.Center = m_nowPos;
+			sphere.m_sphere.Center.y += 0.5f;
+			sphere.m_sphere.Radius = 0.5;
+
+			sphere.m_type = KdCollider::TypeRock;
+			std::list<KdCollider::CollisionResult>retSphereList;
+
+			for (auto& obj : SceneManager::Instance().GetObjList())
+			{
+				obj->Intersects(sphere, &retSphereList);
+			}
+
+			for (auto& ret : retSphereList)
+			{
+				if (maxOverlap < ret.m_overlapDistance)
+				{
+					maxOverlap = ret.m_overlapDistance;
+					hitDir = ret.m_hitDir;
+					hitDir.y = 0;
+					hit = true;
+				}
+			}
+
+			if (hit)
+			{
+				m_nowPos += hitDir * maxOverlap;
+			}
+		}
 	}
 
 	//プレイヤー
