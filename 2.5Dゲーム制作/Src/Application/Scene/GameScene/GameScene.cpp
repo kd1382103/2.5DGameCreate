@@ -3,6 +3,7 @@
 
 #include  <Application/Object/GameObject/Stage/Stage.h>
 #include  <Application/Object/GameObject/Goal/Goal.h>
+#include  <Application/Object/GameObject/StageObject/Rock/Rock.h>
 
 #include<Application/Object/GameObject/Player/Player.h>
 #include<Application/Object/GameObject/Enemy/Enemy.h>
@@ -118,8 +119,9 @@ void GameScene::Event()
 
 void GameScene::Init()
 {
+	BaseScene::Init();
 
-	m_camera = std::make_unique<KdCamera>();
+	m_camera = std::make_shared<KdCamera>();
 	m_camera->SetProjectionMatrix(60);
 
 	//ステージ
@@ -129,6 +131,12 @@ void GameScene::Init()
 	//ゴール
 	m_goal = std::make_shared<Goal>();
 	AddObject(m_goal);
+
+	//岩
+	m_rock = std::make_shared<Rock>();
+	m_rock->SetPos({0,0,50});
+	m_rock->Init();
+	AddObject(m_rock);
 
 
 	//プレイヤー

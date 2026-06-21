@@ -3,7 +3,9 @@
 
 class Player;
 class Score;
+class Effect;
 
+class GameScene;
 class Enemy : public Base
 {
 public:
@@ -59,9 +61,13 @@ private:
 
 	float m_anime = 0.0f;
 
-	std::shared_ptr<KdSquarePolygon>m_poly;
+	std::shared_ptr<KdSquarePolygon	>m_poly;
 
-	std::shared_ptr<Score>m_spScore;
+	std::shared_ptr<Score>		m_spScore;
 
-	std::weak_ptr<Player>m_player;
+	std::weak_ptr<Player>		m_player;
+
+	std::shared_ptr<Effect>		m_effect;
+
+	std::weak_ptr<GameScene>	m_gameOwner;
 };

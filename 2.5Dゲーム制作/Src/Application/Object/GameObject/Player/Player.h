@@ -5,6 +5,7 @@ class GameScene;
 class Enemy;
 class Weapons;
 class Timer;
+class Effect;
 class Player : public Base
 {
 public:
@@ -74,7 +75,7 @@ private:
 
 	std::shared_ptr<KdTexture>			m_hpPoly	= nullptr;
 	std::weak_ptr<KdCamera>				m_wpCamera;
-
+	std::shared_ptr<Effect>				m_effect	= nullptr;
 
 	AnimationInfo m_animeInfo = {};
 	UINT m_dirType = 0;
@@ -101,4 +102,8 @@ private:
 
 	float m_dissolve = 0;
 	bool m_outroFlg = false;
+
+	float m_damageEffectTimer = 0.0f;
+	float m_damageEffectInterval = 0.15f;
+
 };

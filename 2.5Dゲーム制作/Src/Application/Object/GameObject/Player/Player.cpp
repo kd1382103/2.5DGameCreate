@@ -7,6 +7,7 @@
 #include <Application/Scene/GameScene/GameScene.h>
 #include <Application/Scene/ResultScene/ResultScene.h>
 #include<Application/Object/Timer/Timer.h>
+#include<Application/Object/GameObject/Effect/Effect.h>
 
 void Player::Init()
 {
@@ -23,6 +24,7 @@ void Player::Init()
 
 	m_pCollider = std::make_unique<KdCollider>();
 	m_pCollider->RegisterCollisionShape("PlayerCollision", m_poly, KdCollider::TypeBump);
+
 
 	m_animeInfo.start = 0;		// 開始コマ
 	m_animeInfo.end = 7;		// 終了コマ
@@ -46,6 +48,9 @@ void Player::Init()
 
 void Player::Update()
 {
+	float dt = 1.0f / 60.0f;  // ★ 固定フレーム時間
+	m_damageEffectTimer -= dt;
+
 	if (m_outroFlg)
 	{
 		OutroUpdate();
@@ -200,6 +205,7 @@ void Player::PostUpdate()
 
 		//球の中心座標設定
 		sphere.m_sphere.Center = m_nowPos;
+
 		//位置調整
 		sphere.m_sphere.Center.y += 0.5f;
 
@@ -228,6 +234,7 @@ void Player::PostUpdate()
 				//更新
 				maxOverlap = ret.m_overlapDistance;
 				hitDir = ret.m_hitDir;
+				hitDir.y = 0;
 				hit = true;
 			}
 		}
@@ -242,10 +249,6 @@ void Player::PostUpdate()
 	//ゴール
 	{
 		KdCollider::SphereInfo sphere;
-		sphere.m_sphere.Center = m_nowPos;
-		sphere.m_sphere.Center.y += 0.5f;
-		sphere.m_sphere.Radius = 0.5;
-
 		sphere.m_sphere.Center = m_nowPos;
 		sphere.m_sphere.Center.y += 0.5f;
 		sphere.m_sphere.Radius = 0.5;
@@ -268,6 +271,7 @@ void Player::PostUpdate()
 			{
 				SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
 				SceneManager::Instance().m_finalTime = m_timer->GetTime();
+				SceneManager::Instance().m_isClear = true;
 			}
 			SceneManager::Instance().SetNextScene(SceneManager::SceneType::Result);
 		}
@@ -375,6 +379,17 @@ void Player::Damage(float damage)
 	if (m_outroFlg || !m_aliveFlg) return;
 
 	m_hitPoint -= damage;
+
+	if (m_damageEffectTimer <= 0.0f)
+	{
+		m_damageEffectTimer = m_damageEffectInterval;
+		m_effect = std::make_shared<Effect>();
+		m_effect->SetPos(GetPos()+ Math::Vector3 (0,1.5f,0));
+		m_effect->SetCamera(m_wpCamera);
+		m_effect->Init();
+		m_gameOwner.lock()->AddObject(m_effect);
+	}
+
 	if (m_hitPoint <= 0)
 	{
 		m_hitPoint = 0;
@@ -395,7 +410,7 @@ void Player::Damage(float damage)
 			SceneManager::Instance().m_finalScore = owner->GetScore()->GetScore();
 			SceneManager::Instance().m_finalTime = m_timer->GetTime();
 		}
-	}
+	}	
 }
 
 void Player::ChangeAnimetion()

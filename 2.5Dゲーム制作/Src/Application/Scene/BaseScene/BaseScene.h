@@ -30,6 +30,9 @@ public :
 
 	virtual void Init();
 
+	std::shared_ptr<KdCamera> GetCamera() const { return m_camera; }
+
+
 protected :
 
 	// 継承先シーンで必要ならオーバーライドする

@@ -4,6 +4,9 @@
 //追加
 #include <Application/Object/GameObject/Player/Player.h>
 #include<Application/Object/Score/Score.h>
+#include<Application/Object/GameObject/Effect/Effect.h>
+#include <Application/Scene/GameScene/GameScene.h>
+
 void Enemy::Init()
 {
 	Base::Init();
@@ -159,6 +162,7 @@ void Enemy::PostUpdate()
 				{
 					maxOverlap = ret.m_overlapDistance;
 					hitDir = ret.m_hitDir;
+					hitDir.y = 0;
 					hit = true;
 				}
 			}
@@ -264,6 +268,17 @@ void Enemy::Damage(float damage, int attackType)
 	if (m_outroFlg)return;
 
 	m_hitPoint -= damage;
+
+	{
+		m_effect= std::make_shared<Effect>();
+		m_effect->SetPos(GetPos());
+
+		if (auto owner = m_gameOwner.lock())
+		{
+			m_effect->SetCamera(owner->GetCamera());  // ← GameScene のカメラを渡す
+			owner->AddObject(m_effect);
+		}
+	}
 
 	if (m_hitPoint <= 0)
 	{

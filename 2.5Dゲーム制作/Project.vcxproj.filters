@@ -127,6 +127,12 @@
     <Filter Include="Src\Application\Object\GameObject\Effect">
       <UniqueIdentifier>{08f6213a-4af4-4673-9dfe-6529f9abdf35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Object\GameObject\StageObject">
+      <UniqueIdentifier>{01f09b56-0cf5-4541-bdaf-5e1c266dd635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Object\GameObject\StageObject\Rock">
+      <UniqueIdentifier>{e25797ed-c2e1-4365-82d6-63bc963a0611}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -346,6 +352,9 @@
     <ClInclude Include="Src\Application\Object\GameObject\Effect\Effect.h">
       <Filter>Src\Application\Object\GameObject\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Object\GameObject\StageObject\Rock\Rock.h">
+      <Filter>Src\Application\Object\GameObject\StageObject\Rock</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -533,6 +542,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Object\GameObject\Effect\Effect.cpp">
       <Filter>Src\Application\Object\GameObject\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Object\GameObject\StageObject\Rock\Rock.cpp">
+      <Filter>Src\Application\Object\GameObject\StageObject\Rock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

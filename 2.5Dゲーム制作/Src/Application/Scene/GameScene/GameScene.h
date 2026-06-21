@@ -4,6 +4,7 @@
 
 class Stage;
 class Goal;
+class Rock;
 
 class Player;
 class Enemy;
@@ -37,6 +38,7 @@ private:
 	//ステージ類
 	std::shared_ptr<Stage>m_stage;
 	std::shared_ptr<Goal>m_goal;
+	std::shared_ptr<Rock>m_rock;
 
 	//キャラクター類
 	std::shared_ptr<Player>m_player;
