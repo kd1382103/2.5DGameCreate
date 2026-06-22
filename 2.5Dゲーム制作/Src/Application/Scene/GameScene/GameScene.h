@@ -72,8 +72,8 @@ private:
 	template <class TRock>
 	void CreateRocksEX(const std::vector<float>& xs,float y,const std::vector<float>& zs);
 
-	float m_nextSpawnTime = 15.0f;
-	float m_spawnInterval = 15.0f;
+	float m_nextSpawnTime = 10.0f;
+	float m_spawnInterval = 10.0f;
 
 };
 

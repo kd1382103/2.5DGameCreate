@@ -37,7 +37,7 @@ void Enemy::Init()
 		m_poly->SetScale(1.0f);
 		m_poly->SetSplit(17, 5);
 		m_hitPoint = 15;
-		m_moveSpeed = 0.2f;
+		m_moveSpeed = 0.265f;
 		break;
 
 	case Necromancer:
@@ -45,7 +45,7 @@ void Enemy::Init()
 		m_poly->SetScale(2.5f);
 		m_poly->SetSplit(17, 7);
 		m_hitPoint = 30;
-		m_moveSpeed = 0.15f;
+		m_moveSpeed = 0.25f;
 		break;
 	}
 
@@ -360,7 +360,7 @@ void Enemy::ExpiredAnimation()
 
 		m_poly->SetUVRect(expiredAnime[(int)m_anime]);
 
-		m_anime += 0.15f;
+		m_anime += 0.075f;
 		if (m_anime >= 10)
 		{
 			m_isExpired = true;

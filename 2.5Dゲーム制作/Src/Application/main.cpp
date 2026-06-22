@@ -97,7 +97,7 @@ void Application::KdBeginDraw(bool usePostProcess)
 void Application::KdPostDraw()
 {
 	// Imguiのレンダリング
-	KdDebugGUI::Instance().GuiProcess();
+	//KdDebugGUI::Instance().GuiProcess();
 
 	// BackBuffer -> 画面表示
 	KdDirect3D::Instance().WorkSwapChain()->Present(0, 0);

@@ -89,7 +89,7 @@ void Weapons::PostUpdate()
 
 			KdCollider::SphereInfo sphere;
 			sphere.m_sphere.Center = GetPos();
-			sphere.m_sphere.Radius = 0.8;
+			sphere.m_sphere.Radius = 0.9f;
 			sphere.m_type = KdCollider::TypeDamage;
 
 			//m_pDebugWire->AddDebugSphere(sphere.m_sphere.Center, sphere.m_sphere.Radius, kRedColor);
@@ -119,7 +119,7 @@ void Weapons::PostUpdate()
 			{
 				if (obj->Intersects(sphere, nullptr))
 				{
-					obj->Damage(10.0f , 1); // 多段ヒットなので1発は控えめ
+					obj->Damage(8.0f , 1); // 多段ヒットなので1発は控えめ
 				}
 			}
 		}
